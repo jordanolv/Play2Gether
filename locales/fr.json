@@ -36,10 +36,21 @@
       "playAgain": "Rejouer",
       "cluesError": "Veuillez entrer un nombre valide d'indices"
     },
-    "rebus": {
-      "title": "Rébus",
-      "description": "Bientôt disponible...",
-      "comingSoon": "Bientôt disponible..."
+    "scattergories": {
+      "title": "Petit Bac",
+      "description": "Trouvez des mots avec 2 lettres et un thème",
+      "instruction": "Trouvez un mot qui contient ces lettres et correspond au thème !",
+      "theme": "Thème: {{theme}}",
+      "player1": "Joueur 1",
+      "player2": "Joueur 2", 
+      "score": "{{score}} points",
+      "newRound": "Nouvelle manche",
+      "nextRound": "Manche suivante",
+      "gameOver": "Fin de partie",
+      "winner": "Gagnant: {{player}}",
+      "tie": "Égalité !",
+      "finalScore": "Score final",
+      "playAgain": "Rejouer"
     },
     "code": {
       "title": "Trouve le code",

@@ -36,10 +36,22 @@
       "playAgain": "Play Again",
       "cluesError": "Please enter a valid number of clues"
     },
-    "rebus": {
-      "title": "Rebus",
-      "description": "Coming soon...",
-      "comingSoon": "Coming soon..."
+    "scattergories": {
+      "title": "Scattergories",
+      "description": "Find words with 2 letters and a theme",
+      "instruction": "Find a word that contains these letters and matches the theme!",
+      "theme": "Theme: {{theme}}",
+      "letters": "Letters: {{letters}}",
+      "player1": "Player 1",
+      "player2": "Player 2",
+      "score": "{{score}} points", 
+      "newRound": "New round",
+      "nextRound": "Next round",
+      "gameOver": "Game Over",
+      "winner": "Winner: {{player}}",
+      "tie": "It's a tie!",
+      "finalScore": "Final Score",
+      "playAgain": "Play Again"
     },
     "code": {
       "title": "Crack the code",

@@ -6,10 +6,10 @@
     "icon": "🔤"
   },
   {
-    "id": "rebus",
-    "title": "Rébus",
-    "description": "Bientôt disponible...",
-    "icon": "❓"
+    "id": "scattergories",
+    "title": "Petit Bac",
+    "description": "Trouvez des mots avec 2 lettres et un thème",
+    "icon": "📝"
   },
   {
     "id": "code",

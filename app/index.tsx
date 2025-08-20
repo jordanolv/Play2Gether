@@ -32,7 +32,7 @@ export default function HomeScreen() {
 
 
   const handleGamePress = (gameId: string) => {
-    if (gameId === 'password') {
+    if (gameId === 'password' || gameId === 'scattergories') {
       router.push(('/games/' + gameId) as any);
     }
     // Les autres jeux ne sont pas encore disponibles
@@ -66,7 +66,7 @@ export default function HomeScreen() {
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.dashboard}>
           {gamesData.map((game: GameItem) => {
-            const isAvailable = game.id === 'password';
+            const isAvailable = game.id === 'password' || game.id === 'scattergories';
             
             return (
               <TouchableOpacity
