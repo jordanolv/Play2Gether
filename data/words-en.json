@@ -1,0 +1,131 @@
+[
+  "red", "dog", "ocean", "guitar", "sun",
+  "book", "coffee", "mountain", "star", "garden",
+  "piano", "cloud", "forest", "moon", "chocolate",
+  "river", "flower", "cat", "beach", "violin",
+  "house", "car", "love", "time", "fire",
+  "water", "earth", "air", "heart", "hand",
+  "eyes", "smile", "dream", "travel", "music",
+  "dance", "joy", "peace", "freedom", "hope",
+  
+  "apple", "banana", "orange", "lemon", "strawberry",
+  "tomato", "carrot", "salad", "broccoli", "spinach",
+  "bread", "cheese", "yogurt", "milk", "butter",
+  "chicken", "beef", "fish", "egg", "ham",
+  "pizza", "pasta", "rice", "soup", "sandwich",
+  
+  "bicycle", "train", "plane", "boat",
+  "bus", "subway", "taxi", "truck", "motorcycle",
+  "road", "bridge", "tunnel", "station", "airport",
+  "parking", "gas", "license", "wheel", "engine",
+  
+  "computer", "phone", "tablet", "mouse", "keyboard",
+  "screen", "printer", "internet", "wifi", "email",
+  "app", "software", "file", "folder", "backup",
+  "password", "security", "virus", "update", "download",
+  
+  "doctor", "nurse", "teacher", "lawyer", "engineer",
+  "architect", "police", "firefighter", "baker", "hairdresser",
+  "carpenter", "plumber", "electrician", "gardener", "chef",
+  "waiter", "seller", "accountant", "journalist", "photographer",
+  
+  "football", "tennis", "basketball", "swimming", "running",
+  "cycling", "climbing", "skiing", "surfing", "diving",
+  "yoga", "dancing", "boxing", "judo", "golf",
+  "ping-pong", "volleyball", "rugby", "hockey", "badminton",
+  
+  "blue", "green", "yellow", "orange",
+  "purple", "pink", "black", "white", "gray",
+  "brown", "beige", "turquoise", "magenta", "cyan",
+  "golden", "silver", "transparent", "opaque", "bright",
+  
+  "january", "february", "march", "april", "may",
+  "june", "july", "august", "september", "october",
+  "november", "december", "monday", "tuesday", "wednesday",
+  "thursday", "friday", "saturday", "sunday", "week",
+  
+  "head", "hair", "face", "nose", "mouth",
+  "teeth", "tongue", "ear", "eye", "eyebrow",
+  "neck", "shoulder", "arm", "finger",
+  "chest", "back", "belly", "leg", "foot",
+  
+  "happiness", "sadness", "anger", "fear", "surprise",
+  "disgust", "pride", "shame", "jealousy",
+  "hate", "stress", "calm", "excitement", "boredom",
+  "curiosity", "confidence", "doubt", "despair",
+  
+  "apartment", "villa", "castle", "cabin",
+  "tent", "igloo", "skyscraper", "farm", "barn",
+  "kitchen", "living room", "bedroom", "bathroom", "garage",
+  "balcony", "terrace", "basement", "attic",
+  
+  "lion", "tiger", "elephant", "giraffe", "monkey",
+  "bear", "wolf", "fox", "rabbit", "squirrel",
+  "horse", "cow", "sheep", "pig", "chicken",
+  "eagle", "owl", "parrot", "penguin", "flamingo",
+  
+  "rose", "tulip", "sunflower", "daisy", "orchid",
+  "lily", "iris", "violet", "jasmine", "lavender",
+  "oak", "pine", "palm", "bamboo", "cactus",
+  "grass", "moss", "mushroom", "algae", "fern",
+  
+  "rain", "snow", "wind", "storm",
+  "fog", "rainbow", "hail", "dew",
+  "heatwave", "cold", "hot", "humidity", "drought",
+  "tempest", "cyclone", "tornado", "tsunami", "avalanche",
+  
+  "newspaper", "magazine", "comic", "novel",
+  "poetry", "dictionary", "encyclopedia", "manual", "guide",
+  "pen", "pencil", "eraser", "ruler", "notebook",
+  "sheet", "envelope", "stamp", "letter", "package",
+  
+  "cinema", "theater", "concert", "opera", "ballet",
+  "circus", "museum", "exhibition", "festival", "carnival",
+  "actor", "singer", "musician", "dancer", "clown",
+  "movie", "series", "documentary", "cartoon", "comedy",
+  
+  "hospital", "pharmacy", "school", "university", "library",
+  "bank", "post office", "city hall", "church", "mosque",
+  "synagogue", "temple", "cemetery", "prison", "court",
+  "police station", "barracks", "embassy", "consulate", "prefecture",
+  
+  "valley", "hill", "plain", "plateau",
+  "desert", "jungle", "savanna", "tundra", "swamp",
+  "lake", "pond", "pool", "spring", "waterfall",
+  "river", "stream", "sea",
+  
+  "gold", "silver", "bronze", "copper", "iron",
+  "steel", "aluminum", "lead", "zinc", "tin",
+  "diamond", "ruby", "emerald", "sapphire", "pearl",
+  "crystal", "glass", "plastic", "wood", "stone",
+  
+  "baby", "child", "teenager", "adult", "elderly",
+  "man", "woman", "boy", "girl", "family",
+  "father", "mother", "son", "brother",
+  "sister", "grandfather", "grandmother", "uncle", "aunt",
+  
+  "breakfast", "lunch", "snack", "dinner", "meal",
+  "starter", "main course", "dessert", "appetizer", "digestive",
+  "plate", "glass", "cup", "fork", "knife",
+  "spoon", "napkin", "tablecloth", "candle", "menu",
+  
+  "umbrella", "coat", "jacket", "shirt", "pants",
+  "dress", "skirt", "shorts", "swimsuit", "shoes",
+  "socks", "hat", "cap", "gloves", "scarf",
+  "tie", "belt", "bag", "jewelry", "watch",
+  
+  "television", "radio", "channel", "show",
+  "news", "weather", "sports", "advertisement", "remote",
+  "volume", "program", "live", "rerun",
+  "streaming", "podcast", "video", "audio", "image",
+  
+  "money", "euros", "dollars", "currency", "bill",
+  "coin", "card", "bank", "credit", "debit",
+  "account", "savings", "loan", "interest", "rate",
+  "purchase", "sale", "price", "invoice", "receipt",
+  
+  "class", "lesson", "exercise", "homework",
+  "exam", "grade", "diploma", "student",
+  "classroom", "blackboard", "chalk", "textbook",
+  "backpack", "pencil case", "calculator"
+]

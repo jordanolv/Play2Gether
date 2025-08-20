@@ -1,15 +1,28 @@
 {
   "expo": {
-    "name": "duo-games",
-    "slug": "duo-games",
+    "name": "Play2Gether",
+    "slug": "play2gether",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "duogames",
+    "scheme": "play2gether",
+    "description": "Jouez à des mini-jeux amusants en duo ! Mot de Passe et plus encore.",
+    "keywords": [
+      "jeux",
+      "duo",
+      "mini-jeux",
+      "mot de passe",
+      "amis"
+    ],
+    "privacy": "public",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.jordan.olv.play2gether",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -37,6 +50,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "294f5754-29ae-4bc0-b051-d62b8e1d645d"
+      }
     }
   }
 }

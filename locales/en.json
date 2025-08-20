@@ -1,0 +1,55 @@
+{
+  "app": {
+    "title": "Play2Gether",
+    "subtitle": "Duo Games"
+  },
+  "common": {
+    "back": "Back",
+    "continue": "Continue",
+    "start": "Start",
+    "retry": "Retry",
+    "skip": "Skip",
+    "next": "Next",
+    "finish": "Finish",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "home": {
+    "streak": "Streak: {{count}} days",
+    "streak_zero": "Streak: {{count}} days",
+    "streakIcon": "🔥",
+    "gamesTitle": "Mini-Games"
+  },
+  "games": {
+    "password": {
+      "title": "Password",
+      "description": "Make others guess words with fewest clues",
+      "instruction": "Make your partner guess this word!",
+      "wordProgress": "Word {{current}} of {{total}}",
+      "cluesGiven": "Number of clues given:",
+      "cluesPlaceholder": "Ex: 3",
+      "wordGuessed": "Word guessed ✓",
+      "skipWord": "Skip word (-5)",
+      "results": "Results",
+      "totalScore": "Total score: {{score}} clues",
+      "playAgain": "Play Again",
+      "cluesError": "Please enter a valid number of clues"
+    },
+    "rebus": {
+      "title": "Rebus",
+      "description": "Coming soon...",
+      "comingSoon": "Coming soon..."
+    },
+    "code": {
+      "title": "Crack the code",
+      "description": "Coming soon...",
+      "comingSoon": "Coming soon..."
+    },
+    "defis": {
+      "title": "Fun Challenges",
+      "description": "Coming soon...",
+      "comingSoon": "Coming soon..."
+    }
+  }
+}

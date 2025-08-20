@@ -1,7 +1,8 @@
-import { useRouter, useFocusEffect } from 'expo-router';
-import { useCallback, useState } from 'react';
-import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { getCurrentStreak } from '@/utils/streak';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import gamesData from '@/data/games.json';
 
@@ -15,6 +16,7 @@ interface GameItem {
 
 export default function HomeScreen() {
   const router = useRouter();
+  const { t, i18n } = useTranslation();
   const [streak, setStreak] = useState(0);
 
   const loadStreak = useCallback(async () => {
@@ -36,6 +38,10 @@ export default function HomeScreen() {
     // Les autres jeux ne sont pas encore disponibles
   };
 
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#2D1B69" />
@@ -51,9 +57,9 @@ export default function HomeScreen() {
       </View>
       
       <View style={styles.header}>
-        <Text style={styles.title}>Duo Games 🎲</Text>
+        <Text style={styles.title}>{t('app.title')}</Text>
         <View style={styles.streakContainer}>
-          <Text style={styles.streakText}>🔥 Série: {streak} jours</Text>
+          <Text style={styles.streakText}>{t('home.streakIcon')} {streak > 1 ? t('home.streak', { count: streak }) : t('home.streak_zero', { count: streak })}</Text>
         </View>
       </View>
 
@@ -72,10 +78,10 @@ export default function HomeScreen() {
                 <View style={styles.gameContent}>
                   <Text style={styles.gameIcon}>{game.icon}</Text>
                   <Text style={[styles.gameTitle, !isAvailable && styles.gameTextDisabled]}>
-                    {game.title}
+                    {t(`games.${game.id}.title`)}
                   </Text>
                   <Text style={[styles.gameDescription, !isAvailable && styles.gameTextDisabled]}>
-                    {game.description}
+                    {t(`games.${game.id}.description`)}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -83,6 +89,23 @@ export default function HomeScreen() {
           })}
         </View>
       </ScrollView>
+      
+      {/* Sélecteur de langue */}
+      <View style={styles.languageSelector}>
+        <TouchableOpacity
+          style={[styles.languageButton, i18n.language === 'fr' && styles.languageButtonActive]}
+          onPress={() => changeLanguage('fr')}
+        >
+          <Text style={styles.flagText}>🇫🇷</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity
+          style={[styles.languageButton, i18n.language === 'en' && styles.languageButtonActive]}
+          onPress={() => changeLanguage('en')}
+        >
+          <Text style={styles.flagText}>🇺🇸</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
@@ -229,5 +252,30 @@ const styles = StyleSheet.create({
   },
   gameTextDisabled: {
     opacity: 0.4,
+  },
+  languageSelector: {
+    position: 'absolute',
+    bottom: 40,
+    right: 20,
+    flexDirection: 'row',
+    gap: 10,
+    zIndex: 10,
+  },
+  languageButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, 0.25)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  languageButtonActive: {
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    borderColor: 'rgba(255, 255, 255, 0.6)',
+  },
+  flagText: {
+    fontSize: 24,
   },
 });

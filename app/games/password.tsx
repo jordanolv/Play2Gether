@@ -1,11 +1,13 @@
-import wordsData from '@/data/devine-words.json';
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Alert, SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { updateDailyStreak } from '@/utils/streak';
+import { getRandomWords } from '@/utils/gameWords';
 
 export default function DevineGame() {
   const router = useRouter();
+  const { t, i18n } = useTranslation();
   const [gameWords, setGameWords] = useState<string[]>([]);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [guessCount, setGuessCount] = useState('');
@@ -16,9 +18,14 @@ export default function DevineGame() {
     startNewGame();
   }, []);
 
+  // Redémarrer le jeu quand la langue change
+  useEffect(() => {
+    startNewGame();
+  }, [i18n.language]);
+
   const startNewGame = () => {
-    const shuffled = [...wordsData].sort(() => 0.5 - Math.random());
-    setGameWords(shuffled.slice(0, 5));
+    const randomWords = getRandomWords(i18n.language, 5);
+    setGameWords(randomWords);
     setCurrentWordIndex(0);
     setScores([]);
     setGameFinished(false);
@@ -28,7 +35,7 @@ export default function DevineGame() {
   const handleWordGuessed = () => {
     const count = parseInt(guessCount);
     if (!count || count < 1) {
-      Alert.alert('Erreur', 'Veuillez entrer un nombre valide d\'indices');
+      Alert.alert(t('common.error'), t('games.password.cluesError'));
       return;
     }
 
@@ -46,7 +53,7 @@ export default function DevineGame() {
   };
 
   const handleSkipWord = () => {
-    const newScores = [...scores, 10];
+    const newScores = [...scores, 5];
     setScores(newScores);
 
     if (currentWordIndex < gameWords.length - 1) {
@@ -69,25 +76,27 @@ export default function DevineGame() {
         
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-            <Text style={styles.backText}>← Retour</Text>
+            <Text style={styles.backText}>{t('common.back')}</Text>
           </TouchableOpacity>
-          <Text style={styles.title}>Résultats</Text>
+          <Text style={styles.title}>{t('games.password.results')}</Text>
         </View>
 
         <View style={styles.content}>
-          <Text style={styles.finalScore}>Score total: {getTotalScore()} indices</Text>
+          <Text style={styles.finalScore}>{t('games.password.totalScore', { score: getTotalScore() })}</Text>
           
           <View style={styles.wordScores}>
             {gameWords.map((word, index) => (
               <View key={index} style={styles.scoreRow}>
                 <Text style={styles.wordText}>{word}</Text>
-                <Text style={styles.scoreText}>{scores[index]} indices</Text>
+                <Text style={styles.scoreText}>
+                  {scores[index]} {scores[index] === 1 ? t('games.password.cluesSingular') : t('games.password.cluesPlural')}
+                </Text>
               </View>
             ))}
           </View>
 
           <TouchableOpacity style={styles.playAgainButton} onPress={startNewGame}>
-            <Text style={styles.buttonText}>Rejouer</Text>
+            <Text style={styles.buttonText}>{t('games.password.playAgain')}</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -102,13 +111,13 @@ export default function DevineGame() {
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <Text style={styles.backText}>← Retour</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>Mot de Passe</Text>
+        <Text style={styles.title}>{t('games.password.title')}</Text>
       </View>
 
       <View style={styles.content}>
         <View style={styles.progressContainer}>
           <Text style={styles.progressText}>
-            Mot {currentWordIndex + 1} sur {gameWords.length}
+            {t('games.password.wordProgress', { current: currentWordIndex + 1, total: gameWords.length })}
           </Text>
         </View>
 
@@ -117,28 +126,28 @@ export default function DevineGame() {
         </View>
 
         <Text style={styles.instruction}>
-          Faites deviner ce mot à votre partenaire !
+          {t('games.password.instruction')}
         </Text>
 
         <View style={styles.inputContainer}>
-            <Text style={styles.inputLabel}>{'Nombre d\'indices donnés :'}</Text>
+            <Text style={styles.inputLabel}>{t('games.password.cluesGiven')}</Text>
           <TextInput
             style={styles.input}
             value={guessCount}
             onChangeText={setGuessCount}
             keyboardType="numeric"
-            placeholder="Ex: 3"
+            placeholder={t('games.password.cluesPlaceholder')}
             placeholderTextColor="#666"
           />
         </View>
 
         <View style={styles.buttonsContainer}>
           <TouchableOpacity style={styles.guessedButton} onPress={handleWordGuessed}>
-            <Text style={styles.buttonText}>Mot deviné ✓</Text>
+            <Text style={styles.buttonText}>{t('games.password.wordGuessed')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.skipButton} onPress={handleSkipWord}>
-            <Text style={styles.buttonText}>Passer le mot (-10)</Text>
+            <Text style={styles.buttonText}>{t('games.password.skipWord')}</Text>
           </TouchableOpacity>
         </View>
       </View>

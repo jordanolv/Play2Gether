@@ -1,0 +1,55 @@
+{
+  "app": {
+    "title": "Play2Gether",
+    "subtitle": "Jeux en duo"
+  },
+  "common": {
+    "back": "Retour",
+    "continue": "Continuer",
+    "start": "Commencer",
+    "retry": "Réessayer",
+    "skip": "Passer",
+    "next": "Suivant",
+    "finish": "Terminer",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès"
+  },
+  "home": {
+    "streak": "Série: {{count}} jours",
+    "streak_zero": "Série: {{count}} jour",
+    "streakIcon": "🔥",
+    "gamesTitle": "Mini-Jeux"
+  },
+  "games": {
+    "password": {
+      "title": "Mot de Passe",
+      "description": "Faites deviner des mots avec le moins d'indices",
+      "instruction": "Faites deviner ce mot à votre partenaire !",
+      "wordProgress": "Mot {{current}} sur {{total}}",
+      "cluesGiven": "Nombre d'indices donnés :",
+      "cluesPlaceholder": "Ex: 3",
+      "wordGuessed": "Mot deviné ✓",
+      "skipWord": "Passer le mot (-5)",
+      "results": "Résultats",
+      "totalScore": "Score total: {{score}} indices",
+      "playAgain": "Rejouer",
+      "cluesError": "Veuillez entrer un nombre valide d'indices"
+    },
+    "rebus": {
+      "title": "Rébus",
+      "description": "Bientôt disponible...",
+      "comingSoon": "Bientôt disponible..."
+    },
+    "code": {
+      "title": "Trouve le code",
+      "description": "Bientôt disponible...",
+      "comingSoon": "Bientôt disponible..."
+    },
+    "defis": {
+      "title": "Défis Rigolos", 
+      "description": "Bientôt disponible...",
+      "comingSoon": "Bientôt disponible..."
+    }
+  }
+}

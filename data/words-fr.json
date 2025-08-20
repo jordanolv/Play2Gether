@@ -1,0 +1,131 @@
+[
+  "rouge", "chien", "océan", "guitare", "soleil",
+  "livre", "café", "montagne", "étoile", "jardin",
+  "piano", "nuage", "forêt", "lune", "chocolat",
+  "rivière", "fleur", "chat", "plage", "violon",
+  "maison", "voiture", "amour", "temps", "feu",
+  "eau", "terre", "air", "coeur", "main",
+  "yeux", "sourire", "rêve", "voyage", "musique",
+  "danse", "joie", "paix", "liberté", "espoir",
+  
+  "pomme", "banane", "orange", "citron", "fraise",
+  "tomate", "carotte", "salade", "brocoli", "épinard",
+  "pain", "fromage", "yaourt", "lait", "beurre",
+  "poulet", "boeuf", "poisson", "oeuf", "jambon",
+  "pizza", "pâtes", "riz", "soupe", "sandwich",
+  
+  "voiture", "vélo", "train", "avion", "bateau",
+  "bus", "métro", "taxi", "camion", "moto",
+  "route", "pont", "tunnel", "gare", "aéroport",
+  "parking", "essence", "permis", "volant", "roue",
+  
+  "ordinateur", "téléphone", "tablette", "souris", "clavier",
+  "écran", "imprimante", "internet", "wifi", "email",
+  "application", "logiciel", "fichier", "dossier", "sauvegarde",
+  "password", "sécurité", "virus", "update", "télécharger",
+  
+  "médecin", "infirmière", "professeur", "avocat", "ingénieur",
+  "architecte", "policier", "pompier", "boulanger", "coiffeur",
+  "menuisier", "plombier", "électricien", "jardinier", "cuisinier",
+  "serveur", "vendeur", "comptable", "journaliste", "photographe",
+  
+  "football", "tennis", "basketball", "natation", "course",
+  "cyclisme", "escalade", "ski", "surf", "plongée",
+  "yoga", "danse", "boxe", "judo", "golf",
+  "ping-pong", "volley", "rugby", "hockey", "badminton",
+  
+  "bleu", "vert", "jaune", "orange",
+  "violet", "rose", "noir", "blanc", "gris",
+  "marron", "beige", "turquoise", "magenta", "cyan",
+  "doré", "argenté", "transparent", "opaque", "brillant",
+  
+  "janvier", "février", "mars", "avril", "mai",
+  "juin", "juillet", "août", "septembre", "octobre",
+  "novembre", "décembre", "lundi", "mardi", "mercredi",
+  "jeudi", "vendredi", "samedi", "dimanche", "semaine",
+  
+  "tête", "cheveux", "visage", "nez", "bouche",
+  "dents", "langue", "oreille", "oeil", "sourcil",
+  "cou", "épaule", "bras", "doigt",
+  "poitrine", "dos", "ventre", "jambe", "pied",
+  
+  "bonheur", "tristesse", "colère", "peur", "surprise",
+  "dégoût", "fierté", "honte", "jalousie",
+  "haine", "stress", "calme", "excitation", "ennui",
+  "curiosité", "confiance", "doute", "désespoir",
+  
+  "appartement", "villa", "château", "cabane",
+  "tente", "igloo", "gratte-ciel", "ferme", "grange",
+  "cuisine", "salon", "chambre", "salle de bain", "garage",
+  "balcon", "terrasse", "cave", "grenier",
+  
+  "lion", "tigre", "éléphant", "girafe", "singe",
+  "ours", "loup", "renard", "lapin", "écureuil",
+  "cheval", "vache", "mouton", "cochon", "poule",
+  "aigle", "hibou", "perroquet", "pingouin", "flamant",
+  
+  "rose", "tulipe", "tournesol", "marguerite", "orchidée",
+  "lys", "iris", "violette", "jasmin", "lavande",
+  "chêne", "sapin", "palmier", "bambou", "cactus",
+  "herbe", "mousse", "champignon", "algue", "fougère",
+  
+  "pluie", "neige", "vent", "orage",
+  "brouillard", "arc-en-ciel", "grêle", "rosée",
+  "canicule", "froid", "chaud", "humidité", "sécheresse",
+  "tempête", "cyclone", "tornade", "tsunami", "avalanche",
+  
+  "journal", "magazine", "BD", "roman",
+  "poésie", "dictionnaire", "encyclopédie", "manuel", "guide",
+  "stylo", "crayon", "gomme", "règle", "cahier",
+  "feuille", "enveloppe", "timbre", "lettre", "colis",
+  
+  "cinéma", "théâtre", "concert", "opéra", "ballet",
+  "cirque", "musée", "exposition", "festival", "carnaval",
+  "acteur", "chanteur", "musicien", "danseur", "clown",
+  "film", "série", "documentaire", "dessin animé", "comédie",
+  
+  "hôpital", "pharmacie", "école", "université", "bibliothèque",
+  "banque", "poste", "mairie", "église", "mosquée",
+  "synagogue", "temple", "cimetière", "prison", "tribunal",
+  "commissariat", "caserne", "ambassade", "consulat", "préfecture",
+  
+  "vallée", "colline", "plaine", "plateau",
+  "désert", "jungle", "savane", "toundra", "marais",
+  "lac", "étang", "mare", "source", "cascade",
+  "fleuve", "ruisseau", "mer",
+  
+  "or", "argent", "bronze", "cuivre", "fer",
+  "acier", "aluminium", "plomb", "zinc", "étain",
+  "diamant", "rubis", "émeraude", "saphir", "perle",
+  "cristal", "verre", "plastique", "bois", "pierre",
+  
+  "bébé", "enfant", "adolescent", "adulte", "personne âgée",
+  "homme", "femme", "garçon", "fille", "famille",
+  "père", "mère", "fils", "frère",
+  "soeur", "grand-père", "grand-mère", "oncle", "tante",
+  
+  "petit-déjeuner", "déjeuner", "goûter", "dîner", "collation",
+  "entrée", "plat", "dessert", "apéritif", "digestif",
+  "assiette", "verre", "tasse", "fourchette", "couteau",
+  "cuillère", "serviette", "nappe", "bougie", "menu",
+  
+  "parapluie", "manteau", "veste", "chemise", "pantalon",
+  "robe", "jupe", "short", "maillot", "chaussures",
+  "chaussettes", "chapeau", "casquette", "gants", "écharpe",
+  "cravate", "ceinture", "sac", "bijoux", "montre",
+  
+  "télévision", "radio", "chaîne", "film", "émission",
+  "actualités", "météo", "sport", "publicité", "télécommande",
+  "volume", "chaîne", "programme", "direct", "rediffusion",
+  "streaming", "podcast", "vidéo", "audio", "image",
+  
+  "argent", "euros", "dollars", "monnaie", "billet",
+  "pièce", "carte", "banque", "crédit", "débit",
+  "compte", "épargne", "prêt", "intérêt", "taux",
+  "achat", "vente", "prix", "facture", "reçu",
+  
+  "école", "cours", "leçon", "exercice", "devoirs",
+  "examen", "note", "diplôme", "professeur", "élève",
+  "étudiant", "classe", "tableau", "craie", "livre",
+  "manuel", "cartable", "trousse", "règle", "calculatrice"
+]
