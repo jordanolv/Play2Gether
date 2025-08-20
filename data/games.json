@@ -1,0 +1,26 @@
+[
+  {
+    "id": "password",
+    "title": "Mot de Passe",
+    "description": "Faites deviner des mots avec le moins d'indices",
+    "icon": "🔤"
+  },
+  {
+    "id": "rebus",
+    "title": "Rébus",
+    "description": "Bientôt disponible...",
+    "icon": "❓"
+  },
+  {
+    "id": "questions",
+    "title": "Questions Couples",
+    "description": "Bientôt disponible...",
+    "icon": "❓"
+  },
+  {
+    "id": "defis",
+    "title": "Défis Rigolos",
+    "description": "Bientôt disponible...",
+    "icon": "❓"
+  }
+]
