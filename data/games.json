@@ -1,26 +1,18 @@
 [
   {
     "id": "password",
-    "title": "Mot de Passe",
-    "description": "Faites deviner des mots avec le moins d'indices",
     "icon": "🔤"
   },
   {
     "id": "scattergories",
-    "title": "Petit Bac",
-    "description": "Trouvez des mots avec 2 lettres et un thème",
     "icon": "📝"
   },
   {
-    "id": "code",
-    "title": "Trouve le Code",
-    "description": "Bientôt disponible...",
+    "id": "questions",
     "icon": "❓"
   },
   {
-    "id": "???",
-    "title": "???",
-    "description": "Bientôt disponible...",
+    "id": "defis",
     "icon": "❓"
   }
 ]

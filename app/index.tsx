@@ -8,8 +8,6 @@ import gamesData from '@/data/games.json';
 
 interface GameItem {
   id: string;
-  title: string;
-  description: string;
   icon: string;
 }
 

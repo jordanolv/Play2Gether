@@ -53,15 +53,13 @@
       "finalScore": "Final Score",
       "playAgain": "Play Again"
     },
-    "code": {
-      "title": "Crack the code",
-      "description": "Coming soon...",
-      "comingSoon": "Coming soon..."
+    "questions": {
+      "title": "Couple Questions",
+      "description": "Coming soon..."
     },
     "defis": {
       "title": "Fun Challenges",
-      "description": "Coming soon...",
-      "comingSoon": "Coming soon..."
+      "description": "Coming soon..."
     }
   }
 }

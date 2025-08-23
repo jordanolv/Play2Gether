@@ -52,15 +52,13 @@
       "finalScore": "Score final",
       "playAgain": "Rejouer"
     },
-    "code": {
-      "title": "Trouve le code",
-      "description": "Bientôt disponible...",
-      "comingSoon": "Bientôt disponible..."
+    "questions": {
+      "title": "Questions Couples",
+      "description": "Bientôt disponible..."
     },
     "defis": {
-      "title": "Défis Rigolos", 
-      "description": "Bientôt disponible...",
-      "comingSoon": "Bientôt disponible..."
+      "title": "Défis Rigolos",
+      "description": "Bientôt disponible..."
     }
   }
 }
