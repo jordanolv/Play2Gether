@@ -16,6 +16,10 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "olivier.jordan21@gmail.com"
+      }
+    }
   }
 }
