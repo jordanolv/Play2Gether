@@ -86,11 +86,17 @@ export default function RebusGame() {
   if (gameFinished) {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="light-content" backgroundColor="#2D1B69" />
+        <StatusBar barStyle="light-content" backgroundColor="#121326" />
+        
+        <View style={styles.backgroundShapes}>
+          <View style={[styles.shape, styles.shape1]} />
+          <View style={[styles.shape, styles.shape2]} />
+          <View style={[styles.shape, styles.shape3]} />
+        </View>
         
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-            <Text style={styles.backText}>{t('common.back')}</Text>
+            <Text style={styles.backText}>← {t('common.back')}</Text>
           </TouchableOpacity>
           <Text style={styles.title}>{t('games.scattergories.gameOver')}</Text>
         </View>
@@ -128,7 +134,13 @@ export default function RebusGame() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#2D1B69" />
+      <StatusBar barStyle="light-content" backgroundColor="#121326" />
+      
+      <View style={styles.backgroundShapes}>
+        <View style={[styles.shape, styles.shape1]} />
+        <View style={[styles.shape, styles.shape2]} />
+        <View style={[styles.shape, styles.shape3]} />
+      </View>
       
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
@@ -183,15 +195,50 @@ export default function RebusGame() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#2D1B69',
+    backgroundColor: '#121326',
+    position: 'relative',
+  },
+  backgroundShapes: {
+    position: 'absolute',
+    top: 0, left: 0, right: 0, bottom: 0,
+    zIndex: 0,
+  },
+  shape: {
+    position: 'absolute',
+    borderRadius: 200,
+    opacity: 0.15,
+  },
+  shape1: {
+    width: 200,
+    height: 200,
+    backgroundColor: '#f0abfc',
+    top: -80,
+    right: -60,
+    transform: [{ rotate: '28deg' }],
+  },
+  shape2: {
+    width: 320,
+    height: 320,
+    backgroundColor: '#ff6161ff',
+    top: 200,
+    left: -160,
+    transform: [{ rotate: '-18deg' }],
+  },
+  shape3: {
+    width: 240,
+    height: 240,
+    backgroundColor: '#7dd3fc',
+    bottom: -120,
+    right: -100,
+    transform: [{ rotate: '42deg' }],
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+    padding: 40,
+    backgroundColor: 'transparent',
+    zIndex: 1,
     position: 'relative',
   },
   backButton: {
@@ -199,55 +246,79 @@ const styles = StyleSheet.create({
     left: 20,
   },
   backText: {
-    color: '#fff',
+    color: '#f8fafc',
     fontSize: 16,
+    fontWeight: '600',
+    textShadowColor: 'rgba(0,0,0,0.25)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
   title: {
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold',
+    color: '#f8fafc',
+    fontSize: 28,
+    fontWeight: '900',
+    letterSpacing: 1,
+    textShadowColor: 'rgba(0,0,0,0.35)',
+    textShadowOffset: { width: 0, height: 3 },
+    textShadowRadius: 6,
   },
   content: {
     flex: 1,
-    padding: 20,
+    padding: 24,
+    zIndex: 1,
+    position: 'relative',
   },
   roundInfo: {
     alignItems: 'center',
     marginBottom: 20,
   },
   roundText: {
-    color: '#fff',
+    color: '#cbd5e1',
     fontSize: 16,
-    opacity: 0.7,
+    fontWeight: '600',
+    opacity: 0.9,
   },
   gameCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    borderRadius: 26,
     padding: 30,
     alignItems: 'center',
     marginBottom: 30,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.25)',
+    borderColor: 'rgba(255,255,255,0.12)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.28,
+    shadowRadius: 16,
+    elevation: 10,
   },
   themeText: {
-    color: '#fff',
+    color: '#f8fafc',
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: '800',
     marginBottom: 15,
     textAlign: 'center',
+    letterSpacing: 0.5,
+    textShadowColor: 'rgba(0,0,0,0.25)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
   lettersText: {
-    color: '#fff',
+    color: '#f8fafc',
     fontSize: 36,
-    fontWeight: 'bold',
+    fontWeight: '900',
     marginBottom: 15,
     letterSpacing: 8,
+    textShadowColor: 'rgba(0,0,0,0.35)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
   },
   instruction: {
-    color: '#fff',
+    color: '#cbd5e1',
     fontSize: 14,
     textAlign: 'center',
-    opacity: 0.8,
+    fontWeight: '500',
+    opacity: 0.9,
   },
   scoresContainer: {
     flexDirection: 'row',
@@ -260,89 +331,126 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   playerName: {
-    color: '#fff',
+    color: '#f8fafc',
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '800',
     marginBottom: 5,
+    textShadowColor: 'rgba(0,0,0,0.25)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
   currentScore: {
-    color: '#fff',
+    color: '#cbd5e1',
     fontSize: 16,
     marginBottom: 15,
-    opacity: 0.8,
+    fontWeight: '600',
+    opacity: 0.9,
   },
   pointButton: {
-    borderRadius: 15,
+    borderRadius: 20,
     padding: 15,
     alignItems: 'center',
     minWidth: 120,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
+    borderColor: 'rgba(255,255,255,0.2)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.22,
+    shadowRadius: 10,
+    elevation: 6,
   },
   player1Button: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: 'rgba(76,175,80,0.9)',
   },
   player2Button: {
-    backgroundColor: '#2196F3',
+    backgroundColor: 'rgba(33,150,243,0.9)',
   },
   nextRoundButton: {
-    backgroundColor: '#FF9800',
-    borderRadius: 15,
+    backgroundColor: 'rgba(255,152,0,0.9)',
+    borderRadius: 20,
     padding: 18,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
+    borderColor: 'rgba(255,255,255,0.2)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.22,
+    shadowRadius: 10,
+    elevation: 6,
   },
   buttonText: {
-    color: '#fff',
+    color: '#f8fafc',
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '700',
+    textShadowColor: 'rgba(0,0,0,0.25)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
   finalScoreContainer: {
     alignItems: 'center',
   },
   finalScoreTitle: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: 'bold',
+    color: '#f8fafc',
+    fontSize: 28,
+    fontWeight: '900',
     marginBottom: 30,
+    letterSpacing: 1,
+    textShadowColor: 'rgba(0,0,0,0.35)',
+    textShadowOffset: { width: 0, height: 3 },
+    textShadowRadius: 6,
   },
   scoreRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    paddingVertical: 10,
+    paddingVertical: 12,
     paddingHorizontal: 20,
     marginBottom: 10,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 10,
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.12)',
   },
   playerScore: {
-    color: '#fff',
+    color: '#f8fafc',
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   winnerContainer: {
     marginTop: 30,
     marginBottom: 30,
     padding: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    borderRadius: 15,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 20,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.25)',
+    borderColor: 'rgba(255,255,255,0.15)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 6,
   },
   winnerText: {
-    color: '#fff',
+    color: '#f8fafc',
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: '800',
     textAlign: 'center',
+    letterSpacing: 0.5,
+    textShadowColor: 'rgba(0,0,0,0.25)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
   playAgainButton: {
-    backgroundColor: '#2196F3',
-    borderRadius: 15,
+    backgroundColor: 'rgba(33,150,243,0.9)',
+    borderRadius: 20,
     padding: 18,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
+    borderColor: 'rgba(255,255,255,0.2)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.22,
+    shadowRadius: 10,
+    elevation: 6,
   },
 });

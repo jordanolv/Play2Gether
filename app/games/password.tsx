@@ -1,9 +1,9 @@
+import { getRandomWords } from '@/utils/gameWords';
+import { updateDailyStreak } from '@/utils/streak';
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Alert, SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { updateDailyStreak } from '@/utils/streak';
-import { getRandomWords } from '@/utils/gameWords';
+import { Alert, SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function DevineGame() {
   const router = useRouter();
@@ -72,7 +72,13 @@ export default function DevineGame() {
   if (gameFinished) {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="light-content" backgroundColor="#1a1a1a" />
+        <StatusBar barStyle="light-content" backgroundColor="#121326" />
+        
+        <View style={styles.backgroundShapes}>
+          <View style={[styles.shape, styles.shape1]} />
+          <View style={[styles.shape, styles.shape2]} />
+          <View style={[styles.shape, styles.shape3]} />
+        </View>
         
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
@@ -105,11 +111,17 @@ export default function DevineGame() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#1a1a1a" />
+      <StatusBar barStyle="light-content" backgroundColor="#121326" />
+      
+      <View style={styles.backgroundShapes}>
+        <View style={[styles.shape, styles.shape1]} />
+        <View style={[styles.shape, styles.shape2]} />
+        <View style={[styles.shape, styles.shape3]} />
+      </View>
       
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Text style={styles.backText}>← Retour</Text>
+          <Text style={styles.backText}>{t('common.back')}</Text>
         </TouchableOpacity>
         <Text style={styles.title}>{t('games.password.title')}</Text>
       </View>
@@ -158,15 +170,50 @@ export default function DevineGame() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#2D1B69',
+    backgroundColor: '#121326',
+    position: 'relative',
+  },
+  backgroundShapes: {
+    position: 'absolute',
+    top: 0, left: 0, right: 0, bottom: 0,
+    zIndex: 0,
+  },
+  shape: {
+    position: 'absolute',
+    borderRadius: 200,
+    opacity: 0.15,
+  },
+  shape1: {
+    width: 320,
+    height: 320,
+    backgroundColor: '#a78bfa',
+    top: -120,
+    left: -80,
+    transform: [{ rotate: '-25deg' }],
+  },
+  shape2: {
+    width: 200,
+    height: 200,
+    backgroundColor: '#7dd3fc',
+    top: 200,
+    right: -70,
+    transform: [{ rotate: '30deg' }],
+  },
+  shape3: {
+    width: 260,
+    height: 260,
+    backgroundColor: '#fcd34d',
+    bottom: -80,
+    left: -120,
+    transform: [{ rotate: '15deg' }],
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+    padding: 40,
+    backgroundColor: 'transparent',
+    zIndex: 1,
     position: 'relative',
   },
   backButton: {
@@ -174,97 +221,141 @@ const styles = StyleSheet.create({
     left: 20,
   },
   backText: {
-    color: '#fff',
+    color: '#f8fafc',
     fontSize: 16,
+    fontWeight: '600',
+    textShadowColor: 'rgba(0,0,0,0.25)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
   title: {
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold',
+    color: '#f8fafc',
+    fontSize: 28,
+    fontWeight: '900',
+    letterSpacing: 1,
+    textShadowColor: 'rgba(0,0,0,0.35)',
+    textShadowOffset: { width: 0, height: 3 },
+    textShadowRadius: 6,
   },
   content: {
     flex: 1,
-    padding: 20,
+    padding: 24,
+    zIndex: 1,
+    position: 'relative',
   },
   progressContainer: {
     alignItems: 'center',
     marginBottom: 30,
   },
   progressText: {
-    color: '#fff',
+    color: '#cbd5e1',
     fontSize: 16,
-    opacity: 0.7,
+    fontWeight: '600',
+    opacity: 0.9,
   },
   wordCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    borderRadius: 26,
     padding: 40,
     alignItems: 'center',
     marginBottom: 30,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.25)',
+    borderColor: 'rgba(255,255,255,0.12)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.28,
+    shadowRadius: 16,
+    elevation: 10,
   },
   wordToGuess: {
-    color: '#fff',
+    color: '#f8fafc',
     fontSize: 32,
-    fontWeight: 'bold',
+    fontWeight: '900',
     textAlign: 'center',
+    letterSpacing: 1,
+    textShadowColor: 'rgba(0,0,0,0.25)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
   instruction: {
-    color: '#fff',
+    color: '#cbd5e1',
     fontSize: 16,
     textAlign: 'center',
     marginBottom: 30,
-    opacity: 0.8,
+    fontWeight: '500',
+    opacity: 0.9,
   },
   inputContainer: {
     marginBottom: 30,
   },
   inputLabel: {
-    color: '#fff',
+    color: '#f8fafc',
     fontSize: 16,
     marginBottom: 10,
+    fontWeight: '600',
   },
   input: {
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    borderRadius: 15,
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    borderRadius: 20,
     padding: 18,
-    color: '#fff',
+    color: '#f8fafc',
     fontSize: 18,
     textAlign: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.25)',
+    borderColor: 'rgba(255,255,255,0.12)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 4,
   },
   buttonsContainer: {
     gap: 15,
   },
   guessedButton: {
-    backgroundColor: '#4CAF50',
-    borderRadius: 15,
+    backgroundColor: 'rgba(76,175,80,0.9)',
+    borderRadius: 20,
     padding: 18,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
+    borderColor: 'rgba(255,255,255,0.2)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.22,
+    shadowRadius: 10,
+    elevation: 6,
   },
   skipButton: {
-    backgroundColor: '#FF6B6B',
-    borderRadius: 15,
+    backgroundColor: 'rgba(255,107,107,0.9)',
+    borderRadius: 20,
     padding: 18,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
+    borderColor: 'rgba(255,255,255,0.2)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.22,
+    shadowRadius: 10,
+    elevation: 6,
   },
   buttonText: {
-    color: '#fff',
+    color: '#f8fafc',
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '700',
+    textShadowColor: 'rgba(0,0,0,0.25)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
   finalScore: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: 'bold',
+    color: '#f8fafc',
+    fontSize: 28,
+    fontWeight: '900',
     textAlign: 'center',
     marginBottom: 30,
+    letterSpacing: 1,
+    textShadowColor: 'rgba(0,0,0,0.35)',
+    textShadowOffset: { width: 0, height: 3 },
+    textShadowRadius: 6,
   },
   wordScores: {
     marginBottom: 30,
@@ -277,21 +368,27 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgba(255, 255, 255, 0.1)',
   },
   wordText: {
-    color: '#fff',
+    color: '#f8fafc',
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   scoreText: {
-    color: '#fff',
+    color: '#cbd5e1',
     fontSize: 16,
-    opacity: 0.7,
+    fontWeight: '500',
+    opacity: 0.9,
   },
   playAgainButton: {
-    backgroundColor: '#2196F3',
-    borderRadius: 15,
+    backgroundColor: 'rgba(33,150,243,0.9)',
+    borderRadius: 20,
     padding: 18,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
+    borderColor: 'rgba(255,255,255,0.2)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.22,
+    shadowRadius: 10,
+    elevation: 6,
   },
 });
