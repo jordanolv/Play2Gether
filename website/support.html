@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistance - Play2Gether</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .nav {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+        
+        .nav a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        h2 {
+            color: #2D1B69;
+            margin-bottom: 20px;
+        }
+        
+        h3 {
+            color: #2D1B69;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        
+        .faq-item {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .faq-question {
+            font-weight: bold;
+            color: #2D1B69;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .contact-info {
+            background: rgba(45, 27, 105, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .contact-method {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .contact-method:last-child {
+            margin-bottom: 0;
+        }
+        
+        .contact-icon {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            width: 30px;
+        }
+        
+        a {
+            color: #2D1B69;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            opacity: 0.8;
+        }
+        
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            color: #2D1B69;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            align-self: flex-start;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .form-success {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #c3e6cb;
+            margin-top: 15px;
+        }
+        
+        @media (max-width: 600px) {
+            .nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Assistance Play2Gether</h1>
+            <p>Nous sommes là pour vous aider !</p>
+        </div>
+        
+        <div class="nav">
+            <a href="index.html">Accueil</a>
+            <a href="support.html">Assistance</a>
+            <a href="privacy.html">Confidentialité</a>
+        </div>
+        
+        <div class="card">
+            <h2>📚 Questions Fréquentes</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">Comment jouer aux jeux ?</div>
+                <p>Chaque jeu a ses propres règles simples. Sur l'écran d'accueil, touchez un jeu pour commencer. Les instructions s'affichent directement dans le jeu.</p>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Comment fonctionne la série quotidienne (Daily Streak) ?</div>
+                <p>Votre série augmente de 1 chaque jour où vous terminez au moins une partie complète. Elle se remet à zéro si vous ne jouez pas pendant une journée.</p>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Comment changer la langue de l'application ?</div>
+                <p>Touchez les drapeaux français 🇫🇷 ou américain 🇺🇸 en bas à droite de l'écran d'accueil. La langue change instantanément.</p>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Mes données sont-elles sauvegardées ?</div>
+                <p>Seule votre série quotidienne est sauvegardée localement sur votre appareil. Aucune donnée personnelle n'est collectée ou envoyée sur internet.</p>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">L'application fonctionne-t-elle hors ligne ?</div>
+                <p>Oui ! Play2Gether fonctionne entièrement hors ligne. Aucune connexion internet n'est requise pour jouer.</p>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Puis-je jouer seul(e) ?</div>
+                <p>Bien que conçue pour deux joueurs, vous pouvez techniquement jouer seul(e) en gérant les deux côtés. Mais c'est plus amusant à deux !</p>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Y aura-t-il de nouveaux jeux ?</div>
+                <p>Oui ! Nous prévoyons d'ajouter régulièrement de nouveaux mini-jeux. Restez à l'écoute des mises à jour de l'application.</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>❓ Poser une Question</h2>
+            <p>Une question ? Un problème ? Une suggestion ? Utilisez le formulaire ci-dessous ou contactez-nous directement :</p>
+            
+            <form class="contact-form" action="mailto:support@play2gether.app" method="post" enctype="text/plain">
+                <div class="form-group">
+                    <label for="name">Nom *</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subject">Type de demande *</label>
+                    <select id="subject" name="subject" required>
+                        <option value="">Sélectionnez un type</option>
+                        <option value="Bug Report">Signaler un bug</option>
+                        <option value="Feature Request">Demande de fonctionnalité</option>
+                        <option value="General Question">Question générale</option>
+                        <option value="Account Issue">Problème de compte</option>
+                        <option value="Other">Autre</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Message *</label>
+                    <textarea id="message" name="message" required placeholder="Décrivez votre question ou problème en détail..."></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">Envoyer</button>
+            </form>
+            
+            <div class="form-success" id="successMessage">
+                ✅ Votre message a été envoyé ! Nous vous répondrons sous 24-48h.
+            </div>
+            
+            <div class="contact-info">
+                <div class="contact-method">
+                    <span class="contact-icon">📧</span>
+                    <div>
+                        <strong>Email direct :</strong><br>
+                        <a href="mailto:support@play2gether.app">support@play2gether.app</a>
+                    </div>
+                </div>
+                
+                <div class="contact-method">
+                    <span class="contact-icon">⏰</span>
+                    <div>
+                        <strong>Délai de réponse :</strong><br>
+                        Nous répondons généralement sous 24-48h
+                    </div>
+                </div>
+                
+                <div class="contact-method">
+                    <span class="contact-icon">🌍</span>
+                    <div>
+                        <strong>Langues :</strong><br>
+                        Français, English
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>🐛 Signaler un Bug</h2>
+            <p>Si vous rencontrez un problème technique, merci d'inclure dans votre email :</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Le modèle de votre appareil (iPhone X, Samsung Galaxy S21...)</li>
+                <li>La version de votre système (iOS 16, Android 12...)</li>
+                <li>Une description détaillée du problème</li>
+                <li>Les étapes pour reproduire le bug</li>
+                <li>Une capture d'écran si possible</li>
+            </ul>
+        </div>
+        
+        <div class="card">
+            <h2>⭐ Vous Aimez Play2Gether ?</h2>
+            <p>Si vous appréciez notre application, n'hésitez pas à :</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Laisser un avis 5 étoiles sur l'App Store / Google Play</li>
+                <li>Partager l'app avec vos amis et votre famille</li>
+                <li>Nous envoyer vos suggestions d'amélioration</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2024 Play2Gether. Tous droits réservés.</p>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('.contact-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const submitBtn = form.querySelector('.submit-btn');
+            const formData = new FormData(form);
+            
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                subject: formData.get('subject'),
+                message: formData.get('message')
+            };
+            
+            // Animation d'envoi
+            submitBtn.textContent = 'Envoi en cours...';
+            submitBtn.disabled = true;
+            
+            const subject = data.subject;
+            const name = data.name;
+            const email = data.email;
+            const message = data.message;
+            
+            const mailtoLink = `mailto:support@play2gether.app?subject=${encodeURIComponent(subject + ' - ' + name)}&body=${encodeURIComponent(
+                `Nom: ${name}\n` +
+                `Email: ${email}\n` +
+                `Type: ${subject}\n\n` +
+                `Message:\n${message}`
+            )}`;
+            
+            window.location.href = mailtoLink;
+            
+            document.getElementById('successMessage').style.display = 'block';
+            form.reset();
+            submitBtn.textContent = 'Envoyer';
+            submitBtn.disabled = false;
+            
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
