@@ -4,7 +4,7 @@
     "subtitle": "Jeux en duo"
   },
   "common": {
-    "back": "Retour",
+    "back": "←",
     "continue": "Continuer",
     "start": "Commencer",
     "retry": "Réessayer",
@@ -28,11 +28,13 @@
       "instruction": "Faites deviner ce mot à votre partenaire !",
       "wordProgress": "Mot {{current}} sur {{total}}",
       "cluesGiven": "Nombre d'indices donnés :",
+      "cluesSingular": "Indice",
+      "cluesPlural": "Indices",
       "cluesPlaceholder": "Ex: 3",
       "wordGuessed": "Mot deviné ✓",
       "skipWord": "Passer le mot (-5)",
       "results": "Résultats",
-      "totalScore": "Score total: {{score}} indices",
+      "totalScore": "{{score}} indices",
       "playAgain": "Rejouer",
       "cluesError": "Veuillez entrer un nombre valide d'indices"
     },

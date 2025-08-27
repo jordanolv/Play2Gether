@@ -4,7 +4,7 @@
     "subtitle": "Duo Games"
   },
   "common": {
-    "back": "Back",
+    "back": "←",
     "continue": "Continue",
     "start": "Start",
     "retry": "Retry",
@@ -28,6 +28,8 @@
       "instruction": "Make your partner guess this word!",
       "wordProgress": "Word {{current}} of {{total}}",
       "cluesGiven": "Number of clues given:",
+      "cluesSingular": "Clue",
+      "cluesPlural": "Clues",
       "cluesPlaceholder": "Ex: 3",
       "wordGuessed": "Word guessed ✓",
       "skipWord": "Skip word (-5)",
