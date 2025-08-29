@@ -3,7 +3,7 @@ import { updateDailyStreak } from '@/utils/streak';
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function DevineGame() {
   const router = useRouter();
@@ -126,43 +126,55 @@ export default function DevineGame() {
         <Text style={styles.title}>{t('games.password.title')}</Text>
       </View>
 
-      <View style={styles.content}>
-        <View style={styles.progressContainer}>
-          <Text style={styles.progressText}>
-            {t('games.password.wordProgress', { current: currentWordIndex + 1, total: gameWords.length })}
+      <KeyboardAvoidingView 
+        style={styles.keyboardAvoidingView} 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
+      >
+        <ScrollView 
+          style={styles.content}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={styles.progressContainer}>
+            <Text style={styles.progressText}>
+              {t('games.password.wordProgress', { current: currentWordIndex + 1, total: gameWords.length })}
+            </Text>
+          </View>
+
+          <View style={styles.wordCard}>
+            <Text style={styles.wordToGuess}>{gameWords[currentWordIndex]}</Text>
+          </View>
+
+          <Text style={styles.instruction}>
+            {t('games.password.instruction')}
           </Text>
-        </View>
 
-        <View style={styles.wordCard}>
-          <Text style={styles.wordToGuess}>{gameWords[currentWordIndex]}</Text>
-        </View>
+          <View style={styles.inputContainer}>
+              <Text style={styles.inputLabel}>{t('games.password.cluesGiven')}</Text>
+            <TextInput
+              style={styles.input}
+              value={guessCount}
+              onChangeText={setGuessCount}
+              keyboardType="numeric"
+              placeholder={t('games.password.cluesPlaceholder')}
+              placeholderTextColor="#666"
+              returnKeyType="done"
+            />
+          </View>
 
-        <Text style={styles.instruction}>
-          {t('games.password.instruction')}
-        </Text>
+          <View style={styles.buttonsContainer}>
+            <TouchableOpacity style={styles.guessedButton} onPress={handleWordGuessed}>
+              <Text style={styles.buttonText}>{t('games.password.wordGuessed')}</Text>
+            </TouchableOpacity>
 
-        <View style={styles.inputContainer}>
-            <Text style={styles.inputLabel}>{t('games.password.cluesGiven')}</Text>
-          <TextInput
-            style={styles.input}
-            value={guessCount}
-            onChangeText={setGuessCount}
-            keyboardType="numeric"
-            placeholder={t('games.password.cluesPlaceholder')}
-            placeholderTextColor="#666"
-          />
-        </View>
-
-        <View style={styles.buttonsContainer}>
-          <TouchableOpacity style={styles.guessedButton} onPress={handleWordGuessed}>
-            <Text style={styles.buttonText}>{t('games.password.wordGuessed')}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.skipButton} onPress={handleSkipWord}>
-            <Text style={styles.buttonText}>{t('games.password.skipWord')}</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+            <TouchableOpacity style={styles.skipButton} onPress={handleSkipWord}>
+              <Text style={styles.buttonText}>{t('games.password.skipWord')}</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -237,11 +249,19 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 0, height: 3 },
     textShadowRadius: 6,
   },
+  keyboardAvoidingView: {
+    flex: 1,
+    zIndex: 1,
+  },
   content: {
     flex: 1,
     padding: 24,
     zIndex: 1,
     position: 'relative',
+  },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: 'space-between',
   },
   progressContainer: {
     alignItems: 'center',
