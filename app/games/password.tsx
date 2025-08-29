@@ -261,7 +261,6 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    justifyContent: 'space-between',
   },
   progressContainer: {
     alignItems: 'center',
