@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-type Glow = { color: string; size: number; top?: number; left?: number; right?: number; bottom?: number };
+export type Glow = { color: string; size: number; top?: number; left?: number; right?: number; bottom?: number };
 
 const DEFAULT_GLOWS: Glow[] = [
   { color: colors.pink, size: 420, top: -180, right: -160 },

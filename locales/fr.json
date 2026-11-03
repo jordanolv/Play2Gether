@@ -131,20 +131,32 @@
     },
     "wouldyourather": {
       "title": "Tu préfères…",
-      "tagline": "Choix impossibles",
-      "description": "Chacun choisit en secret, puis on révèle.",
+      "tagline": "Devine ses choix",
+      "description": "L'un répond en secret, l'autre devine ce qu'il préfère.",
       "results": "Résultats",
       "prompt": "Tu préfères…",
-      "secretPick": "{{other}}, ne regarde pas l'écran !",
-      "match": "Même choix !",
-      "noMatch": "Pas le même choix",
       "next": "Dilemme suivant",
       "seeResults": "Voir le résultat",
-      "sameTaste": "Mêmes goûts",
-      "verdictHigh": "Vous êtes sur la même longueur d'onde.",
-      "verdictMid": "Assez proches, avec du caractère.",
-      "verdictLow": "Les opposés s'attirent, paraît-il.",
-      "playAgain": "Rejouer"
+      "verdictHigh": "Par cœur. Rien ne vous échappe.",
+      "verdictMid": "Pas mal, mais il reste des surprises.",
+      "verdictLow": "Il va falloir mieux écouter…",
+      "playAgain": "Rejouer",
+      "whoAnswers": "Qui répond en secret ?",
+      "whoAnswersSub": "L'autre devra deviner ses réponses ensuite.",
+      "secretPrompt": ", tu préfères…",
+      "dontLook": "{{other}}, ne regarde pas l'écran !",
+      "handoffTitle": "Réponses enregistrées",
+      "handoffBody": "À {{guesser}} de deviner ce que {{answerer}} préfère.",
+      "handoffScreen": "C'est parti",
+      "handoffFilter": "Lancer la caméra",
+      "guessKicker": "{{guesser}} devine",
+      "guessQuestion": "Qu'est-ce que {{answerer}} préfère ?",
+      "right": "Bien vu !",
+      "wrong": "Raté !",
+      "answerTag": "Choix de {{name}}",
+      "guessTag": "Pari de {{name}}",
+      "resultKicker": "{{guesser}} connaît {{answerer}} à",
+      "swapRoles": "Au tour de {{name}} de répondre"
     }
   },
   "names": {
@@ -199,6 +211,8 @@
     "filmingTitle": "Mode tournage",
     "filmingBody": "1. Les menus disparaissent.\n2. Lance l'enregistrement de l'écran depuis le Centre de contrôle.\n3. Touche l'écran pour jouer.\n4. Appui long pour réafficher les menus.",
     "filmingCancel": "Annuler",
-    "filmingGo": "C'est parti"
+    "filmingGo": "C'est parti",
+    "hintGuess": "Touche l'option que tu paries",
+    "hintRestart": "Touche l'écran pour rejouer"
   }
 }

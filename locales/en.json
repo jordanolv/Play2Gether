@@ -132,20 +132,32 @@
     },
     "wouldyourather": {
       "title": "Would you rather…",
-      "tagline": "Impossible choices",
-      "description": "Each of you picks in secret, then reveal.",
+      "tagline": "Guess their picks",
+      "description": "One answers in secret, the other guesses what they prefer.",
       "results": "Results",
       "prompt": "Would you rather…",
-      "secretPick": "{{other}}, don't look at the screen!",
-      "match": "Same pick!",
-      "noMatch": "Different picks",
       "next": "Next dilemma",
-      "seeResults": "See results",
-      "sameTaste": "Same taste",
-      "verdictHigh": "You're totally on the same wavelength.",
-      "verdictMid": "Pretty close, with some personality.",
-      "verdictLow": "Opposites attract, they say.",
-      "playAgain": "Play again"
+      "seeResults": "See the result",
+      "verdictHigh": "By heart. Nothing gets past you.",
+      "verdictMid": "Not bad, still some surprises left.",
+      "verdictLow": "Time to listen a bit better…",
+      "playAgain": "Play again",
+      "whoAnswers": "Who answers in secret?",
+      "whoAnswersSub": "The other one will have to guess the answers.",
+      "secretPrompt": ", would you rather…",
+      "dontLook": "{{other}}, don't look at the screen!",
+      "handoffTitle": "Answers locked in",
+      "handoffBody": "Now {{guesser}} guesses what {{answerer}} prefers.",
+      "handoffScreen": "Let's go",
+      "handoffFilter": "Start the camera",
+      "guessKicker": "{{guesser}} guesses",
+      "guessQuestion": "What does {{answerer}} prefer?",
+      "right": "Nailed it!",
+      "wrong": "Nope!",
+      "answerTag": "{{name}}'s pick",
+      "guessTag": "{{name}}'s guess",
+      "resultKicker": "{{guesser}} knows {{answerer}}",
+      "swapRoles": "{{name}}'s turn to answer"
     }
   },
   "names": {
@@ -200,6 +212,8 @@
     "filmingTitle": "Filming mode",
     "filmingBody": "1. Menus disappear.\n2. Start screen recording from Control Center.\n3. Tap the screen to play.\n4. Long press to bring the menus back.",
     "filmingCancel": "Cancel",
-    "filmingGo": "Let's go"
+    "filmingGo": "Let's go",
+    "hintGuess": "Tap the option you bet on",
+    "hintRestart": "Tap the screen to play again"
   }
 }
