@@ -28,7 +28,9 @@
     "play": "Play",
     "gamesCount": "{{count}} games",
     "new": "NEW",
-    "soon": "SOON"
+    "soon": "SOON",
+    "storyTitle": "Story Studio",
+    "storySub": "Make an overlay for TikTok or Insta"
   },
   "games": {
     "password": {
@@ -81,8 +83,18 @@
     },
     "questions": {
       "title": "Couple Questions",
-      "description": "Coming soon...",
-      "tagline": "Get to know each other"
+      "description": "Questions to discover each other, in 3 levels.",
+      "tagline": "Get to know each other",
+      "levels": {
+        "light": "Light",
+        "deep": "Deep",
+        "spicy": "Spicy"
+      },
+      "number": "Question {{count}}",
+      "tapForNext": "Tap the card for the next one",
+      "rule": "Take turns answering. No judgment, just curiosity.",
+      "toStory": "Story",
+      "next": "Next"
     },
     "defis": {
       "title": "Duo challenges",
@@ -92,12 +104,56 @@
     "whoofus": {
       "title": "Who of us?",
       "tagline": "Point at each other",
-      "description": "Coming soon..."
+      "description": "One question, and you both point at the same time.",
+      "results": "Results",
+      "instruction": "3, 2, 1… point!",
+      "filmIt": "Film a story",
+      "editNames": "Names",
+      "whoWasPointed": "Who did you both point at?",
+      "disagree": "We didn't agree",
+      "matchLabel": "Your match",
+      "matchSub": "Agreed on {{agreed}} of {{total}} questions",
+      "timesPointed": "times picked",
+      "shareStory": "Share as a story",
+      "playAgain": "Play again"
     },
     "wouldyourather": {
       "title": "Would you rather…",
       "tagline": "Impossible choices",
       "description": "Coming soon..."
     }
+  },
+  "names": {
+    "title": "Who are you?",
+    "subtitle": "We'll show your names in the game and on your stories.",
+    "first": "Player 1",
+    "second": "Player 2",
+    "placeholder1": "e.g. Emma",
+    "placeholder2": "e.g. Noah",
+    "go": "Let's go"
+  },
+  "story": {
+    "title": "Story Studio",
+    "tag": "played on",
+    "templates": {
+      "whoofus": "Who of us",
+      "match": "Our score",
+      "question": "Question of the night"
+    },
+    "whoKicker": "WHO OF US?",
+    "matchKicker": "Our match",
+    "matchCaption": "Can you beat it?",
+    "questionKicker": "Couple question",
+    "questionCaption": "Answer on video",
+    "videoHere": "YOUR VIDEO HERE",
+    "shuffle": "Another question",
+    "howTo": "Save the overlay (transparent PNG), then add it as a sticker on your video in TikTok or Instagram.",
+    "save": "Save to Photos",
+    "share": "Share",
+    "savedTitle": "Saved",
+    "savedBody": "The overlay is in your photos.",
+    "permissionTitle": "Photo access",
+    "permissionBody": "Allow photo access in Settings to save the overlay.",
+    "exportError": "Couldn't create the image. Try again."
   }
 }

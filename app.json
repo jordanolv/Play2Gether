@@ -37,6 +37,15 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      "expo-sharing",
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Play2Gether a besoin d'accéder à tes photos pour enregistrer tes overlays de story.",
+          "savePhotosPermission": "Play2Gether enregistre tes overlays de story dans tes photos.",
+          "isAccessMediaLocationEnabled": false
+        }
       ]
     ],
     "experiments": {

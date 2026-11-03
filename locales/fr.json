@@ -28,7 +28,9 @@
     "play": "Jouer",
     "gamesCount": "{{count}} jeux",
     "new": "NOUVEAU",
-    "soon": "BIENTÔT"
+    "soon": "BIENTÔT",
+    "storyTitle": "Studio Story",
+    "storySub": "Crée un overlay pour TikTok ou Insta"
   },
   "games": {
     "password": {
@@ -80,8 +82,18 @@
     },
     "questions": {
       "title": "Questions Couples",
-      "description": "Bientôt disponible...",
-      "tagline": "Pour mieux se connaître"
+      "description": "Des questions pour se découvrir, en 3 niveaux.",
+      "tagline": "Pour mieux se connaître",
+      "levels": {
+        "light": "Léger",
+        "deep": "Profond",
+        "spicy": "Épicé"
+      },
+      "number": "Question {{count}}",
+      "tapForNext": "Touche la carte pour la suivante",
+      "rule": "Chacun répond à son tour. Pas de jugement, que de la curiosité.",
+      "toStory": "Story",
+      "next": "Suivante"
     },
     "defis": {
       "title": "Défis à deux",
@@ -91,12 +103,56 @@
     "whoofus": {
       "title": "Qui de nous deux ?",
       "tagline": "Pointez-vous du doigt",
-      "description": "Bientôt disponible..."
+      "description": "Une question, et vous pointez l'autre (ou vous-même) en même temps.",
+      "results": "Résultats",
+      "instruction": "3, 2, 1… pointez !",
+      "filmIt": "Filmer en story",
+      "editNames": "Prénoms",
+      "whoWasPointed": "Qui avez-vous pointé tous les deux ?",
+      "disagree": "Pas d'accord",
+      "matchLabel": "Votre accord",
+      "matchSub": "D'accord sur {{agreed}} questions sur {{total}}",
+      "timesPointed": "fois désigné·e",
+      "shareStory": "Partager en story",
+      "playAgain": "Rejouer"
     },
     "wouldyourather": {
       "title": "Tu préfères…",
       "tagline": "Choix impossibles",
       "description": "Bientôt disponible..."
     }
+  },
+  "names": {
+    "title": "Vous êtes qui ?",
+    "subtitle": "On affichera vos prénoms dans le jeu et sur vos stories.",
+    "first": "Joueur 1",
+    "second": "Joueur 2",
+    "placeholder1": "Ex : Léa",
+    "placeholder2": "Ex : Tom",
+    "go": "C'est parti"
+  },
+  "story": {
+    "title": "Studio Story",
+    "tag": "joué sur",
+    "templates": {
+      "whoofus": "Qui de nous deux",
+      "match": "Notre score",
+      "question": "Question du soir"
+    },
+    "whoKicker": "QUI DE NOUS DEUX ?",
+    "matchKicker": "Notre accord",
+    "matchCaption": "Vous faites mieux ?",
+    "questionKicker": "Question couple",
+    "questionCaption": "Réponse en vidéo",
+    "videoHere": "VOTRE VIDÉO ICI",
+    "shuffle": "Autre question",
+    "howTo": "Enregistre l'overlay (PNG transparent), puis ajoute-le en sticker sur ta vidéo dans TikTok ou Instagram.",
+    "save": "Enregistrer dans Photos",
+    "share": "Partager",
+    "savedTitle": "Enregistré",
+    "savedBody": "L'overlay est dans tes photos.",
+    "permissionTitle": "Accès aux photos",
+    "permissionBody": "Autorise l'accès aux photos dans les réglages pour enregistrer l'overlay.",
+    "exportError": "Impossible de créer l'image. Réessaie."
   }
 }

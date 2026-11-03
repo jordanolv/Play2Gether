@@ -76,6 +76,21 @@ export default function HomeScreen() {
           </LinearGradient>
         </Pressable>
 
+        <Pressable
+          onPress={() => router.push('/story')}
+          accessibilityRole="button"
+          style={({ pressed }) => [styles.storyCard, pressed && { opacity: 0.85 }]}
+        >
+          <View style={styles.storyIcon}>
+            <Feather name="smartphone" size={20} color={colors.bg} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.storyTitle}>{t('home.storyTitle')}</Text>
+            <Text style={styles.storySub}>{t('home.storySub')}</Text>
+          </View>
+          <Feather name="chevron-right" size={20} color={colors.textMuted} />
+        </Pressable>
+
         <View style={styles.sectionHead}>
           <Text style={styles.sectionTitle}>{t('home.gamesTitle')}</Text>
           <Text style={styles.sectionMeta}>{t('home.gamesCount', { count: games.length })}</Text>
@@ -134,6 +149,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.bg, paddingHorizontal: 18, height: 44, borderRadius: radius.pill, marginTop: 2,
   },
   heroCtaText: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 15 },
+
+  storyCard: {
+    flexDirection: 'row', alignItems: 'center', gap: 14, padding: 14, borderRadius: radius.lg,
+    backgroundColor: colors.surface, borderWidth: 1, borderColor: 'rgba(255,216,77,0.3)',
+  },
+  storyIcon: { width: 44, height: 44, borderRadius: 14, backgroundColor: colors.yellow, alignItems: 'center', justifyContent: 'center' },
+  storyTitle: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 16 },
+  storySub: { color: colors.textMuted, fontFamily: fonts.semibold, fontSize: 13 },
 
   sectionHead: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' },
   sectionTitle: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 20 },

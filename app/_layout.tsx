@@ -37,6 +37,9 @@ export default function RootLayout() {
         <Stack.Screen name="index" />
         <Stack.Screen name="games/password" />
         <Stack.Screen name="games/scattergories" />
+        <Stack.Screen name="games/whoofus" />
+        <Stack.Screen name="games/questions" />
+        <Stack.Screen name="story" />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="light" />
