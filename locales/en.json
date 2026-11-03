@@ -98,8 +98,15 @@
     },
     "defis": {
       "title": "Duo challenges",
-      "description": "Coming soon...",
-      "tagline": "Dares and mini-challenges"
+      "description": "Take turns doing mini-dares, 1 point per dare done.",
+      "tagline": "Dares and mini-challenges",
+      "results": "Results",
+      "forPlayer": "Dare for {{player}}",
+      "done": "Dare done",
+      "pass": "Joker (skip)",
+      "winner": "{{player}} wins!",
+      "tie": "It's a tie!",
+      "playAgain": "Play again"
     },
     "whoofus": {
       "title": "Who of us?",
@@ -120,7 +127,19 @@
     "wouldyourather": {
       "title": "Would you rather…",
       "tagline": "Impossible choices",
-      "description": "Coming soon..."
+      "description": "Each of you picks in secret, then reveal.",
+      "results": "Results",
+      "prompt": "Would you rather…",
+      "secretPick": "{{other}}, don't look at the screen!",
+      "match": "Same pick!",
+      "noMatch": "Different picks",
+      "next": "Next dilemma",
+      "seeResults": "See results",
+      "sameTaste": "Same taste",
+      "verdictHigh": "You're totally on the same wavelength.",
+      "verdictMid": "Pretty close, with some personality.",
+      "verdictLow": "Opposites attract, they say.",
+      "playAgain": "Play again"
     }
   },
   "names": {

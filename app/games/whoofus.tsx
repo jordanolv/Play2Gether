@@ -7,12 +7,12 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '@/components/ui/Button';
 import { GameHeader } from '@/components/ui/GameHeader';
-import { NamesForm } from '@/components/ui/NamesForm';
 import { Screen } from '@/components/ui/Screen';
+import { WithCoupleNames } from '@/components/ui/WithCoupleNames';
 import { colors, fonts, radius, spacing } from '@/constants/theme';
 import questionsEn from '@/data/whoofus-en.json';
 import questionsFr from '@/data/whoofus-fr.json';
-import { CoupleNames, useCoupleNames } from '@/utils/couple';
+import { CoupleNames } from '@/utils/couple';
 import { byLanguage, pickRandom } from '@/utils/random';
 import { updateDailyStreak } from '@/utils/streak';
 
@@ -28,27 +28,11 @@ type Answer = 0 | 1 | 'split';
 
 export default function WhoOfUsScreen() {
   const { t, i18n } = useTranslation();
-  const couple = useCoupleNames();
-  const [editingNames, setEditingNames] = useState(false);
-
-  if (!couple.loaded) return <Screen><View /></Screen>;
-
-  if (!couple.hasNames || editingNames) {
-    return (
-      <Screen glows={GLOWS}>
-        <GameHeader title={t('games.whoofus.title')} />
-        <NamesForm
-          initial={couple.names}
-          onSubmit={(n) => {
-            couple.save(n);
-            setEditingNames(false);
-          }}
-        />
-      </Screen>
-    );
-  }
-
-  return <WhoOfUsGame key={i18n.language} names={couple.names} onEditNames={() => setEditingNames(true)} />;
+  return (
+    <WithCoupleNames title={t('games.whoofus.title')} glows={GLOWS}>
+      {(names, editNames) => <WhoOfUsGame key={i18n.language} names={names} onEditNames={editNames} />}
+    </WithCoupleNames>
+  );
 }
 
 function WhoOfUsGame({ names, onEditNames }: { names: CoupleNames; onEditNames: () => void }) {

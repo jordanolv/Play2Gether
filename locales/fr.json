@@ -97,8 +97,15 @@
     },
     "defis": {
       "title": "Défis à deux",
-      "description": "Bientôt disponible...",
-      "tagline": "Gages et mini-défis"
+      "description": "Des mini-défis à tour de rôle, 1 point par défi réussi.",
+      "tagline": "Gages et mini-défis",
+      "results": "Résultats",
+      "forPlayer": "Défi pour {{player}}",
+      "done": "Défi réussi",
+      "pass": "Joker (passer)",
+      "winner": "{{player}} gagne !",
+      "tie": "Égalité !",
+      "playAgain": "Rejouer"
     },
     "whoofus": {
       "title": "Qui de nous deux ?",
@@ -119,7 +126,19 @@
     "wouldyourather": {
       "title": "Tu préfères…",
       "tagline": "Choix impossibles",
-      "description": "Bientôt disponible..."
+      "description": "Chacun choisit en secret, puis on révèle.",
+      "results": "Résultats",
+      "prompt": "Tu préfères…",
+      "secretPick": "{{other}}, ne regarde pas l'écran !",
+      "match": "Même choix !",
+      "noMatch": "Pas le même choix",
+      "next": "Dilemme suivant",
+      "seeResults": "Voir le résultat",
+      "sameTaste": "Mêmes goûts",
+      "verdictHigh": "Vous êtes sur la même longueur d'onde.",
+      "verdictMid": "Assez proches, avec du caractère.",
+      "verdictLow": "Les opposés s'attirent, paraît-il.",
+      "playAgain": "Rejouer"
     }
   },
   "names": {
