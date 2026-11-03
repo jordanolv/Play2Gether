@@ -13,30 +13,48 @@
     "finish": "Finish",
     "loading": "Loading...",
     "error": "Error",
-    "success": "Success"
+    "success": "Success",
+    "backLabel": "Back"
   },
   "home": {
     "streak": "Streak: {{count}} days",
     "streak_zero": "Streak: {{count}} days",
     "streakIcon": "🔥",
-    "gamesTitle": "Mini-Games"
+    "gamesTitle": "All games",
+    "greeting": "Good evening, you two",
+    "streakShort": "{{count}} d",
+    "changeLanguage": "Change language",
+    "tonight": "Tonight's game",
+    "play": "Play",
+    "gamesCount": "{{count}} games",
+    "new": "NEW",
+    "soon": "SOON"
   },
   "games": {
     "password": {
       "title": "Password",
-      "description": "Make others guess words with fewest clues",
-      "instruction": "Make your partner guess this word!",
+      "description": "Make your partner guess 5 words with as few clues as possible.",
+      "instruction": "Make your partner guess this word",
       "wordProgress": "Word {{current}} of {{total}}",
-      "cluesGiven": "Number of clues given:",
+      "cluesGiven": "Clues given",
       "cluesSingular": "Clue",
       "cluesPlural": "Clues",
       "cluesPlaceholder": "Ex: 3",
-      "wordGuessed": "Word guessed ✓",
-      "skipWord": "Skip word (-5)",
+      "wordGuessed": "Word guessed",
+      "skipWord": "Skip word (+5)",
       "results": "Results",
       "totalScore": "Total score: {{score}} clues",
       "playAgain": "Play Again",
-      "cluesError": "Please enter a valid number of clues"
+      "cluesError": "Please enter a valid number of clues",
+      "tagline": "Guess with 1 clue",
+      "secretLabel": "THE SECRET WORD",
+      "tapToHide": "Tap to hide",
+      "tapToReveal": "Tap to reveal",
+      "hiddenWord": "Hidden word",
+      "removeClue": "Remove a clue",
+      "addClue": "Add a clue",
+      "totalLabel": "clues in total",
+      "skipped": "skipped"
     },
     "scattergories": {
       "title": "Scattergories",
@@ -46,21 +64,39 @@
       "letters": "Letters: {{letters}}",
       "player1": "Player 1",
       "player2": "Player 2",
-      "score": "{{score}} points", 
-      "newRound": "New round",
+      "score": "{{score}} points",
+      "newRound": "Shuffle letters",
       "nextRound": "Next round",
       "gameOver": "Game Over",
       "winner": "Winner: {{player}}",
       "tie": "It's a tie!",
       "finalScore": "Final Score",
-      "playAgain": "Play Again"
+      "playAgain": "Play Again",
+      "tagline": "2 letters, 1 theme",
+      "round": "Round {{round}}/{{total}}",
+      "lettersLabel": "THE LETTERS",
+      "themeLabel": "Theme",
+      "point": "+1 point",
+      "whoWon": "Who found one first?"
     },
     "questions": {
       "title": "Couple Questions",
-      "description": "Coming soon..."
+      "description": "Coming soon...",
+      "tagline": "Get to know each other"
     },
     "defis": {
-      "title": "Fun Challenges",
+      "title": "Duo challenges",
+      "description": "Coming soon...",
+      "tagline": "Dares and mini-challenges"
+    },
+    "whoofus": {
+      "title": "Who of us?",
+      "tagline": "Point at each other",
+      "description": "Coming soon..."
+    },
+    "wouldyourather": {
+      "title": "Would you rather…",
+      "tagline": "Impossible choices",
       "description": "Coming soon..."
     }
   }

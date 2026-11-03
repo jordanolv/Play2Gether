@@ -1,18 +1,8 @@
 [
-  {
-    "id": "password",
-    "icon": "🔤"
-  },
-  {
-    "id": "scattergories",
-    "icon": "📝"
-  },
-  {
-    "id": "questions",
-    "icon": "❓"
-  },
-  {
-    "id": "defis",
-    "icon": "❓"
-  }
+  { "id": "password", "mark": "Aa", "tint": "pink", "available": true },
+  { "id": "scattergories", "mark": "B", "tint": "cyan", "available": true },
+  { "id": "whoofus", "mark": "?", "tint": "yellow", "available": false },
+  { "id": "questions", "mark": "♡", "tint": "lilac", "available": false },
+  { "id": "wouldyourather", "mark": "⇄", "tint": "mint", "available": false },
+  { "id": "defis", "mark": "!", "tint": "peach", "available": false }
 ]

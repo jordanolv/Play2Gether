@@ -13,30 +13,48 @@
     "finish": "Terminer",
     "loading": "Chargement...",
     "error": "Erreur",
-    "success": "Succès"
+    "success": "Succès",
+    "backLabel": "Retour"
   },
   "home": {
     "streak": "Série: {{count}} jours",
     "streak_zero": "Série: {{count}} jour",
     "streakIcon": "🔥",
-    "gamesTitle": "Mini-Jeux"
+    "gamesTitle": "Tous les jeux",
+    "greeting": "Bonsoir vous deux",
+    "streakShort": "{{count}} j",
+    "changeLanguage": "Changer de langue",
+    "tonight": "Le jeu du soir",
+    "play": "Jouer",
+    "gamesCount": "{{count}} jeux",
+    "new": "NOUVEAU",
+    "soon": "BIENTÔT"
   },
   "games": {
     "password": {
       "title": "Mot de Passe",
-      "description": "Faites deviner des mots avec le moins d'indices",
-      "instruction": "Faites deviner ce mot à votre partenaire !",
+      "description": "Faites deviner 5 mots avec le moins d'indices possible.",
+      "instruction": "Fais deviner ce mot à ton/ta partenaire",
       "wordProgress": "Mot {{current}} sur {{total}}",
-      "cluesGiven": "Nombre d'indices donnés :",
+      "cluesGiven": "Indices donnés",
       "cluesSingular": "Indice",
       "cluesPlural": "Indices",
       "cluesPlaceholder": "Ex: 3",
-      "wordGuessed": "Mot deviné ✓",
-      "skipWord": "Passer le mot (-5)",
+      "wordGuessed": "Mot deviné",
+      "skipWord": "Passer le mot (+5)",
       "results": "Résultats",
       "totalScore": "{{score}} indices",
       "playAgain": "Rejouer",
-      "cluesError": "Veuillez entrer un nombre valide d'indices"
+      "cluesError": "Veuillez entrer un nombre valide d'indices",
+      "tagline": "Deviner en 1 indice",
+      "secretLabel": "LE MOT SECRET",
+      "tapToHide": "Appuie pour cacher",
+      "tapToReveal": "Appuie pour révéler",
+      "hiddenWord": "Mot caché",
+      "removeClue": "Retirer un indice",
+      "addClue": "Ajouter un indice",
+      "totalLabel": "indices au total",
+      "skipped": "passé"
     },
     "scattergories": {
       "title": "Petit Bac",
@@ -44,22 +62,40 @@
       "instruction": "Trouvez un mot qui contient ces lettres et correspond au thème !",
       "theme": "Thème: {{theme}}",
       "player1": "Joueur 1",
-      "player2": "Joueur 2", 
+      "player2": "Joueur 2",
       "score": "{{score}} points",
-      "newRound": "Nouvelle manche",
+      "newRound": "Changer les lettres",
       "nextRound": "Manche suivante",
       "gameOver": "Fin de partie",
       "winner": "Gagnant: {{player}}",
       "tie": "Égalité !",
       "finalScore": "Score final",
-      "playAgain": "Rejouer"
+      "playAgain": "Rejouer",
+      "tagline": "2 lettres, 1 thème",
+      "round": "Manche {{round}}/{{total}}",
+      "lettersLabel": "LES LETTRES",
+      "themeLabel": "Thème",
+      "point": "+1 point",
+      "whoWon": "Qui a trouvé en premier ?"
     },
     "questions": {
       "title": "Questions Couples",
-      "description": "Bientôt disponible..."
+      "description": "Bientôt disponible...",
+      "tagline": "Pour mieux se connaître"
     },
     "defis": {
-      "title": "Défis Rigolos",
+      "title": "Défis à deux",
+      "description": "Bientôt disponible...",
+      "tagline": "Gages et mini-défis"
+    },
+    "whoofus": {
+      "title": "Qui de nous deux ?",
+      "tagline": "Pointez-vous du doigt",
+      "description": "Bientôt disponible..."
+    },
+    "wouldyourather": {
+      "title": "Tu préfères…",
+      "tagline": "Choix impossibles",
       "description": "Bientôt disponible..."
     }
   }

@@ -1,311 +1,161 @@
-import { getCurrentStreak } from '@/utils/streak';
+import { Feather } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { Screen } from '@/components/ui/Screen';
+import { colors, fonts, radius } from '@/constants/theme';
 import gamesData from '@/data/games.json';
+import { getCurrentStreak } from '@/utils/streak';
 
 interface GameItem {
   id: string;
-  icon: string;
+  mark: string;
+  tint: keyof typeof colors;
+  available: boolean;
+  isNew?: boolean;
 }
 
+const games = gamesData as GameItem[];
+const FEATURED_ID = 'password';
 
 export default function HomeScreen() {
   const router = useRouter();
   const { t, i18n } = useTranslation();
   const [streak, setStreak] = useState(0);
 
-  const loadStreak = useCallback(async () => {
-    const currentStreak = await getCurrentStreak();
-    setStreak(currentStreak);
-  }, []);
-
   useFocusEffect(
     useCallback(() => {
-      loadStreak();
-    }, [loadStreak])
+      getCurrentStreak().then(setStreak);
+    }, [])
   );
 
-
-  const handleGamePress = (gameId: string) => {
-    if (gameId === 'password' || gameId === 'scattergories') {
-      router.push(('/games/' + gameId) as any);
-    }
-    // Les autres jeux ne sont pas encore disponibles
+  const openGame = (game: GameItem) => {
+    if (game.available) router.push(`/games/${game.id}` as any);
   };
 
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
+  const toggleLanguage = () => {
+    i18n.changeLanguage(i18n.language === 'fr' ? 'en' : 'fr');
   };
+
+  const featured = games.find((g) => g.id === FEATURED_ID)!;
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#2D1B69" />
-      
-      <View style={styles.backgroundShapes}>
-        <View style={[styles.shape, styles.shape1]} />
-        <View style={[styles.shape, styles.shape2]} />
-        <View style={[styles.shape, styles.shape3]} />
-        <View style={[styles.shape, styles.shape4]} />
-      </View>
-      
+    <Screen>
       <View style={styles.header}>
-        <Text style={styles.title}>{t('app.title')}</Text>
-        <View style={styles.streakContainer}>
-          <Text style={styles.streakText}>{t('home.streakIcon')} {streak > 1 ? t('home.streak', { count: streak }) : t('home.streak_zero', { count: streak })}</Text>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.greeting}>{t('home.greeting')}</Text>
+          <Text style={styles.title}>{t('app.title')}</Text>
         </View>
+        <View style={styles.streak} accessibilityLabel={t('home.streak', { count: streak })}>
+          <Feather name="zap" size={15} color={colors.yellow} />
+          <Text style={styles.streakText}>{t('home.streakShort', { count: streak })}</Text>
+        </View>
+        <Pressable
+          onPress={toggleLanguage}
+          accessibilityRole="button"
+          accessibilityLabel={t('home.changeLanguage')}
+          style={({ pressed }) => [styles.langButton, pressed && { opacity: 0.7 }]}
+        >
+          <Text style={styles.langText}>{i18n.language === 'fr' ? 'FR' : 'EN'}</Text>
+        </Pressable>
       </View>
 
-      <ScrollView style={styles.scrollContainer}>
-        <View style={styles.dashboard}>
-          {gamesData.map((game: GameItem) => {
-            const isAvailable = game.id === 'password' || game.id === 'scattergories';
-            
-            return (
-              <TouchableOpacity
-                key={game.id}
-                style={[styles.gameCard, !isAvailable && styles.gameCardDisabled]}
-                onPress={() => handleGamePress(game.id)}
-                disabled={!isAvailable}
-              >
-                <View style={styles.gameContent}>
-                  <Text style={styles.gameIcon}>{game.icon}</Text>
-                  <Text style={[styles.gameTitle, !isAvailable && styles.gameTextDisabled]}>
-                    {t(`games.${game.id}.title`)}
-                  </Text>
-                  <Text style={[styles.gameDescription, !isAvailable && styles.gameTextDisabled]}>
-                    {t(`games.${game.id}.description`)}
-                  </Text>
+      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        <Pressable onPress={() => openGame(featured)} accessibilityRole="button" style={({ pressed }) => pressed && { transform: [{ scale: 0.99 }] }}>
+          <LinearGradient colors={[colors.pink, colors.violet]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.hero}>
+            <Text style={styles.heroKicker}>{t('home.tonight')}</Text>
+            <Text style={styles.heroTitle}>{t(`games.${featured.id}.title`)}</Text>
+            <Text style={styles.heroDesc}>{t(`games.${featured.id}.description`)}</Text>
+            <View style={styles.heroCta}>
+              <Text style={styles.heroCtaText}>{t('home.play')}</Text>
+              <Feather name="arrow-right" size={16} color={colors.text} />
+            </View>
+          </LinearGradient>
+        </Pressable>
+
+        <View style={styles.sectionHead}>
+          <Text style={styles.sectionTitle}>{t('home.gamesTitle')}</Text>
+          <Text style={styles.sectionMeta}>{t('home.gamesCount', { count: games.length })}</Text>
+        </View>
+
+        <View style={styles.grid}>
+          {games.map((game) => (
+            <Pressable
+              key={game.id}
+              onPress={() => openGame(game)}
+              disabled={!game.available}
+              accessibilityRole="button"
+              accessibilityState={{ disabled: !game.available }}
+              style={({ pressed }) => [styles.card, !game.available && styles.cardSoon, pressed && { opacity: 0.85 }]}
+            >
+              <View style={styles.cardTop}>
+                <View style={[styles.mark, { backgroundColor: colors[game.tint] }]}>
+                  <Text style={styles.markText}>{game.mark}</Text>
                 </View>
-              </TouchableOpacity>
-            );
-          })}
+                {game.isNew && game.available && <Text style={styles.badgeNew}>{t('home.new')}</Text>}
+                {!game.available && <Text style={styles.badgeSoon}>{t('home.soon')}</Text>}
+              </View>
+              <Text style={styles.cardTitle}>{t(`games.${game.id}.title`)}</Text>
+              <Text style={styles.cardSub} numberOfLines={2}>{t(`games.${game.id}.tagline`)}</Text>
+            </Pressable>
+          ))}
         </View>
       </ScrollView>
-      
-      {/* Sélecteur de langue */}
-      <View style={styles.languageSelector}>
-        <TouchableOpacity
-          style={[styles.languageButton, i18n.language === 'fr' && styles.languageButtonActive]}
-          onPress={() => changeLanguage('fr')}
-        >
-          <Text style={styles.flagText}>🇫🇷</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity
-          style={[styles.languageButton, i18n.language === 'en' && styles.languageButtonActive]}
-          onPress={() => changeLanguage('en')}
-        >
-          <Text style={styles.flagText}>🇺🇸</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#121326', // fond plus profond
-    position: 'relative',
+  header: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 24, paddingTop: 16, paddingBottom: 8 },
+  greeting: { color: colors.textMuted, fontFamily: fonts.semibold, fontSize: 13 },
+  title: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 28, letterSpacing: -0.5 },
+  streak: {
+    flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 12, height: 36, borderRadius: radius.pill,
+    backgroundColor: 'rgba(255,216,77,0.12)', borderWidth: 1, borderColor: 'rgba(255,216,77,0.3)',
   },
+  streakText: { color: colors.yellow, fontFamily: fonts.extrabold, fontSize: 14 },
+  langButton: {
+    width: 44, height: 44, borderRadius: 14, alignItems: 'center', justifyContent: 'center',
+    backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border,
+  },
+  langText: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 13 },
 
-  // Circles
-  backgroundShapes: {
-    position: 'absolute',
-    top: 0, left: 0, right: 0, bottom: 0,
-    zIndex: 0,
-  },
-  shape: {
-    position: 'absolute',
-    borderRadius: 200,
-    opacity: 0.18,
-  },
-  shape1: {
-    width: 360,
-    height: 360,
-    backgroundColor: '#7dd3fc',
-    top: -140,
-    right: -120,
-    transform: [{ rotate: '18deg' }],
-  },
-  shape2: {
-    width: 280,
-    height: 280,
-    backgroundColor: '#f0abfc',
-    bottom: -90,
-    left: -120,
-    transform: [{ rotate: '-12deg' }],
-  },
-  shape3: {
-    width: 220,
-    height: 220,
-    backgroundColor: '#fcd34d',
-    top: 220,
-    left: -100,
-    transform: [{ rotate: '8deg' }],
-  },
-  shape4: {
-    width: 260,
-    height: 260,
-    backgroundColor: '#ff6161ff',
-    bottom: 180,
-    right: -160,
-    transform: [{ rotate: '-15deg' }],
-  },
+  content: { paddingHorizontal: 24, paddingTop: 16, paddingBottom: 40, gap: 20 },
 
-  // Header
-  header: {
-    padding: 40,
-    alignItems: 'center',
-    backgroundColor: 'transparent',
-    zIndex: 1,
-    position: 'relative',
+  hero: { borderRadius: radius.xl, padding: 22, gap: 12 },
+  heroKicker: { color: colors.text, opacity: 0.85, fontFamily: fonts.extrabold, fontSize: 12, letterSpacing: 1.2, textTransform: 'uppercase' },
+  heroTitle: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 30, letterSpacing: -0.5, lineHeight: 32 },
+  heroDesc: { color: colors.text, opacity: 0.92, fontFamily: fonts.semibold, fontSize: 14, lineHeight: 19 },
+  heroCta: {
+    alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', gap: 8,
+    backgroundColor: colors.bg, paddingHorizontal: 18, height: 44, borderRadius: radius.pill, marginTop: 2,
   },
-  title: {
-    fontSize: 36,
-    fontWeight: '900',
-    color: '#f8fafc',
-    letterSpacing: 2,
-    textShadowColor: 'rgba(0,0,0,0.35)',
-    textShadowOffset: { width: 0, height: 4 },
-    textShadowRadius: 8,
-  },
-  streakContainer: {
-    marginTop: 10,
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    borderRadius: 24,
-    backgroundColor: 'rgba(255,255,255,0.06)',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.12)',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.25,
-    shadowRadius: 16,
-    elevation: 8,
-  },
-  streakText: {
-    fontSize: 17,
-    fontWeight: '800',
-    color: '#f472b6',
-    textAlign: 'center',
-    textShadowColor: 'rgba(0,0,0,0.25)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
-  },
+  heroCtaText: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 15 },
 
-  // 📜 Contenu
-  scrollContainer: {
-    flex: 1,
-    zIndex: 1,
-    position: 'relative',
-  },
-  dashboard: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    padding: 24,
-  },
+  sectionHead: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' },
+  sectionTitle: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 20 },
+  sectionMeta: { color: colors.textMuted, fontFamily: fonts.semibold, fontSize: 13 },
 
-  // 🃏 Cartes jeux
-  gameCard: {
-    width: '48%',
-    marginBottom: 22,
-    borderRadius: 26,
-    backgroundColor: 'rgba(255,255,255,0.08)', // glassmorphism
-    height: 180,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.28,
-    shadowRadius: 16,
-    elevation: 10,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.12)',
-    overflow: 'hidden',
+  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 12 },
+  card: {
+    width: '48%', flexGrow: 1, minHeight: 120, padding: 16, gap: 8, borderRadius: radius.lg,
+    backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border,
   },
-  gameContent: {
-    flex: 1,
-    padding: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
+  cardSoon: { opacity: 0.55 },
+  cardTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 },
+  mark: { width: 36, height: 36, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center' },
+  markText: { color: colors.bg, fontFamily: fonts.extrabold, fontSize: 16 },
+  badgeNew: {
+    overflow: 'hidden', backgroundColor: colors.yellow, color: colors.bg, fontFamily: fonts.extrabold,
+    fontSize: 10, letterSpacing: 0.8, paddingHorizontal: 8, paddingVertical: 4, borderRadius: radius.pill,
   },
-  gameIcon: {
-    fontSize: 52,
-    marginBottom: 12,
-    lineHeight: 58,
-    textShadowColor: 'rgba(0,0,0,0.25)',
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 4,
+  badgeSoon: {
+    overflow: 'hidden', borderWidth: 1, borderColor: colors.borderStrong, color: colors.textMuted, fontFamily: fonts.bold,
+    fontSize: 10, letterSpacing: 0.8, paddingHorizontal: 8, paddingVertical: 3, borderRadius: radius.pill,
   },
-  gameTitle: {
-    fontSize: 17,
-    marginBottom: 6,
-    textAlign: 'center',
-    fontWeight: '800',
-    color: '#f8fafc',
-    textShadowColor: 'rgba(0,0,0,0.25)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
-    letterSpacing: 0.5,
-  },
-  gameDescription: {
-    fontSize: 11,
-    textAlign: 'center',
-    lineHeight: 15,
-    color: '#cbd5e1',
-    fontWeight: '600',
-    opacity: 0.9,
-  },
-  gameCardDisabled: {
-    opacity: 0.5,
-    backgroundColor: 'rgba(255,255,255,0.04)',
-    borderColor: 'rgba(255,255,255,0.06)',
-    shadowOpacity: 0.15,
-  },
-  gameTextDisabled: {
-    opacity: 0.4,
-  },
-
-  // 🌍 Sélecteur de langue
-  languageSelector: {
-    position: 'absolute',
-    bottom: 45,
-    right: 25,
-    flexDirection: 'row',
-    // on garde "gap" si ta version RN le supporte, sinon ignoré sans casser
-    gap: 12,
-    zIndex: 10,
-  },
-  languageButton: {
-    width: 55,
-    height: 55,
-    borderRadius: 27.5,
-    backgroundColor: 'rgba(255,255,255,0.10)',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.18)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.22,
-    shadowRadius: 10,
-    elevation: 6,
-  },
-  languageButtonActive: {
-    backgroundColor: 'rgba(255,255,255,0.18)',
-    borderColor: '#f472b6',
-    shadowColor: '#f472b6',
-    shadowOpacity: 0.35,
-    transform: [{ scale: 1.05 }],
-  },
-  flagText: {
-    fontSize: 26,
-    textShadowColor: 'rgba(0,0,0,0.25)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
-  },
+  cardTitle: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 16, lineHeight: 19 },
+  cardSub: { color: colors.textMuted, fontFamily: fonts.semibold, fontSize: 12, lineHeight: 16 },
 });
-
