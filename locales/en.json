@@ -31,8 +31,12 @@
     "soon": "SOON",
     "storyTitle": "Story Studio",
     "storySub": "Make an overlay for TikTok or Insta",
-    "filterTitle": "Filter mode",
-    "filterSub": "Play live on camera, made for TikTok"
+    "filmable": "Playable in camera filter mode",
+    "launchScreen": "Play on screen",
+    "launchScreenSub": "The classic game, on the phone",
+    "launchFilter": "Play as a filter",
+    "launchFilterSub": "Selfie camera with the game on top, for TikTok and Insta",
+    "launchCancel": "Cancel"
   },
   "games": {
     "password": {
@@ -183,11 +187,6 @@
     "permissionBody": "Filter mode shows the game on top of your selfie camera, like a TikTok filter.",
     "allowCamera": "Allow camera",
     "tapToPlay": "Tap to play",
-    "modes": {
-      "whoofus": "Who of us",
-      "wouldyourather": "Would you rather",
-      "questions": "Questions"
-    },
     "kickers": {
       "whoofus": "Who of us?",
       "wouldyourather": "Would you rather",

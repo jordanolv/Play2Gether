@@ -31,8 +31,12 @@
     "soon": "BIENTÔT",
     "storyTitle": "Studio Story",
     "storySub": "Crée un overlay pour TikTok ou Insta",
-    "filterTitle": "Mode filtre",
-    "filterSub": "Jouez en direct devant la caméra, pour TikTok"
+    "filmable": "Jouable en mode filtre caméra",
+    "launchScreen": "Jouer à l'écran",
+    "launchScreenSub": "Le jeu classique, sur le téléphone",
+    "launchFilter": "Jouer en mode filtre",
+    "launchFilterSub": "Caméra selfie + jeu par-dessus, pour TikTok et Insta",
+    "launchCancel": "Annuler"
   },
   "games": {
     "password": {
@@ -182,11 +186,6 @@
     "permissionBody": "Le mode filtre affiche le jeu par-dessus votre caméra selfie, comme un filtre TikTok.",
     "allowCamera": "Autoriser la caméra",
     "tapToPlay": "Touche pour jouer",
-    "modes": {
-      "whoofus": "Qui de nous",
-      "wouldyourather": "Tu préfères",
-      "questions": "Questions"
-    },
     "kickers": {
       "whoofus": "Qui de nous deux ?",
       "wouldyourather": "Tu préfères",

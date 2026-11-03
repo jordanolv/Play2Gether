@@ -1,7 +1,7 @@
 import { Feather } from '@expo/vector-icons';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import * as Haptics from 'expo-haptics';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Animated, Pressable, StyleSheet, Text, View } from 'react-native';
@@ -22,6 +22,7 @@ import { byLanguage, shuffle } from '@/utils/random';
 
 type Mode = 'whoofus' | 'wouldyourather' | 'questions';
 const MODES: Mode[] = ['whoofus', 'wouldyourather', 'questions'];
+const isMode = (value: unknown): value is Mode => MODES.includes(value as Mode);
 const SIDE_COLORS = [colors.pink, colors.cyan] as const;
 type Side = 0 | 1;
 /** Délais successifs de la roulette : elle accélère puis ralentit avant de s'arrêter. */
@@ -32,6 +33,8 @@ const randomSide = (): Side => (Math.random() < 0.5 ? 0 : 1);
 export default function FilterScreen() {
   const { t, i18n } = useTranslation();
   const [permission, requestPermission] = useCameraPermissions();
+  const params = useLocalSearchParams<{ mode?: string }>();
+  const mode: Mode = isMode(params.mode) ? params.mode : 'whoofus';
 
   if (!permission) return <Screen><View /></Screen>;
 
@@ -50,17 +53,16 @@ export default function FilterScreen() {
 
   return (
     <WithCoupleNames title={t('filter.title')}>
-      {(names) => <Filter key={i18n.language} names={names} />}
+      {(names) => <Filter key={i18n.language} names={names} mode={mode} />}
     </WithCoupleNames>
   );
 }
 
-function Filter({ names }: { names: CoupleNames }) {
+function Filter({ names, mode }: { names: CoupleNames; mode: Mode }) {
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
-  const [mode, setMode] = useState<Mode>('whoofus');
   const [filming, setFilming] = useState(false);
   const [swapped, setSwapped] = useState(false);
   const sideNames: CoupleNames = swapped ? [names[1], names[0]] : names;
@@ -139,12 +141,6 @@ function Filter({ names }: { names: CoupleNames }) {
     if (rolling) return;
     if (mode === 'whoofus' && !picked) spin();
     else nextCard();
-  };
-
-  const changeMode = (next: Mode) => {
-    resetRoulette();
-    setMode(next);
-    popCard();
   };
 
   const card = decks[mode][indexes[mode]];
@@ -226,18 +222,9 @@ function Filter({ names }: { names: CoupleNames }) {
             <Pressable onPress={() => router.back()} accessibilityRole="button" accessibilityLabel={t('common.backLabel')} style={styles.iconBtn}>
               <Feather name="x" size={22} color={colors.text} />
             </Pressable>
-            <View style={styles.modes}>
-              {MODES.map((m) => (
-                <Pressable
-                  key={m}
-                  onPress={() => changeMode(m)}
-                  accessibilityRole="button"
-                  accessibilityState={{ selected: m === mode }}
-                  style={[styles.modeChip, m === mode && styles.modeChipActive]}
-                >
-                  <Text style={[styles.modeText, m === mode && styles.modeTextActive]} numberOfLines={1}>{t(`filter.modes.${m}`)}</Text>
-                </Pressable>
-              ))}
+            <View style={styles.titlePill}>
+              <Feather name="video" size={14} color={colors.pink} />
+              <Text style={styles.titleText} numberOfLines={1}>{t(`games.${mode}.title`)}</Text>
             </View>
             <Pressable onPress={() => setSwapped((s) => !s)} accessibilityRole="button" accessibilityLabel={t('filter.swap')} style={styles.iconBtn}>
               <Feather name="repeat" size={20} color={colors.text} />
@@ -304,11 +291,11 @@ const styles = StyleSheet.create({
 
   header: { position: 'absolute', top: 0, left: 0, right: 0, flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12 },
   iconBtn: { width: 44, height: 44, borderRadius: 22, backgroundColor: 'rgba(18,16,34,0.7)', alignItems: 'center', justifyContent: 'center' },
-  modes: { flex: 1, flexDirection: 'row', gap: 4, backgroundColor: 'rgba(18,16,34,0.7)', borderRadius: radius.pill, padding: 4 },
-  modeChip: { flex: 1, height: 36, borderRadius: radius.pill, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 4 },
-  modeChipActive: { backgroundColor: colors.text },
-  modeText: { color: colors.text, fontFamily: fonts.bold, fontSize: 12 },
-  modeTextActive: { color: colors.bg, fontFamily: fonts.extrabold },
+  titlePill: {
+    flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, height: 44,
+    backgroundColor: 'rgba(18,16,34,0.7)', borderRadius: radius.pill, paddingHorizontal: 14,
+  },
+  titleText: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 15, flexShrink: 1 },
 
   bottomBar: { position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: spacing.screen, gap: 10 },
   hint: {

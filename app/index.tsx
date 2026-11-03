@@ -5,6 +5,7 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { LaunchSheet } from '@/components/ui/LaunchSheet';
 import { Screen } from '@/components/ui/Screen';
 import { colors, fonts, radius } from '@/constants/theme';
 import gamesData from '@/data/games.json';
@@ -16,6 +17,8 @@ interface GameItem {
   tint: keyof typeof colors;
   available: boolean;
   isNew?: boolean;
+  /** Jouable en mode filtre caméra. */
+  filmable?: boolean;
 }
 
 const games = gamesData as GameItem[];
@@ -25,6 +28,7 @@ export default function HomeScreen() {
   const router = useRouter();
   const { t, i18n } = useTranslation();
   const [streak, setStreak] = useState(0);
+  const [launching, setLaunching] = useState<string | null>(null);
 
   useFocusEffect(
     useCallback(() => {
@@ -33,7 +37,19 @@ export default function HomeScreen() {
   );
 
   const openGame = (game: GameItem) => {
-    if (game.available) router.push(`/games/${game.id}` as any);
+    if (!game.available) return;
+    if (game.filmable) setLaunching(game.id);
+    else router.push(`/games/${game.id}` as any);
+  };
+
+  const playScreen = (id: string) => {
+    setLaunching(null);
+    router.push(`/games/${id}` as any);
+  };
+
+  const playFilter = (id: string) => {
+    setLaunching(null);
+    router.push({ pathname: '/filter', params: { mode: id } });
   };
 
   const toggleLanguage = () => {
@@ -76,21 +92,6 @@ export default function HomeScreen() {
           </LinearGradient>
         </Pressable>
 
-        <Pressable
-          onPress={() => router.push('/filter')}
-          accessibilityRole="button"
-          style={({ pressed }) => [styles.storyCard, pressed && { opacity: 0.85 }]}
-        >
-          <View style={styles.storyIcon}>
-            <Feather name="video" size={20} color={colors.bg} />
-          </View>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.storyTitle}>{t('home.filterTitle')}</Text>
-            <Text style={styles.storySub}>{t('home.filterSub')}</Text>
-          </View>
-          <Feather name="chevron-right" size={20} color={colors.textMuted} />
-        </Pressable>
-
         <View style={styles.sectionHead}>
           <Text style={styles.sectionTitle}>{t('home.gamesTitle')}</Text>
           <Text style={styles.sectionMeta}>{t('home.gamesCount', { count: games.length })}</Text>
@@ -110,8 +111,15 @@ export default function HomeScreen() {
                 <View style={[styles.mark, { backgroundColor: colors[game.tint] }]}>
                   <Text style={styles.markText}>{game.mark}</Text>
                 </View>
-                {game.isNew && game.available && <Text style={styles.badgeNew}>{t('home.new')}</Text>}
-                {!game.available && <Text style={styles.badgeSoon}>{t('home.soon')}</Text>}
+                <View style={styles.badges}>
+                  {game.filmable && (
+                    <View style={styles.badgeCam} accessibilityLabel={t('home.filmable')}>
+                      <Feather name="video" size={13} color={colors.pink} />
+                    </View>
+                  )}
+                  {game.isNew && game.available && <Text style={styles.badgeNew}>{t('home.new')}</Text>}
+                  {!game.available && <Text style={styles.badgeSoon}>{t('home.soon')}</Text>}
+                </View>
               </View>
               <Text style={styles.cardTitle}>{t(`games.${game.id}.title`)}</Text>
               <Text style={styles.cardSub} numberOfLines={2}>{t(`games.${game.id}.tagline`)}</Text>
@@ -119,6 +127,8 @@ export default function HomeScreen() {
           ))}
         </View>
       </ScrollView>
+
+      <LaunchSheet gameId={launching} onClose={() => setLaunching(null)} onPlayScreen={playScreen} onPlayFilter={playFilter} />
     </Screen>
   );
 }
@@ -150,14 +160,6 @@ const styles = StyleSheet.create({
   },
   heroCtaText: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 15 },
 
-  storyCard: {
-    flexDirection: 'row', alignItems: 'center', gap: 14, padding: 14, borderRadius: radius.lg,
-    backgroundColor: colors.surface, borderWidth: 1, borderColor: 'rgba(255,216,77,0.3)',
-  },
-  storyIcon: { width: 44, height: 44, borderRadius: 14, backgroundColor: colors.yellow, alignItems: 'center', justifyContent: 'center' },
-  storyTitle: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 16 },
-  storySub: { color: colors.textMuted, fontFamily: fonts.semibold, fontSize: 13 },
-
   sectionHead: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' },
   sectionTitle: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 20 },
   sectionMeta: { color: colors.textMuted, fontFamily: fonts.semibold, fontSize: 13 },
@@ -171,6 +173,11 @@ const styles = StyleSheet.create({
   cardTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 },
   mark: { width: 36, height: 36, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center' },
   markText: { color: colors.bg, fontFamily: fonts.extrabold, fontSize: 16 },
+  badges: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  badgeCam: {
+    width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center',
+    backgroundColor: 'rgba(255,95,168,0.14)', borderWidth: 1, borderColor: 'rgba(255,95,168,0.4)',
+  },
   badgeNew: {
     overflow: 'hidden', backgroundColor: colors.yellow, color: colors.bg, fontFamily: fonts.extrabold,
     fontSize: 10, letterSpacing: 0.8, paddingHorizontal: 8, paddingVertical: 4, borderRadius: radius.pill,
