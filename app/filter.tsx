@@ -233,7 +233,8 @@ function Filter({ names, mode, secret, onRestart }: FilterProps) {
   const guesser = otherSide(answerer);
   const score = results.filter(Boolean).length;
   const lastCorrect = results[results.length - 1];
-  const sidesBottom = insets.bottom + (filming ? 40 : 150);
+  // Marge au-dessus de la signature : le côté choisi grossit de 12 % quand il est révélé
+  const sidesBottom = insets.bottom + (filming ? 64 : 172);
 
   const hint = (() => {
     if (isWyr) return finished ? t('filter.hintRestart') : guess === null ? t('filter.hintGuess') : t('filter.hintNext');
