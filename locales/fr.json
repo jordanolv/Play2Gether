@@ -30,7 +30,9 @@
     "new": "NOUVEAU",
     "soon": "BIENTÔT",
     "storyTitle": "Studio Story",
-    "storySub": "Crée un overlay pour TikTok ou Insta"
+    "storySub": "Crée un overlay pour TikTok ou Insta",
+    "filterTitle": "Mode filtre",
+    "filterSub": "Jouez en direct devant la caméra, pour TikTok"
   },
   "games": {
     "password": {
@@ -173,5 +175,31 @@
     "permissionTitle": "Accès aux photos",
     "permissionBody": "Autorise l'accès aux photos dans les réglages pour enregistrer l'overlay.",
     "exportError": "Impossible de créer l'image. Réessaie."
+  },
+  "filter": {
+    "title": "Mode filtre",
+    "permissionTitle": "On a besoin de la caméra",
+    "permissionBody": "Le mode filtre affiche le jeu par-dessus votre caméra selfie, comme un filtre TikTok.",
+    "allowCamera": "Autoriser la caméra",
+    "tapToPlay": "Touche pour jouer",
+    "modes": {
+      "whoofus": "Qui de nous",
+      "wouldyourather": "Tu préfères",
+      "questions": "Questions"
+    },
+    "kickers": {
+      "whoofus": "Qui de nous deux ?",
+      "wouldyourather": "Tu préfères",
+      "questions": "Question couple"
+    },
+    "or": "OU",
+    "swap": "Inverser les côtés",
+    "hintSpin": "Touche l'écran pour lancer la roulette",
+    "hintNext": "Touche l'écran pour la suite",
+    "startFilming": "Mode tournage",
+    "filmingTitle": "Mode tournage",
+    "filmingBody": "1. Les menus disparaissent.\n2. Lance l'enregistrement de l'écran depuis le Centre de contrôle.\n3. Touche l'écran pour jouer.\n4. Appui long pour réafficher les menus.",
+    "filmingCancel": "Annuler",
+    "filmingGo": "C'est parti"
   }
 }

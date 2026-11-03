@@ -46,6 +46,15 @@
           "savePhotosPermission": "Play2Gether enregistre tes overlays de story dans tes photos.",
           "isAccessMediaLocationEnabled": false
         }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Play2Gether utilise la caméra pour le mode filtre : le jeu s'affiche par-dessus votre vidéo.",
+          "microphonePermission": false,
+          "recordAudioAndroid": false,
+          "barcodeScannerEnabled": false
+        }
       ]
     ],
     "experiments": {

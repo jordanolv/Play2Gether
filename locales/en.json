@@ -30,7 +30,9 @@
     "new": "NEW",
     "soon": "SOON",
     "storyTitle": "Story Studio",
-    "storySub": "Make an overlay for TikTok or Insta"
+    "storySub": "Make an overlay for TikTok or Insta",
+    "filterTitle": "Filter mode",
+    "filterSub": "Play live on camera, made for TikTok"
   },
   "games": {
     "password": {
@@ -174,5 +176,31 @@
     "permissionTitle": "Photo access",
     "permissionBody": "Allow photo access in Settings to save the overlay.",
     "exportError": "Couldn't create the image. Try again."
+  },
+  "filter": {
+    "title": "Filter mode",
+    "permissionTitle": "We need the camera",
+    "permissionBody": "Filter mode shows the game on top of your selfie camera, like a TikTok filter.",
+    "allowCamera": "Allow camera",
+    "tapToPlay": "Tap to play",
+    "modes": {
+      "whoofus": "Who of us",
+      "wouldyourather": "Would you rather",
+      "questions": "Questions"
+    },
+    "kickers": {
+      "whoofus": "Who of us?",
+      "wouldyourather": "Would you rather",
+      "questions": "Couple question"
+    },
+    "or": "OR",
+    "swap": "Swap sides",
+    "hintSpin": "Tap the screen to spin",
+    "hintNext": "Tap the screen for the next one",
+    "startFilming": "Filming mode",
+    "filmingTitle": "Filming mode",
+    "filmingBody": "1. Menus disappear.\n2. Start screen recording from Control Center.\n3. Tap the screen to play.\n4. Long press to bring the menus back.",
+    "filmingCancel": "Cancel",
+    "filmingGo": "Let's go"
   }
 }

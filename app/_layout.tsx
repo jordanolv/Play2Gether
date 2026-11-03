@@ -42,6 +42,7 @@ export default function RootLayout() {
         <Stack.Screen name="games/wouldyourather" />
         <Stack.Screen name="games/defis" />
         <Stack.Screen name="story" />
+        <Stack.Screen name="filter" options={{ animation: 'fade' }} />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="light" />

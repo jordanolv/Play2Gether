@@ -77,16 +77,16 @@ export default function HomeScreen() {
         </Pressable>
 
         <Pressable
-          onPress={() => router.push('/story')}
+          onPress={() => router.push('/filter')}
           accessibilityRole="button"
           style={({ pressed }) => [styles.storyCard, pressed && { opacity: 0.85 }]}
         >
           <View style={styles.storyIcon}>
-            <Feather name="smartphone" size={20} color={colors.bg} />
+            <Feather name="video" size={20} color={colors.bg} />
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.storyTitle}>{t('home.storyTitle')}</Text>
-            <Text style={styles.storySub}>{t('home.storySub')}</Text>
+            <Text style={styles.storyTitle}>{t('home.filterTitle')}</Text>
+            <Text style={styles.storySub}>{t('home.filterSub')}</Text>
           </View>
           <Feather name="chevron-right" size={20} color={colors.textMuted} />
         </Pressable>
