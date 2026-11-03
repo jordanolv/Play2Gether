@@ -4,19 +4,10 @@
     "slug": "play2gether",
     "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.jpeg",
+    "icon": "./assets/images/icon.png",
     "scheme": "play2gether",
     "description": "Jouez à des mini-jeux amusants en duo ! Mot de Passe et plus encore.",
-    "keywords": [
-      "jeux",
-      "duo",
-      "mini-jeux",
-      "mot de passe",
-      "amis"
-    ],
-    "privacy": "public",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.jordan.olv.play2gether",
@@ -29,8 +20,7 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },
-      "edgeToEdgeEnabled": true
+      }
     },
     "web": {
       "bundler": "metro",

@@ -1,6 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
@@ -17,9 +17,15 @@ const MAX_CLUES = 20;
 
 const GLOWS = [{ color: colors.pink, size: 460, top: 160, left: -40 }];
 
-export default function PasswordGame() {
+// La clé force une nouvelle partie quand la langue change
+export default function PasswordScreen() {
+  const { i18n } = useTranslation();
+  return <PasswordGame key={i18n.language} />;
+}
+
+function PasswordGame() {
   const { t, i18n } = useTranslation();
-  const [gameWords, setGameWords] = useState<string[]>([]);
+  const [gameWords, setGameWords] = useState<string[]>(() => getRandomWords(i18n.language, WORDS_PER_GAME));
   const [index, setIndex] = useState(0);
   const [clues, setClues] = useState(1);
   const [scores, setScores] = useState<number[]>([]);
@@ -36,9 +42,6 @@ export default function PasswordGame() {
     setHidden(false);
     setFinished(false);
   };
-
-  // Démarre (et redémarre quand la langue change)
-  useEffect(startNewGame, [i18n.language]);
 
   const recordWord = (score: number, wasSkipped: boolean) => {
     setScores((s) => [...s, score]);

@@ -37,7 +37,7 @@ export default function RootLayout() {
         <Stack.Screen name="index" />
         <Stack.Screen name="games/password" />
         <Stack.Screen name="games/scattergories" />
-        <Stack.Screen name="+not-found" options={{ headerShown: true }} />
+        <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="light" />
     </ThemeProvider>

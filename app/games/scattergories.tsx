@@ -1,6 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
@@ -24,10 +24,16 @@ const randomLetters = () => {
   return shuffled.slice(0, 2);
 };
 
-export default function ScattergoriesGame() {
+// La clé force une nouvelle partie quand la langue change
+export default function ScattergoriesScreen() {
+  const { i18n } = useTranslation();
+  return <ScattergoriesGame key={i18n.language} />;
+}
+
+function ScattergoriesGame() {
   const { t, i18n } = useTranslation();
-  const [theme, setTheme] = useState('');
-  const [letters, setLetters] = useState<string[]>([]);
+  const [theme, setTheme] = useState(() => getRandomTheme(i18n.language));
+  const [letters, setLetters] = useState<string[]>(randomLetters);
   const [scores, setScores] = useState<[number, number]>([0, 0]);
   const [round, setRound] = useState(1);
   const [finished, setFinished] = useState(false);
@@ -43,8 +49,6 @@ export default function ScattergoriesGame() {
     setFinished(false);
     newRound();
   };
-
-  useEffect(startNewGame, [i18n.language]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const givePoint = (player: 0 | 1) => {
     if (finished) return;
