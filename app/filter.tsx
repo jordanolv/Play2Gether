@@ -137,9 +137,8 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
   // Les menus restent visibles au départ, se cachent dès qu'on joue, et reviennent en touchant le haut de l'écran
   const [chrome, setChrome] = useState(true);
   const [started, setStarted] = useState(false);
-  const [swapped, setSwapped] = useState(false);
-  const sideNames: CoupleNames = swapped ? [names[1], names[0]] : names;
-  const sideGenders: CoupleGenders = swapped ? [genders[1], genders[0]] : genders;
+  const sideNames = names;
+  const sideGenders = genders;
 
   // Overlay déplaçable : la carte du haut et les deux côtés du bas
   const cardPlacement = usePlacement();
@@ -302,11 +301,6 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
     }
   };
 
-  const resetLayout = () => {
-    cardPlacement.reset();
-    sidesPlacement.reset();
-    Haptics.selectionAsync().catch(() => {});
-  };
 
   const cardStyle = {
     opacity: cardAnim,
@@ -345,9 +339,10 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
         };
       case 'password':
         return {
-          kicker: t('filter.kickers.password', { giver: sideNames[0] }),
+          // Celui qui fait deviner change à chaque mot
+          kicker: t('filter.kickers.password', { giver: sideNames[index % 2] }),
           text: deck[index],
-          sub: t('filter.passwordSub', { guesser: sideNames[1] }),
+          sub: t('filter.passwordSub', { guesser: sideNames[(index + 1) % 2] }),
           score: t('filter.passwordScore', { count: scores[0] }),
         };
       case 'scattergories':
@@ -538,14 +533,7 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
               <Feather name="video" size={14} color={colors.pink} />
               <Text style={styles.titleText} numberOfLines={1}>{t(`games.${mode}.title`)}</Text>
             </View>
-            <Pressable onPress={resetLayout} accessibilityRole="button" accessibilityLabel={t('filter.resetLayout')} style={styles.iconBtn}>
-              <Feather name="maximize" size={18} color={colors.text} />
-            </Pressable>
-            {mode !== 'wouldyourather' && (
-              <Pressable onPress={() => setSwapped((s) => !s)} accessibilityRole="button" accessibilityLabel={t('filter.swap')} style={styles.iconBtn}>
-                <Feather name="repeat" size={20} color={colors.text} />
-              </Pressable>
-            )}
+            <View style={styles.iconSpacer} />
           </View>
 
           <View style={[styles.menuBar, { top: insets.top + 60 }]} pointerEvents="box-none">
@@ -642,6 +630,7 @@ const styles = StyleSheet.create({
   chromeZone: { position: 'absolute', top: 0, left: 0, right: 0 },
   header: { position: 'absolute', top: 0, left: 0, right: 0, flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12 },
   iconBtn: { width: 44, height: 44, borderRadius: 22, backgroundColor: 'rgba(18,16,34,0.7)', alignItems: 'center', justifyContent: 'center' },
+  iconSpacer: { width: 44, height: 44 },
   titlePill: {
     flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, height: 44,
     backgroundColor: 'rgba(18,16,34,0.7)', borderRadius: radius.pill, paddingHorizontal: 14,

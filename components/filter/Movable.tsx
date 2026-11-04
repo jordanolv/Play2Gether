@@ -1,9 +1,10 @@
+import * as Haptics from 'expo-haptics';
 import { ReactNode } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import {
-  GestureDetector, useExclusiveGestures, usePanGesture, usePinchGesture, useSimultaneousGestures, useTapGesture,
+  GestureDetector, useExclusiveGestures, useLongPressGesture, usePanGesture, usePinchGesture, useSimultaneousGestures, useTapGesture,
 } from 'react-native-gesture-handler';
-import Animated, { SharedValue, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import Animated, { SharedValue, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
 const MIN_SCALE = 0.5;
@@ -36,7 +37,11 @@ interface Props {
   children: ReactNode;
 }
 
-/** Élément d'overlay qu'on peut déplacer (un doigt) et agrandir ou réduire (deux doigts). */
+const onReset = () => {
+  Haptics.selectionAsync().catch(() => {});
+};
+
+/** Élément d'overlay qu'on peut déplacer (un doigt), agrandir ou réduire (deux doigts), et remettre en place (appui long). */
 export function Movable({ placement, onTap, style, children }: Props) {
   const { x, y, scale } = placement;
   const startX = useSharedValue(0);
@@ -76,7 +81,19 @@ export function Movable({ placement, onTap, style, children }: Props) {
     },
   });
 
-  const gesture = useExclusiveGestures(useSimultaneousGestures(pan, pinch), tap);
+  // Appui long : l'élément revient à sa place et à sa taille d'origine
+  const longPress = useLongPressGesture({
+    minDuration: 600,
+    onActivate: () => {
+      'worklet';
+      x.set(withSpring(0));
+      y.set(withSpring(0));
+      scale.set(withSpring(1));
+      scheduleOnRN(onReset);
+    },
+  });
+
+  const gesture = useExclusiveGestures(useSimultaneousGestures(pan, pinch), longPress, tap);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: x.get() }, { translateY: y.get() }, { scale: scale.get() }],
