@@ -213,20 +213,28 @@
     "kickers": {
       "whoofus": "Qui de nous deux ?",
       "wouldyourather": "Tu préfères",
-      "truthordare": "Action ou vérité"
+      "truthordare": "Action ou vérité",
+      "password": "{{giver}} fait deviner",
+      "scattergories": "Petit Bac"
     },
     "or": "OU",
     "swap": "Inverser les côtés",
     "hintSpin": "Touche l'écran pour lancer la roulette",
     "hintNext": "Touche l'écran pour la suite",
-    "startFilming": "Mode tournage",
-    "filmingTitle": "Mode tournage",
-    "filmingBody": "1. Les menus disparaissent.\n2. Lance l'enregistrement de l'écran depuis le Centre de contrôle.\n3. Touche l'écran pour jouer.\n4. Appui long pour réafficher les menus.",
-    "filmingCancel": "Annuler",
-    "filmingGo": "C'est parti",
     "hintGuess": "Touche l'option que tu paries",
     "hintRestart": "Touche l'écran pour rejouer",
     "hintSpinTod": "Touche l'écran pour tirer qui joue",
-    "hintTod": "Vérité à gauche, action à droite"
+    "hintTod": "Vérité à gauche, action à droite",
+    "hintChrome": "Les menus se cachent dès que vous jouez. Touche le haut de l'écran pour les revoir.",
+    "showMenus": "Afficher les menus",
+    "resetLayout": "Remettre l'overlay en place",
+    "passwordSub": "{{guesser}}, ne regarde pas !",
+    "passwordScore_one": "{{count}} trouvé",
+    "passwordScore_other": "{{count}} trouvés",
+    "bacLetter": "Lettre {{letter}}",
+    "found": "Trouvé",
+    "skip": "Passer",
+    "hintPassword": "Gauche : trouvé · Droite : on passe",
+    "hintBac": "Touche le côté de celui qui trouve en premier"
   }
 }

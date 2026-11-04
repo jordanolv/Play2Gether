@@ -27,20 +27,27 @@ export interface TodPlayers {
 /*
  * Syntaxe des cartes :
  * - « @o:f », « @o:m », « @p:f », « @p:m » en tête : carte réservée à ce sexe (o = partenaire, p = joueur).
+ * - « @x » en tête : acte sexuel concret, volontairement rare (au plus une action sur EXPLICIT_GAP + 1).
  * - « [o:féminin|masculin] », « [p:féminin|masculin] » : accord selon le sexe.
  * - « {o} », « {p} » : prénom du ou de la partenaire, du joueur.
  */
-const TAG = /^@([po]):([fm])\s+/;
+const TAG = /^@(?:x|([po]):([fm]))\s+/;
+/** Nombre minimum d'autres cartes entre deux actes concrets. */
+const EXPLICIT_GAP = 3;
 
 function parseTags(text: string) {
   const tags: { who: 'p' | 'o'; gender: Gender }[] = [];
+  let explicit = false;
   let rest = text;
   for (let m = rest.match(TAG); m; m = rest.match(TAG)) {
-    tags.push({ who: m[1] as 'p' | 'o', gender: m[2] as Gender });
+    if (m[1]) tags.push({ who: m[1] as 'p' | 'o', gender: m[2] as Gender });
+    else explicit = true;
     rest = rest.slice(m[0].length);
   }
-  return { tags, rest };
+  return { tags, explicit, rest };
 }
+
+const isExplicit = (text: string) => parseTags(text).explicit;
 
 /** La carte convient-elle à ce couple ? */
 export function fitsPlayers(text: string, players: TodPlayers): boolean {
@@ -64,10 +71,10 @@ export function renderCard(text: string, players: TodPlayers): string {
 export function useTodDecks(language: string) {
   const content = byLanguage(language, { fr: todFr, en: todEn });
   const [decks, setDecks] = useState(() => {
-    const all = {} as Record<Key, { cards: string[]; next: number }>;
+    const all = {} as Record<Key, { cards: string[]; next: number; sinceExplicit: number }>;
     for (const level of TOD_LEVELS) {
       for (const kind of ['truth', 'dare'] as const) {
-        all[`${level}.${kind}`] = { cards: shuffle(content[level][kind]), next: 0 };
+        all[`${level}.${kind}`] = { cards: shuffle(content[level][kind]), next: 0, sinceExplicit: 1 };
       }
     }
     return all;
@@ -76,15 +83,19 @@ export function useTodDecks(language: string) {
   /** Tire la prochaine carte qui convient au couple, déjà personnalisée. */
   const draw = (level: TodLevel, kind: TodKind, players: TodPlayers): string => {
     const key: Key = `${level}.${kind}`;
-    let { cards, next } = decks[key];
-    let index = cards.findIndex((card, i) => i >= next && fitsPlayers(card, players));
+    const deck = decks[key];
+    let cards = deck.cards;
+    const allowExplicit = deck.sinceExplicit >= EXPLICIT_GAP;
+    const fits = (card: string) => fitsPlayers(card, players) && (allowExplicit || !isExplicit(card));
+    let index = cards.findIndex((card, i) => i >= deck.next && fits(card));
     if (index === -1) {
       cards = shuffle(content[level][kind]);
-      index = Math.max(0, cards.findIndex((card) => fitsPlayers(card, players)));
+      index = Math.max(0, cards.findIndex(fits));
     }
-    next = index + 1;
-    setDecks((prev) => ({ ...prev, [key]: { cards, next } }));
-    return renderCard(cards[index], players);
+    const card = cards[index];
+    const sinceExplicit = isExplicit(card) ? 0 : deck.sinceExplicit + 1;
+    setDecks((prev) => ({ ...prev, [key]: { cards, next: index + 1, sinceExplicit } }));
+    return renderCard(card, players);
   };
 
   return draw;

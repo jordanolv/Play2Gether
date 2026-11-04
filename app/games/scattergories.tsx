@@ -1,5 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -32,6 +33,7 @@ export default function ScattergoriesScreen() {
 
 function ScattergoriesGame() {
   const { t, i18n } = useTranslation();
+  const router = useRouter();
   const [theme, setTheme] = useState(() => getRandomTheme(i18n.language));
   const [letters, setLetters] = useState<string[]>(randomLetters);
   const [scores, setScores] = useState<[number, number]>([0, 0]);
@@ -97,7 +99,7 @@ function ScattergoriesGame() {
 
   return (
     <Screen glows={GLOWS}>
-      <GameHeader title={t('games.scattergories.title')} step={round} total={MAX_ROUNDS} />
+      <GameHeader title={t('games.scattergories.title')} step={round} total={MAX_ROUNDS} onFilm={() => router.push({ pathname: '/filter', params: { mode: 'scattergories' } })} />
 
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.card}>

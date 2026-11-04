@@ -4,9 +4,10 @@ import * as Haptics from 'expo-haptics';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, Animated, GestureResponderEvent, Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { Animated, Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { Movable, usePlacement } from '@/components/filter/Movable';
 import { Button } from '@/components/ui/Button';
 import { Screen } from '@/components/ui/Screen';
 import { WithCoupleNames } from '@/components/ui/WithCoupleNames';
@@ -15,19 +16,24 @@ import { colors, fonts, radius, spacing } from '@/constants/theme';
 import whoEn from '@/data/whoofus-en.json';
 import whoFr from '@/data/whoofus-fr.json';
 import { CoupleGenders, CoupleNames } from '@/utils/couple';
+import { getRandomTheme, getRandomWords } from '@/utils/gameWords';
 import { byLanguage, shuffle } from '@/utils/random';
 import { updateDailyStreak } from '@/utils/streak';
 import { TOD_FILTER_LEVELS, TOD_KIND_COLORS, TOD_LEVEL_COLORS, TodKind, TodLevel, useTodDecks } from '@/utils/truthordare';
 
-type Mode = 'whoofus' | 'wouldyourather' | 'truthordare';
-const MODES: Mode[] = ['whoofus', 'wouldyourather', 'truthordare'];
-const TOD_KINDS: TodKind[] = ['truth', 'dare'];
+type Mode = 'whoofus' | 'wouldyourather' | 'truthordare' | 'password' | 'scattergories';
+const MODES: Mode[] = ['whoofus', 'wouldyourather', 'truthordare', 'password', 'scattergories'];
 const isMode = (value: unknown): value is Mode => MODES.includes(value as Mode);
+const TOD_KINDS: TodKind[] = ['truth', 'dare'];
 const SIDE_COLORS = [colors.pink, colors.cyan] as const;
+const DIM = 'rgba(18,16,34,0.75)';
 /** Délais successifs de la roulette : elle accélère puis ralentit avant de s'arrêter. */
 const ROULETTE_STEPS = [90, 80, 70, 70, 70, 80, 90, 110, 130, 160, 200, 250, 320, 400];
+const ALPHABET = 'ABCDEFGHIJKLMNOPRSTUV';
+const PASSWORD_DECK = 60;
 
 const randomSide = (): Side => (Math.random() < 0.5 ? 0 : 1);
+const randomLetter = () => ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
 
 /** Réponses secrètes transmises par l'écran « Tu préfères » quand on passe en caméra en cours de partie. */
 function parseSecret(raw: string | undefined): Secret | null {
@@ -128,20 +134,26 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
 
-  const [filming, setFilming] = useState(false);
+  // Les menus restent visibles au départ, se cachent dès qu'on joue, et reviennent en touchant le haut de l'écran
+  const [chrome, setChrome] = useState(true);
+  const [started, setStarted] = useState(false);
   const [swapped, setSwapped] = useState(false);
   const sideNames: CoupleNames = swapped ? [names[1], names[0]] : names;
   const sideGenders: CoupleGenders = swapped ? [genders[1], genders[0]] : genders;
 
+  // Overlay déplaçable : la carte du haut et les deux côtés du bas
+  const cardPlacement = usePlacement();
+  const sidesPlacement = usePlacement();
+
   // Paquet de cartes mélangé
-  const [deck] = useState<(string | string[])[]>(() => {
-    if (mode === 'wouldyourather') return secret?.dilemmas ?? [];
+  const [deck] = useState<string[]>(() => {
     if (mode === 'whoofus') return shuffle(byLanguage(i18n.language, { fr: whoFr, en: whoEn }));
+    if (mode === 'password') return getRandomWords(i18n.language, PASSWORD_DECK);
     return [];
   });
   const [index, setIndex] = useState(0);
 
-  // Roulette « Qui de nous deux »
+  // Roulette (« Qui de nous deux », « Action ou vérité »)
   const [highlight, setHighlight] = useState<Side | null>(null);
   const [rolling, setRolling] = useState(false);
   const [picked, setPicked] = useState(false);
@@ -157,6 +169,10 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
   const drawTod = useTodDecks(i18n.language);
   const [todLevel, setTodLevel] = useState<TodLevel>(initialLevel);
   const [todCard, setTodCard] = useState<{ kind: TodKind; text: string } | null>(null);
+
+  // Scores à deux (Petit Bac) ou en équipe (Mot de passe : trouvés / passés)
+  const [scores, setScores] = useState<[number, number]>([0, 0]);
+  const [bac, setBac] = useState(() => ({ theme: getRandomTheme(i18n.language), letter: randomLetter() }));
 
   // Animations : entrée de chaque carte, côté choisi, verdict
   const [cardAnim] = useState(() => new Animated.Value(1));
@@ -183,12 +199,15 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
 
   const nextCard = () => {
     resetRound();
-    if (mode === 'wouldyourather' && index + 1 >= deck.length) {
+    if (mode === 'wouldyourather' && index + 1 >= (secret?.dilemmas.length ?? 0)) {
       setFinished(true);
       updateDailyStreak();
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
     } else if (deck.length > 0) {
       setIndex((i) => (i + 1) % deck.length);
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+    } else {
+      setIndex((i) => i + 1);
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
     }
     popCard();
@@ -229,30 +248,66 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
     popPick();
   };
 
-  // Un appui fait avancer le jeu. Pour « Tu préfères », le côté touché est la réponse devinée.
-  const onTap = (e: GestureResponderEvent) => {
-    if (rolling) return;
-    if (mode === 'wouldyourather') {
-      if (finished) onRestart?.();
-      else if (guess === null) makeGuess(e.nativeEvent.pageX < width / 2 ? 0 : 1);
-      else nextCard();
-    } else if (mode !== 'truthordare' && mode !== 'whoofus') nextCard();
-    else if (!picked) spin();
-    else if (mode === 'truthordare' && !todCard) {
-      const kind = TOD_KINDS[e.nativeEvent.pageX < width / 2 ? 0 : 1];
-      const player = highlight ?? 0;
-      const other = otherSide(player);
-      const players = {
-        player: { name: sideNames[player], gender: sideGenders[player] },
-        other: { name: sideNames[other], gender: sideGenders[other] },
-      };
-      setTodCard({ kind, text: drawTod(todLevel, kind, players) });
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
-      popCard();
-    } else nextCard();
+  const point = (side: Side) => {
+    const next: [number, number] = [...scores];
+    next[side] += 1;
+    setScores(next);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
   };
 
-  const card = deck[index];
+  // Un appui fait avancer le jeu. Pour les jeux à deux choix, le côté touché compte.
+  const onTap = (x: number) => {
+    if (rolling) return;
+    setChrome(false);
+    setStarted(true);
+    const side: Side = x < width / 2 ? 0 : 1;
+    switch (mode) {
+      case 'wouldyourather':
+        if (finished) onRestart?.();
+        else if (guess === null) makeGuess(side);
+        else nextCard();
+        return;
+      case 'whoofus':
+        if (!picked) spin();
+        else nextCard();
+        return;
+      case 'truthordare':
+        if (!picked) spin();
+        else if (!todCard) {
+          const player = highlight ?? 0;
+          const other = otherSide(player);
+          const kind = TOD_KINDS[side];
+          setTodCard({
+            kind,
+            text: drawTod(todLevel, kind, {
+              player: { name: sideNames[player], gender: sideGenders[player] },
+              other: { name: sideNames[other], gender: sideGenders[other] },
+            }),
+          });
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
+          popCard();
+        } else nextCard();
+        return;
+      case 'password':
+        // Gauche : trouvé, droite : on passe
+        if (side === 0) point(0);
+        else setScores(([found, skipped]) => [found, skipped + 1]);
+        nextCard();
+        return;
+      case 'scattergories':
+        // Le côté touché marque le point de la manche
+        point(side);
+        setBac({ theme: getRandomTheme(i18n.language), letter: randomLetter() });
+        popCard();
+    }
+  };
+
+  const resetLayout = () => {
+    cardPlacement.reset();
+    sidesPlacement.reset();
+    Haptics.selectionAsync().catch(() => {});
+  };
+
   const cardStyle = {
     opacity: cardAnim,
     transform: [{ scale: cardAnim.interpolate({ inputRange: [0, 1], outputRange: [0.85, 1] }) }],
@@ -260,166 +315,220 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
   const pickScale = pickAnim.interpolate({ inputRange: [0, 1], outputRange: [1, 1.12] });
   const verdictStyle = {
     opacity: pickAnim,
-    transform: [
-      { scale: pickAnim.interpolate({ inputRange: [0, 1], outputRange: [0.4, 1] }) },
-      { rotate: '-6deg' },
-    ],
+    transform: [{ scale: pickAnim.interpolate({ inputRange: [0, 1], outputRange: [0.4, 1] }) }, { rotate: '-6deg' }],
   };
 
-  const isWyr = mode === 'wouldyourather' && secret;
   const answerer = secret?.answerer ?? 0;
   const guesser = otherSide(answerer);
-  const score = results.filter(Boolean).length;
+  const wyrScore = results.filter(Boolean).length;
   const lastCorrect = results[results.length - 1];
-  // Marge au-dessus de la signature : le côté choisi grossit de 12 % quand il est révélé
-  const sidesBottom = insets.bottom + (filming ? 64 : 172);
+  const sidesBottom = insets.bottom + 64;
+
+  // Contenu de la carte du haut, selon le jeu
+  const top = ((): { kicker: string; text: string; sub?: string; score?: string } => {
+    switch (mode) {
+      case 'wouldyourather':
+        return {
+          kicker: t('games.wouldyourather.guessKicker', { guesser: names[guesser] }),
+          text: t('games.wouldyourather.guessQuestion', { answerer: names[answerer] }),
+          score: results.length > 0 ? `${wyrScore}/${results.length}` : undefined,
+        };
+      case 'truthordare':
+        if (todCard && highlight !== null) {
+          return { kicker: t(`games.truthordare.${todCard.kind}For`, { player: sideNames[highlight] }), text: todCard.text };
+        }
+        return {
+          kicker: t('filter.kickers.truthordare'),
+          text: picked && highlight !== null
+            ? t('games.truthordare.filterAsk', { player: sideNames[highlight] })
+            : t('games.truthordare.filterSpin'),
+        };
+      case 'password':
+        return {
+          kicker: t('filter.kickers.password', { giver: sideNames[0] }),
+          text: deck[index],
+          sub: t('filter.passwordSub', { guesser: sideNames[1] }),
+          score: t('filter.passwordScore', { count: scores[0] }),
+        };
+      case 'scattergories':
+        return { kicker: t('filter.kickers.scattergories'), text: bac.theme, sub: t('filter.bacLetter', { letter: bac.letter }) };
+      default:
+        return { kicker: t('filter.kickers.whoofus'), text: deck[index] };
+    }
+  })();
 
   const hint = (() => {
-    if (isWyr) return finished ? t('filter.hintRestart') : guess === null ? t('filter.hintGuess') : t('filter.hintNext');
-    if (mode === 'truthordare') return !picked ? t('filter.hintSpinTod') : !todCard ? t('filter.hintTod') : t('filter.hintNext');
-    if (mode === 'whoofus' && !picked) return t('filter.hintSpin');
-    return t('filter.hintNext');
+    if (!started) return t('filter.hintChrome');
+    switch (mode) {
+      case 'wouldyourather':
+        return finished ? t('filter.hintRestart') : guess === null ? t('filter.hintGuess') : t('filter.hintNext');
+      case 'truthordare':
+        return !picked ? t('filter.hintSpinTod') : !todCard ? t('filter.hintTod') : t('filter.hintNext');
+      case 'whoofus':
+        return picked ? t('filter.hintNext') : t('filter.hintSpin');
+      case 'password':
+        return t('filter.hintPassword');
+      default:
+        return t('filter.hintBac');
+    }
   })();
+
+  /** Boutons du bas : deux côtés colorés, selon le jeu. */
+  const renderSides = () => {
+    if (mode === 'wouldyourather') {
+      const card = secret?.dilemmas[index] ?? [];
+      return ([0, 1] as const).map((side) => {
+        const revealed = guess !== null;
+        const isAnswer = revealed && secret?.answers[index] === side;
+        return (
+          <Animated.View
+            key={side}
+            style={[
+              styles.side,
+              styles.sideOption,
+              { backgroundColor: !revealed || isAnswer ? SIDE_COLORS[side] : DIM },
+              isAnswer && { transform: [{ scale: pickScale }] },
+            ]}
+          >
+            {isAnswer && (
+              <Text style={styles.answerTag} numberOfLines={1}>
+                {t('games.wouldyourather.answerTag', { name: names[answerer] })}
+              </Text>
+            )}
+            <Text style={[styles.sideText, styles.sideOptionText, { color: !revealed || isAnswer ? colors.bg : colors.text }]} numberOfLines={4}>
+              {card[side]}
+            </Text>
+          </Animated.View>
+        );
+      });
+    }
+    if (mode === 'truthordare' && picked && !todCard) {
+      return TOD_KINDS.map((kind) => (
+        <View key={kind} style={[styles.side, styles.sideOption, { backgroundColor: TOD_KIND_COLORS[kind], minHeight: 90 }]}>
+          <Feather name={kind === 'truth' ? 'message-circle' : 'zap'} size={22} color={colors.bg} />
+          <Text style={[styles.sideText, { color: colors.bg }]}>{t(`games.truthordare.${kind}`)}</Text>
+        </View>
+      ));
+    }
+    if (mode === 'truthordare' && todCard) return null;
+    if (mode === 'password') {
+      return [
+        { icon: 'check' as const, label: t('filter.found'), color: colors.mint },
+        { icon: 'skip-forward' as const, label: t('filter.skip'), color: DIM },
+      ].map((b, i) => (
+        <View key={i} style={[styles.side, styles.sideWide, { backgroundColor: b.color }]}>
+          <Feather name={b.icon} size={18} color={i === 0 ? colors.bg : colors.text} />
+          <Text style={[styles.sideText, { color: i === 0 ? colors.bg : colors.text }]}>{b.label}</Text>
+        </View>
+      ));
+    }
+    if (mode === 'scattergories') {
+      return ([0, 1] as const).map((side) => (
+        <View key={side} style={[styles.side, styles.sideWide, { backgroundColor: SIDE_COLORS[side] }]}>
+          <Text style={[styles.sideText, { color: colors.bg }]} numberOfLines={1}>{sideNames[side]}</Text>
+          <Text style={styles.sideScore}>{scores[side]}</Text>
+        </View>
+      ));
+    }
+    // Roulette sur les prénoms
+    return ([0, 1] as const).map((side) => {
+      const lit = highlight === side;
+      return (
+        <Animated.View
+          key={side}
+          style={[
+            styles.side,
+            side === 1 && styles.sideRight,
+            { backgroundColor: lit ? SIDE_COLORS[side] : DIM },
+            picked && lit && { transform: [{ scale: pickScale }] },
+          ]}
+        >
+          {side === 0 && <Feather name="arrow-left" size={20} color={lit ? colors.bg : colors.text} />}
+          <Text style={[styles.sideText, { color: lit ? colors.bg : colors.text }]} numberOfLines={1}>{sideNames[side]}</Text>
+          {side === 1 && <Feather name="arrow-right" size={20} color={lit ? colors.bg : colors.text} />}
+        </Animated.View>
+      );
+    });
+  };
+
+  const sides = renderSides();
+  const showOr = (mode === 'wouldyourather' && guess === null && !finished) || (mode === 'truthordare' && picked && !todCard);
 
   return (
     <View style={styles.root}>
       <CameraView style={StyleSheet.absoluteFill} facing="front" mirror />
 
+      {/* Fond tactile : un appui n'importe où joue */}
       <Pressable
         style={StyleSheet.absoluteFill}
-        onPress={onTap}
-        onLongPress={() => filming && setFilming(false)}
-        delayLongPress={700}
+        onPress={(e) => onTap(e.nativeEvent.pageX)}
         accessibilityRole="button"
         accessibilityLabel={t('filter.tapToPlay')}
-      >
-        {isWyr && finished ? (
-          <View style={styles.endWrap} pointerEvents="none">
-            <Animated.View style={[styles.endCard, cardStyle]}>
-              <Text style={styles.endKicker}>
-                {t('games.wouldyourather.resultKicker', { guesser: names[guesser], answerer: names[answerer] })}
-              </Text>
-              <Text style={styles.endValue}>{Math.round((score / Math.max(results.length, 1)) * 100)}%</Text>
-              <Text style={styles.endScore}>{score}/{results.length}</Text>
-            </Animated.View>
-          </View>
-        ) : (
-          <>
-            {/* Carte du jeu, en haut */}
-            <View style={[styles.top, { paddingTop: insets.top + (filming ? 24 : 72) }]} pointerEvents="none">
-              <View style={styles.kickerRow}>
-                <Text style={styles.kicker}>
-                  {isWyr
-                    ? t('games.wouldyourather.guessKicker', { guesser: names[guesser] })
-                    : todCard && highlight !== null
-                      ? t(`games.truthordare.${todCard.kind}For`, { player: sideNames[highlight] })
-                      : t(`filter.kickers.${mode}`)}
-                </Text>
-                {isWyr && results.length > 0 && <Text style={styles.scorePill}>{score}/{results.length}</Text>}
-              </View>
-              <Animated.View style={[styles.card, cardStyle]}>
-                <Text style={styles.cardText}>
-                  {isWyr
-                    ? t('games.wouldyourather.guessQuestion', { answerer: names[answerer] })
-                    : mode === 'truthordare'
-                      ? todCard?.text ??
-                        (picked && highlight !== null
-                          ? t('games.truthordare.filterAsk', { player: sideNames[highlight] })
-                          : t('games.truthordare.filterSpin'))
-                      : (card as string)}
-                </Text>
-              </Animated.View>
+      />
+
+      {mode === 'wouldyourather' && finished ? (
+        <Movable placement={cardPlacement} onTap={onTap} style={styles.endWrap}>
+          <Animated.View style={[styles.endCard, cardStyle]}>
+            <Text style={styles.endKicker}>
+              {t('games.wouldyourather.resultKicker', { guesser: names[guesser], answerer: names[answerer] })}
+            </Text>
+            <Text style={styles.endValue}>{Math.round((wyrScore / Math.max(results.length, 1)) * 100)}%</Text>
+            <Text style={styles.endScore}>{wyrScore}/{results.length}</Text>
+          </Animated.View>
+        </Movable>
+      ) : (
+        <>
+          {/* Carte du jeu, en haut */}
+          <Movable placement={cardPlacement} onTap={onTap} style={[styles.top, { top: insets.top + (mode === 'truthordare' ? 112 : 72) }]}>
+            <View style={styles.kickerRow}>
+              <Text style={styles.kicker}>{top.kicker}</Text>
+              {top.score && <Text style={styles.scorePill}>{top.score}</Text>}
             </View>
+            <Animated.View style={[styles.card, cardStyle]}>
+              <Text style={[styles.cardText, mode === 'password' && styles.cardWord]}>{top.text}</Text>
+              {top.sub && <Text style={styles.cardSub}>{top.sub}</Text>}
+            </Animated.View>
+          </Movable>
 
-            {/* Verdict de « Tu préfères » */}
-            {isWyr && guess !== null && (
-              <View style={styles.verdictWrap} pointerEvents="none">
-                <Animated.Text style={[styles.verdict, { backgroundColor: lastCorrect ? colors.mint : colors.pink }, verdictStyle]}>
-                  {t(lastCorrect ? 'games.wouldyourather.right' : 'games.wouldyourather.wrong')}
-                </Animated.Text>
-              </View>
-            )}
+          {/* Verdict de « Tu préfères » */}
+          {mode === 'wouldyourather' && guess !== null && (
+            <View style={styles.verdictWrap} pointerEvents="none">
+              <Animated.Text style={[styles.verdict, { backgroundColor: lastCorrect ? colors.mint : colors.pink }, verdictStyle]}>
+                {t(lastCorrect ? 'games.wouldyourather.right' : 'games.wouldyourather.wrong')}
+              </Animated.Text>
+            </View>
+          )}
 
-            {/* Bas de l'écran : les deux côtés */}
-            {mode === 'truthordare' && picked && !todCard && (
-              <View style={[styles.sides, { bottom: sidesBottom }]} pointerEvents="none">
-                {TOD_KINDS.map((kind) => (
-                  <View key={kind} style={[styles.side, styles.sideOption, { backgroundColor: TOD_KIND_COLORS[kind], minHeight: 90 }]}>
-                    <Feather name={kind === 'truth' ? 'message-circle' : 'zap'} size={22} color={colors.bg} />
-                    <Text style={[styles.sideText, { color: colors.bg }]}>{t(`games.truthordare.${kind}`)}</Text>
-                  </View>
-                ))}
-              </View>
-            )}
+          {/* Bas de l'écran : les deux côtés */}
+          {sides && (
+            <Movable placement={sidesPlacement} onTap={onTap} style={[styles.sides, { bottom: sidesBottom }]}>
+              {sides}
+              {showOr && (
+                <View style={styles.orWrap} pointerEvents="none">
+                  <Text style={styles.or}>{t('filter.or')}</Text>
+                </View>
+              )}
+            </Movable>
+          )}
+        </>
+      )}
 
-            {(isWyr || mode === 'whoofus' || (mode === 'truthordare' && !picked)) && (
-              <View style={[styles.sides, { bottom: sidesBottom }]} pointerEvents="none">
-                {([0, 1] as const).map((side) => {
-                  if (isWyr) {
-                    const revealed = guess !== null;
-                    const isAnswer = revealed && secret.answers[index] === side;
-                    return (
-                      <Animated.View
-                        key={side}
-                        style={[
-                          styles.side,
-                          styles.sideOption,
-                          { backgroundColor: !revealed || isAnswer ? SIDE_COLORS[side] : 'rgba(18,16,34,0.75)' },
-                          isAnswer && { transform: [{ scale: pickScale }] },
-                        ]}
-                      >
-                        {isAnswer && (
-                          <Text style={styles.answerTag} numberOfLines={1}>
-                            {t('games.wouldyourather.answerTag', { name: names[answerer] })}
-                          </Text>
-                        )}
-                        <Text
-                          style={[styles.sideText, styles.sideOptionText, { color: !revealed || isAnswer ? colors.bg : colors.text }]}
-                          numberOfLines={4}
-                        >
-                          {(card as string[])[side]}
-                        </Text>
-                      </Animated.View>
-                    );
-                  }
-                  const lit = highlight === side;
-                  const isPick = picked && lit;
-                  return (
-                    <Animated.View
-                      key={side}
-                      style={[
-                        styles.side,
-                        side === 1 && styles.sideRight,
-                        { backgroundColor: lit ? SIDE_COLORS[side] : 'rgba(18,16,34,0.75)' },
-                        isPick && { transform: [{ scale: pickScale }] },
-                      ]}
-                    >
-                      {side === 0 && <Feather name="arrow-left" size={20} color={lit ? colors.bg : colors.text} />}
-                      <Text style={[styles.sideText, { color: lit ? colors.bg : colors.text }]} numberOfLines={1}>
-                        {sideNames[side]}
-                      </Text>
-                      {side === 1 && <Feather name="arrow-right" size={20} color={lit ? colors.bg : colors.text} />}
-                    </Animated.View>
-                  );
-                })}
-              </View>
-            )}
+      {/* Signature, remplacée par l'aide quand les menus sont affichés */}
+      <View style={[styles.brand, { bottom: insets.bottom + 20 }]} pointerEvents="none">
+        {chrome ? <Text style={styles.hint}>{hint}</Text> : <Text style={styles.brandText}>Play2Gether</Text>}
+      </View>
 
-            {isWyr && guess === null && (
-              <View style={[styles.orWrap, { bottom: sidesBottom }]} pointerEvents="none">
-                <Text style={styles.or}>{t('filter.or')}</Text>
-              </View>
-            )}
-          </>
-        )}
+      {/* Bande du haut : touche pour réafficher les menus */}
+      {!chrome && (
+        <Pressable
+          style={[styles.chromeZone, { height: insets.top + 64 }]}
+          onPress={() => setChrome(true)}
+          accessibilityRole="button"
+          accessibilityLabel={t('filter.showMenus')}
+        />
+      )}
 
-        {/* Signature */}
-        <View style={[styles.brand, { bottom: insets.bottom + (filming ? 12 : 120) }]} pointerEvents="none">
-          <Text style={styles.brandText}>Play2Gether</Text>
-        </View>
-      </Pressable>
-
-      {!filming && (
+      {chrome && (
         <>
           <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
             <Pressable onPress={() => router.back()} accessibilityRole="button" accessibilityLabel={t('common.backLabel')} style={styles.iconBtn}>
@@ -429,16 +538,17 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
               <Feather name="video" size={14} color={colors.pink} />
               <Text style={styles.titleText} numberOfLines={1}>{t(`games.${mode}.title`)}</Text>
             </View>
-            {mode !== 'wouldyourather' ? (
+            <Pressable onPress={resetLayout} accessibilityRole="button" accessibilityLabel={t('filter.resetLayout')} style={styles.iconBtn}>
+              <Feather name="maximize" size={18} color={colors.text} />
+            </Pressable>
+            {mode !== 'wouldyourather' && (
               <Pressable onPress={() => setSwapped((s) => !s)} accessibilityRole="button" accessibilityLabel={t('filter.swap')} style={styles.iconBtn}>
                 <Feather name="repeat" size={20} color={colors.text} />
               </Pressable>
-            ) : (
-              <View style={styles.iconSpacer} />
             )}
           </View>
 
-          <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 12 }]}>
+          <View style={[styles.menuBar, { top: insets.top + 60 }]} pointerEvents="box-none">
             {mode === 'truthordare' && (
               <View style={styles.todLevels}>
                 {TOD_FILTER_LEVELS.map((l) => (
@@ -454,17 +564,6 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
                 ))}
               </View>
             )}
-            <Text style={styles.hint}>{hint}</Text>
-            <Button
-              label={t('filter.startFilming')}
-              onPress={() =>
-                Alert.alert(t('filter.filmingTitle'), t('filter.filmingBody'), [
-                  { text: t('filter.filmingCancel'), style: 'cancel' },
-                  { text: t('filter.filmingGo'), onPress: () => setFilming(true) },
-                ])
-              }
-              variant="accent"
-            />
           </View>
         </>
       )}
@@ -481,20 +580,22 @@ const styles = StyleSheet.create({
   permissionBody: { color: colors.textMuted, fontFamily: fonts.semibold, fontSize: 15, textAlign: 'center', lineHeight: 21, marginBottom: 8 },
 
   top: { position: 'absolute', left: 16, right: 16, alignItems: 'center', gap: 10 },
-  kickerRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  kickerRow: { flexDirection: 'row', alignItems: 'center', gap: 8, maxWidth: '100%' },
   kicker: {
     overflow: 'hidden', backgroundColor: colors.yellow, color: colors.bg, fontFamily: fonts.extrabold, fontSize: 12,
-    letterSpacing: 1.8, paddingHorizontal: 12, paddingVertical: 6, borderRadius: radius.pill, textTransform: 'uppercase',
+    letterSpacing: 1.8, paddingHorizontal: 12, paddingVertical: 6, borderRadius: radius.pill, textTransform: 'uppercase', flexShrink: 1,
   },
   scorePill: {
     overflow: 'hidden', backgroundColor: colors.bg, color: colors.text, fontFamily: fonts.extrabold, fontSize: 13,
     paddingHorizontal: 12, paddingVertical: 5, borderRadius: radius.pill,
   },
   card: {
-    backgroundColor: colors.bg, borderRadius: radius.lg, paddingHorizontal: 18, paddingVertical: 14,
+    backgroundColor: colors.bg, borderRadius: radius.lg, paddingHorizontal: 18, paddingVertical: 14, gap: 6,
     shadowColor: '#000', shadowOpacity: 0.35, shadowRadius: 18, shadowOffset: { width: 0, height: 10 }, elevation: 10,
   },
   cardText: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 26, lineHeight: 30, textAlign: 'center' },
+  cardWord: { fontSize: 40, lineHeight: 46, letterSpacing: -0.5 },
+  cardSub: { color: colors.yellow, fontFamily: fonts.extrabold, fontSize: 15, textAlign: 'center' },
 
   verdictWrap: { position: 'absolute', left: 0, right: 0, top: '42%', alignItems: 'center' },
   verdict: {
@@ -505,7 +606,12 @@ const styles = StyleSheet.create({
   sides: { position: 'absolute', left: 16, right: 16, flexDirection: 'row', justifyContent: 'space-between', gap: 12 },
   side: { flexDirection: 'row', alignItems: 'center', gap: 6, height: 52, paddingHorizontal: 18, borderRadius: radius.pill, maxWidth: '48%' },
   sideRight: { justifyContent: 'flex-end' },
+  sideWide: { flex: 1, justifyContent: 'center', maxWidth: undefined },
   sideText: { fontFamily: fonts.extrabold, fontSize: 20, flexShrink: 1 },
+  sideScore: {
+    overflow: 'hidden', color: colors.text, backgroundColor: colors.bg, fontFamily: fonts.extrabold, fontSize: 15,
+    minWidth: 30, textAlign: 'center', paddingHorizontal: 8, paddingVertical: 3, borderRadius: radius.pill,
+  },
   sideOption: {
     flex: 1, flexDirection: 'column', height: 'auto', minHeight: 110, borderRadius: radius.lg, paddingVertical: 14,
     justifyContent: 'center', maxWidth: undefined,
@@ -515,7 +621,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden', backgroundColor: colors.bg, color: colors.text, fontFamily: fonts.extrabold, fontSize: 11,
     paddingHorizontal: 8, paddingVertical: 3, borderRadius: radius.pill, maxWidth: '100%',
   },
-  orWrap: { position: 'absolute', left: 0, right: 0, height: 110, alignItems: 'center', justifyContent: 'center' },
+  orWrap: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center' },
   or: {
     overflow: 'hidden', backgroundColor: colors.bg, color: colors.yellow, fontFamily: fonts.extrabold, fontSize: 14,
     width: 44, height: 44, lineHeight: 44, textAlign: 'center', borderRadius: 22,
@@ -527,27 +633,27 @@ const styles = StyleSheet.create({
   endValue: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 80, lineHeight: 88 },
   endScore: { color: colors.textMuted, fontFamily: fonts.bold, fontSize: 16 },
 
-  brand: { position: 'absolute', left: 0, right: 0, alignItems: 'center' },
+  brand: { position: 'absolute', left: spacing.screen, right: spacing.screen, alignItems: 'center' },
   brandText: {
-    overflow: 'hidden', backgroundColor: 'rgba(18,16,34,0.75)', color: colors.pink, fontFamily: fonts.extrabold, fontSize: 12,
+    overflow: 'hidden', backgroundColor: DIM, color: colors.pink, fontFamily: fonts.extrabold, fontSize: 12,
     paddingHorizontal: 12, paddingVertical: 5, borderRadius: radius.pill,
   },
 
+  chromeZone: { position: 'absolute', top: 0, left: 0, right: 0 },
   header: { position: 'absolute', top: 0, left: 0, right: 0, flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12 },
   iconBtn: { width: 44, height: 44, borderRadius: 22, backgroundColor: 'rgba(18,16,34,0.7)', alignItems: 'center', justifyContent: 'center' },
-  iconSpacer: { width: 44, height: 44 },
   titlePill: {
     flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, height: 44,
     backgroundColor: 'rgba(18,16,34,0.7)', borderRadius: radius.pill, paddingHorizontal: 14,
   },
   titleText: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 15, flexShrink: 1 },
-
-  todLevels: { flexDirection: 'row', alignSelf: 'center', gap: 4, padding: 4, borderRadius: radius.pill, backgroundColor: 'rgba(18,16,34,0.7)' },
+  menuBar: { position: 'absolute', left: 0, right: 0, alignItems: 'center' },
+  todLevels: { flexDirection: 'row', gap: 4, padding: 4, borderRadius: radius.pill, backgroundColor: 'rgba(18,16,34,0.7)' },
   todLevel: { height: 32, paddingHorizontal: 14, borderRadius: radius.pill, alignItems: 'center', justifyContent: 'center' },
   todLevelText: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 12 },
-  bottomBar: { position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: spacing.screen, gap: 10 },
+
   hint: {
-    alignSelf: 'center', overflow: 'hidden', color: colors.text, fontFamily: fonts.bold, fontSize: 13,
-    backgroundColor: 'rgba(18,16,34,0.7)', paddingHorizontal: 12, paddingVertical: 6, borderRadius: radius.pill,
+    overflow: 'hidden', color: colors.text, fontFamily: fonts.bold, fontSize: 13, textAlign: 'center',
+    backgroundColor: 'rgba(18,16,34,0.85)', paddingHorizontal: 12, paddingVertical: 6, borderRadius: radius.pill,
   },
 });

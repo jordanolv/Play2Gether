@@ -1,5 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -25,6 +26,7 @@ export default function PasswordScreen() {
 
 function PasswordGame() {
   const { t, i18n } = useTranslation();
+  const router = useRouter();
   const [gameWords, setGameWords] = useState<string[]>(() => getRandomWords(i18n.language, WORDS_PER_GAME));
   const [index, setIndex] = useState(0);
   const [clues, setClues] = useState(1);
@@ -93,7 +95,7 @@ function PasswordGame() {
 
   return (
     <Screen glows={GLOWS}>
-      <GameHeader title={t('games.password.title')} step={index + 1} total={gameWords.length || WORDS_PER_GAME} />
+      <GameHeader title={t('games.password.title')} step={index + 1} total={gameWords.length || WORDS_PER_GAME} onFilm={() => router.push({ pathname: '/filter', params: { mode: 'password' } })} />
 
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={styles.instruction}>{t('games.password.instruction')}</Text>

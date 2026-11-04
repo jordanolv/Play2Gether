@@ -214,20 +214,28 @@
     "kickers": {
       "whoofus": "Who of us?",
       "wouldyourather": "Would you rather",
-      "truthordare": "Truth or dare"
+      "truthordare": "Truth or dare",
+      "password": "{{giver}} gives clues",
+      "scattergories": "Scattergories"
     },
     "or": "OR",
     "swap": "Swap sides",
     "hintSpin": "Tap the screen to spin",
     "hintNext": "Tap the screen for the next one",
-    "startFilming": "Filming mode",
-    "filmingTitle": "Filming mode",
-    "filmingBody": "1. Menus disappear.\n2. Start screen recording from Control Center.\n3. Tap the screen to play.\n4. Long press to bring the menus back.",
-    "filmingCancel": "Cancel",
-    "filmingGo": "Let's go",
     "hintGuess": "Tap the option you bet on",
     "hintRestart": "Tap the screen to play again",
     "hintSpinTod": "Tap the screen to pick who plays",
-    "hintTod": "Truth on the left, dare on the right"
+    "hintTod": "Truth on the left, dare on the right",
+    "hintChrome": "Menus hide as soon as you play. Tap the top of the screen to bring them back.",
+    "showMenus": "Show menus",
+    "resetLayout": "Reset the overlay",
+    "passwordSub": "{{guesser}}, don't look!",
+    "passwordScore_one": "{{count}} found",
+    "passwordScore_other": "{{count}} found",
+    "bacLetter": "Letter {{letter}}",
+    "found": "Got it",
+    "skip": "Skip",
+    "hintPassword": "Left: got it · Right: skip",
+    "hintBac": "Tap the side of whoever finds one first"
   }
 }
