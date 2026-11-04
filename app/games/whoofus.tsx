@@ -13,7 +13,8 @@ import { colors, fonts, radius, spacing } from '@/constants/theme';
 import questionsEn from '@/data/whoofus-en.json';
 import questionsFr from '@/data/whoofus-fr.json';
 import { CoupleNames } from '@/utils/couple';
-import { byLanguage, pickRandom } from '@/utils/random';
+import { byLanguage } from '@/utils/random';
+import { drawFresh } from '@/utils/seen';
 import { updateDailyStreak } from '@/utils/streak';
 
 const QUESTIONS_PER_GAME = 10;
@@ -38,7 +39,7 @@ export default function WhoOfUsScreen() {
 function WhoOfUsGame({ names, onEditNames }: { names: CoupleNames; onEditNames: () => void }) {
   const { t, i18n } = useTranslation();
   const router = useRouter();
-  const draw = () => pickRandom(byLanguage(i18n.language, { fr: questionsFr, en: questionsEn }), QUESTIONS_PER_GAME);
+  const draw = () => drawFresh(`whoofus.${i18n.language}`, byLanguage(i18n.language, { fr: questionsFr, en: questionsEn }), QUESTIONS_PER_GAME);
   const [questions, setQuestions] = useState<string[]>(draw);
   const [answers, setAnswers] = useState<Answer[]>([]);
   const index = answers.length;

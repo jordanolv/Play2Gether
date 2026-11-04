@@ -16,8 +16,9 @@ import { colors, fonts, radius, spacing } from '@/constants/theme';
 import whoEn from '@/data/whoofus-en.json';
 import whoFr from '@/data/whoofus-fr.json';
 import { CoupleGenders, CoupleNames } from '@/utils/couple';
-import { getRandomTheme, getRandomWords } from '@/utils/gameWords';
-import { byLanguage, shuffle } from '@/utils/random';
+import { getBacRound, getRandomWords } from '@/utils/gameWords';
+import { byLanguage } from '@/utils/random';
+import { drawFresh } from '@/utils/seen';
 import { updateDailyStreak } from '@/utils/streak';
 import { TOD_FILTER_LEVELS, TOD_KIND_COLORS, TOD_LEVEL_COLORS, TodKind, TodLevel, useTodDecks } from '@/utils/truthordare';
 
@@ -29,12 +30,9 @@ const SIDE_COLORS = [colors.pink, colors.cyan] as const;
 const DIM = 'rgba(18,16,34,0.75)';
 /** Délais successifs de la roulette : elle accélère puis ralentit avant de s'arrêter. */
 const ROULETTE_STEPS = [90, 80, 70, 70, 70, 80, 90, 110, 130, 160, 200, 250, 320, 400];
-const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const PASSWORD_DECK = 60;
 
 const randomSide = (): Side => (Math.random() < 0.5 ? 0 : 1);
-/** Deux lettres différentes, comme dans le Petit Bac classique. */
-const randomLetters = () => shuffle(ALPHABET.split('')).slice(0, 2);
 
 /** Réponses secrètes transmises par l'écran « Tu préfères » quand on passe en caméra en cours de partie. */
 function parseSecret(raw: string | undefined): Secret | null {
@@ -147,7 +145,7 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
 
   // Paquet de cartes mélangé
   const [deck] = useState<string[]>(() => {
-    if (mode === 'whoofus') return shuffle(byLanguage(i18n.language, { fr: whoFr, en: whoEn }));
+    if (mode === 'whoofus') return drawFresh(`whoofus.${i18n.language}`, byLanguage(i18n.language, { fr: whoFr, en: whoEn }), 40);
     if (mode === 'password') return getRandomWords(i18n.language, PASSWORD_DECK);
     return [];
   });
@@ -172,7 +170,7 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
 
   // Scores à deux (Petit Bac) ou en équipe (Mot de passe : trouvés / passés)
   const [scores, setScores] = useState<[number, number]>([0, 0]);
-  const [bac, setBac] = useState(() => ({ theme: getRandomTheme(i18n.language), letters: randomLetters() }));
+  const [bac, setBac] = useState(() => getBacRound(i18n.language));
 
   // Animations : entrée de chaque carte, côté choisi, verdict
   const [cardAnim] = useState(() => new Animated.Value(1));
@@ -297,7 +295,7 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
       case 'scattergories':
         // Le côté touché marque le point de la manche
         point(side);
-        setBac({ theme: getRandomTheme(i18n.language), letters: randomLetters() });
+        setBac(getBacRound(i18n.language));
         popCard();
     }
   };

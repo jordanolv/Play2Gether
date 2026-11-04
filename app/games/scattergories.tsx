@@ -9,21 +9,16 @@ import { Button } from '@/components/ui/Button';
 import { GameHeader } from '@/components/ui/GameHeader';
 import { Screen } from '@/components/ui/Screen';
 import { colors, fonts, radius, spacing } from '@/constants/theme';
-import { getRandomTheme } from '@/utils/gameWords';
+import { BacRound, getBacRound } from '@/utils/gameWords';
 import { updateDailyStreak } from '@/utils/streak';
 
 const MAX_ROUNDS = 5;
-const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const PLAYER_COLORS = [colors.pink, colors.cyan] as const;
 const GLOWS = [
   { color: colors.cyan, size: 420, top: -160, right: -160 },
   { color: colors.pink, size: 360, bottom: 40, left: -180 },
 ];
 
-const randomLetters = () => {
-  const shuffled = ALPHABET.split('').sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, 2);
-};
 
 // La clé force une nouvelle partie quand la langue change
 export default function ScattergoriesScreen() {
@@ -34,15 +29,16 @@ export default function ScattergoriesScreen() {
 function ScattergoriesGame() {
   const { t, i18n } = useTranslation();
   const router = useRouter();
-  const [theme, setTheme] = useState(() => getRandomTheme(i18n.language));
-  const [letters, setLetters] = useState<string[]>(randomLetters);
+  const [bac, setBac] = useState<BacRound>(() => getBacRound(i18n.language));
+  const [showAnswer, setShowAnswer] = useState(false);
+  const { theme, letters, answer } = bac;
   const [scores, setScores] = useState<[number, number]>([0, 0]);
   const [round, setRound] = useState(1);
   const [finished, setFinished] = useState(false);
 
   const newRound = () => {
-    setTheme(getRandomTheme(i18n.language));
-    setLetters(randomLetters());
+    setBac(getBacRound(i18n.language));
+    setShowAnswer(false);
   };
 
   const startNewGame = () => {
@@ -117,6 +113,13 @@ function ScattergoriesGame() {
           </View>
           <Text style={styles.instruction}>{t('games.scattergories.instruction')}</Text>
         </View>
+
+        <Pressable onPress={() => setShowAnswer(true)} disabled={showAnswer} accessibilityRole="button" style={({ pressed }) => [styles.shuffle, pressed && { opacity: 0.7 }]}>
+          <Feather name={showAnswer ? 'check-circle' : 'help-circle'} size={15} color={showAnswer ? colors.yellow : colors.textMuted} />
+          <Text style={[styles.shuffleText, showAnswer && { color: colors.yellow }]}>
+            {showAnswer ? t('games.scattergories.answer', { answer }) : t('games.scattergories.showAnswer')}
+          </Text>
+        </Pressable>
 
         <Pressable onPress={newRound} accessibilityRole="button" style={({ pressed }) => [styles.shuffle, pressed && { opacity: 0.7 }]}>
           <Feather name="refresh-cw" size={15} color={colors.textMuted} />

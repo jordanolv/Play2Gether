@@ -84,7 +84,9 @@
       "lettersLabel": "THE LETTERS",
       "themeLabel": "Theme",
       "point": "+1 point",
-      "whoWon": "Who found one first?"
+      "whoWon": "Who found one first?",
+      "showAnswer": "A possible answer?",
+      "answer": "Possible answer: {{answer}}"
     },
     "whoofus": {
       "title": "Who of us?",

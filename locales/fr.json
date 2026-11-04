@@ -83,7 +83,9 @@
       "lettersLabel": "LES LETTRES",
       "themeLabel": "Thème",
       "point": "+1 point",
-      "whoWon": "Qui a trouvé en premier ?"
+      "whoWon": "Qui a trouvé en premier ?",
+      "showAnswer": "Une réponse possible ?",
+      "answer": "Réponse possible : {{answer}}"
     },
     "whoofus": {
       "title": "Qui de nous deux ?",

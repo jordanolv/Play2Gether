@@ -11,7 +11,8 @@ import { colors, fonts, radius, spacing } from '@/constants/theme';
 import dilemmasEn from '@/data/wouldyourather-en.json';
 import dilemmasFr from '@/data/wouldyourather-fr.json';
 import { CoupleNames } from '@/utils/couple';
-import { byLanguage, pickRandom } from '@/utils/random';
+import { byLanguage } from '@/utils/random';
+import { drawFresh } from '@/utils/seen';
 
 export const WYR_ROUNDS = 8;
 export const PLAYER_COLORS = [colors.pink, colors.cyan] as const;
@@ -44,7 +45,7 @@ interface Props {
 export function SecretRound({ names, glows, initialAnswerer, startLabel, onReady, onFilm }: Props) {
   const { t, i18n } = useTranslation();
   const [dilemmas] = useState<string[][]>(() =>
-    pickRandom(byLanguage(i18n.language, { fr: dilemmasFr, en: dilemmasEn }), WYR_ROUNDS)
+    drawFresh(`wyr.${i18n.language}`, byLanguage(i18n.language, { fr: dilemmasFr, en: dilemmasEn }), WYR_ROUNDS)
   );
   const [answerer, setAnswerer] = useState<Side | null>(initialAnswerer ?? null);
   const [answers, setAnswers] = useState<Side[]>([]);
