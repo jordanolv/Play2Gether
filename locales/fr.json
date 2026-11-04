@@ -229,10 +229,9 @@
     "passwordSub": "{{guesser}}, ne regarde pas !",
     "passwordScore_one": "{{count}} trouvé",
     "passwordScore_other": "{{count}} trouvés",
-    "bacLetter": "Lettre {{letter}}",
     "found": "Trouvé",
     "skip": "Passer",
     "hintPassword": "Gauche : trouvé · Droite : on passe",
-    "hintBac": "Touche le côté de celui qui trouve en premier"
+    "hintBac": "Un mot du thème qui contient les 2 lettres. Touche le côté de celui qui trouve en premier"
   }
 }

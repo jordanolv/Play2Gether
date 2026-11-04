@@ -29,11 +29,12 @@ const SIDE_COLORS = [colors.pink, colors.cyan] as const;
 const DIM = 'rgba(18,16,34,0.75)';
 /** Délais successifs de la roulette : elle accélère puis ralentit avant de s'arrêter. */
 const ROULETTE_STEPS = [90, 80, 70, 70, 70, 80, 90, 110, 130, 160, 200, 250, 320, 400];
-const ALPHABET = 'ABCDEFGHIJKLMNOPRSTUV';
+const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const PASSWORD_DECK = 60;
 
 const randomSide = (): Side => (Math.random() < 0.5 ? 0 : 1);
-const randomLetter = () => ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
+/** Deux lettres différentes, comme dans le Petit Bac classique. */
+const randomLetters = () => shuffle(ALPHABET.split('')).slice(0, 2);
 
 /** Réponses secrètes transmises par l'écran « Tu préfères » quand on passe en caméra en cours de partie. */
 function parseSecret(raw: string | undefined): Secret | null {
@@ -171,7 +172,7 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
 
   // Scores à deux (Petit Bac) ou en équipe (Mot de passe : trouvés / passés)
   const [scores, setScores] = useState<[number, number]>([0, 0]);
-  const [bac, setBac] = useState(() => ({ theme: getRandomTheme(i18n.language), letter: randomLetter() }));
+  const [bac, setBac] = useState(() => ({ theme: getRandomTheme(i18n.language), letters: randomLetters() }));
 
   // Animations : entrée de chaque carte, côté choisi, verdict
   const [cardAnim] = useState(() => new Animated.Value(1));
@@ -296,7 +297,7 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
       case 'scattergories':
         // Le côté touché marque le point de la manche
         point(side);
-        setBac({ theme: getRandomTheme(i18n.language), letter: randomLetter() });
+        setBac({ theme: getRandomTheme(i18n.language), letters: randomLetters() });
         popCard();
     }
   };
@@ -319,7 +320,7 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
   const sidesBottom = insets.bottom + 64;
 
   // Contenu de la carte du haut, selon le jeu
-  const top = ((): { kicker: string; text: string; sub?: string; score?: string } => {
+  const top = ((): { kicker: string; text: string; sub?: string; score?: string; letters?: string[] } => {
     switch (mode) {
       case 'wouldyourather':
         return {
@@ -346,7 +347,7 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
           score: t('filter.passwordScore', { count: scores[0] }),
         };
       case 'scattergories':
-        return { kicker: t('filter.kickers.scattergories'), text: bac.theme, sub: t('filter.bacLetter', { letter: bac.letter }) };
+        return { kicker: t('filter.kickers.scattergories'), text: bac.theme, letters: bac.letters };
       default:
         return { kicker: t('filter.kickers.whoofus'), text: deck[index] };
     }
@@ -482,6 +483,13 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
             <Animated.View style={[styles.card, cardStyle]}>
               <Text style={[styles.cardText, mode === 'password' && styles.cardWord]}>{top.text}</Text>
               {top.sub && <Text style={styles.cardSub}>{top.sub}</Text>}
+              {top.letters && (
+                <View style={styles.letters}>
+                  {top.letters.map((letter, i) => (
+                    <Text key={i} style={[styles.letter, { backgroundColor: SIDE_COLORS[i] }]}>{letter}</Text>
+                  ))}
+                </View>
+              )}
             </Animated.View>
           </Movable>
 
@@ -583,6 +591,11 @@ const styles = StyleSheet.create({
   },
   cardText: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 26, lineHeight: 30, textAlign: 'center' },
   cardWord: { fontSize: 40, lineHeight: 46, letterSpacing: -0.5 },
+  letters: { flexDirection: 'row', justifyContent: 'center', gap: 10, marginTop: 4 },
+  letter: {
+    overflow: 'hidden', width: 52, height: 52, lineHeight: 52, borderRadius: 14, textAlign: 'center',
+    color: colors.bg, fontFamily: fonts.extrabold, fontSize: 30,
+  },
   cardSub: { color: colors.yellow, fontFamily: fonts.extrabold, fontSize: 15, textAlign: 'center' },
 
   verdictWrap: { position: 'absolute', left: 0, right: 0, top: '42%', alignItems: 'center' },

@@ -230,10 +230,9 @@
     "passwordSub": "{{guesser}}, don't look!",
     "passwordScore_one": "{{count}} found",
     "passwordScore_other": "{{count}} found",
-    "bacLetter": "Letter {{letter}}",
     "found": "Got it",
     "skip": "Skip",
     "hintPassword": "Left: got it · Right: skip",
-    "hintBac": "Tap the side of whoever finds one first"
+    "hintBac": "A word from the theme containing both letters. Tap the side of whoever finds one first"
   }
 }
