@@ -118,5 +118,557 @@
   [
     "Une surprise organisée par moi",
     "Choisir toi-même le programme"
+  ],
+  [
+    "Voyager dans le passé",
+    "Voyager dans le futur"
+  ],
+  [
+    "Ne plus jamais avoir froid",
+    "Ne plus jamais avoir chaud"
+  ],
+  [
+    "Vivre à la montagne",
+    "Vivre au bord de la mer"
+  ],
+  [
+    "Avoir un chien",
+    "Avoir un chat"
+  ],
+  [
+    "Un road trip en van",
+    "Un séjour dans un hôtel de luxe"
+  ],
+  [
+    "Petit-déjeuner au lit",
+    "Dîner aux chandelles"
+  ],
+  [
+    "Pouvoir voler",
+    "Être invisible"
+  ],
+  [
+    "Lire dans les pensées",
+    "Voir l'avenir"
+  ],
+  [
+    "Ne plus jamais utiliser les réseaux sociaux",
+    "Ne plus jamais regarder de séries"
+  ],
+  [
+    "Une soirée karaoké",
+    "Une soirée jeux de société"
+  ],
+  [
+    "Parler toutes les langues",
+    "Jouer de tous les instruments"
+  ],
+  [
+    "Vivre sans musique",
+    "Vivre sans films"
+  ],
+  [
+    "Être célèbre",
+    "Être riche dans l'anonymat"
+  ],
+  [
+    "Un week-end à Paris",
+    "Un week-end à New York"
+  ],
+  [
+    "Faire du camping",
+    "Dormir dans une cabane dans les arbres"
+  ],
+  [
+    "Ne manger que salé",
+    "Ne manger que sucré"
+  ],
+  [
+    "Pizza à vie",
+    "Sushis à vie"
+  ],
+  [
+    "Revivre ton meilleur jour",
+    "Découvrir un jour encore meilleur"
+  ],
+  [
+    "Être toujours en avance",
+    "Être toujours en retard"
+  ],
+  [
+    "Un câlin de 10 minutes",
+    "Dix bisous rapides"
+  ],
+  [
+    "Avoir un majordome",
+    "Avoir un chef cuisinier"
+  ],
+  [
+    "Perdre ton téléphone",
+    "Perdre ton portefeuille"
+  ],
+  [
+    "Une maison à la campagne",
+    "Un appartement en ville"
+  ],
+  [
+    "Chanter devant 1000 personnes",
+    "Danser devant 1000 personnes"
+  ],
+  [
+    "Ne jamais plus pouvoir mentir",
+    "Ne jamais plus entendre la vérité"
+  ],
+  [
+    "Remonter le temps de 5 minutes",
+    "Mettre le temps en pause 5 minutes"
+  ],
+  [
+    "Être un super-héros",
+    "Être un sorcier"
+  ],
+  [
+    "Vivre dans Harry Potter",
+    "Vivre dans Star Wars"
+  ],
+  [
+    "Un tatouage assorti",
+    "Une bague assortie"
+  ],
+  [
+    "Voyager tout le temps",
+    "Avoir un cocon parfait à la maison"
+  ],
+  [
+    "Une semaine sans se voir",
+    "Une semaine sans téléphone ensemble"
+  ],
+  [
+    "Se marier sur une plage",
+    "Se marier dans un château"
+  ],
+  [
+    "Un mariage énorme",
+    "Un mariage en tout petit comité"
+  ],
+  [
+    "Faire un saut en parachute",
+    "Faire de la plongée avec des requins"
+  ],
+  [
+    "Savoir cuisiner comme un chef",
+    "Savoir danser comme un pro"
+  ],
+  [
+    "Une soirée en boîte",
+    "Une soirée sous un plaid"
+  ],
+  [
+    "Recevoir une lettre d'amour",
+    "Recevoir un bouquet surprise"
+  ],
+  [
+    "Vivre 200 ans",
+    "Vivre 5 vies différentes de 40 ans"
+  ],
+  [
+    "Avoir toujours raison",
+    "Toujours trouver le mot pour rire"
+  ],
+  [
+    "Ne plus jamais dormir",
+    "Ne plus jamais manger"
+  ],
+  [
+    "Être coincé dans un ascenseur avec ton ex",
+    "Avec ton boss"
+  ],
+  [
+    "Chaque chanson que tu entends te reste en tête",
+    "Tu oublies chaque chanson après l'avoir entendue"
+  ],
+  [
+    "Pouvoir parler aux animaux",
+    "Pouvoir respirer sous l'eau"
+  ],
+  [
+    "Avoir un dragon",
+    "Être un dragon"
+  ],
+  [
+    "Tout savoir sur l'univers",
+    "Tout savoir sur ton couple"
+  ],
+  [
+    "Retrouver les vidéos de ton enfance",
+    "Voir une vidéo de toi dans 30 ans"
+  ],
+  [
+    "Que ta vie soit un film d'action",
+    "Une comédie romantique"
+  ],
+  [
+    "Être pote avec ton idole",
+    "Rencontrer ton idole une seule fois"
+  ],
+  [
+    "Un dîner avec un président",
+    "Un dîner avec une rock star"
+  ],
+  [
+    "Dormir dans un igloo",
+    "Dormir dans le désert"
+  ],
+  [
+    "Prendre une douche glacée",
+    "Ne pas prendre de douche pendant 3 jours"
+  ],
+  [
+    "Avoir le hoquet toute une journée",
+    "Éternuer toutes les 5 minutes"
+  ],
+  [
+    "Toujours dire ce que tu penses",
+    "Ne jamais rien dire"
+  ],
+  [
+    "Avoir un bouton pause pour ta vie",
+    "Un bouton rembobiner"
+  ],
+  [
+    "Que l'autre lise ton journal intime",
+    "Ton historique de recherche"
+  ],
+  [
+    "Te réveiller à 5 h tous les jours",
+    "Te coucher à 21 h tous les jours"
+  ],
+  [
+    "Que l'autre choisisse tes vêtements pendant un mois",
+    "Ton repas pendant un mois"
+  ],
+  [
+    "Être le meilleur ami de l'autre",
+    "Être son âme sœur"
+  ],
+  [
+    "Que l'autre chante tout le temps",
+    "Parle en rimes tout le temps"
+  ],
+  [
+    "Un baiser sous la pluie",
+    "Un baiser sous les étoiles"
+  ],
+  [
+    "Recréer votre premier rendez-vous",
+    "Vivre un tout nouveau premier rendez-vous"
+  ],
+  [
+    "Partir en vacances avec ta belle-famille",
+    "Que ta belle-famille vienne chez vous une semaine"
+  ],
+  [
+    "Avoir des jumeaux",
+    "Avoir un seul enfant"
+  ],
+  [
+    "Un salon rempli de plantes",
+    "Un salon rempli de livres"
+  ],
+  [
+    "Un mois sans chocolat",
+    "Un mois sans fromage"
+  ],
+  [
+    "Une semaine à Bali",
+    "Une semaine en Laponie"
+  ],
+  [
+    "Ne plus jamais prendre l'avion",
+    "Ne plus jamais prendre la voiture"
+  ],
+  [
+    "Vivre dans une maison hantée",
+    "Vivre dans une maison sans fenêtres"
+  ],
+  [
+    "Avoir des cheveux qui changent de couleur selon ton humeur",
+    "Des yeux qui changent de couleur"
+  ],
+  [
+    "Parler à ton toi de 10 ans",
+    "À ton toi de 80 ans"
+  ],
+  [
+    "Gagner un Oscar",
+    "Gagner une médaille d'or"
+  ],
+  [
+    "Être le plus drôle de la soirée",
+    "Le plus beau de la soirée"
+  ],
+  [
+    "Faire le tour du monde en bateau",
+    "En train"
+  ],
+  [
+    "Ne regarder que des dessins animés",
+    "Que des documentaires"
+  ],
+  [
+    "Que vos disputes soient en chanson",
+    "Que vos disputes soient en mime"
+  ],
+  [
+    "Être téléporté où tu veux une fois par jour",
+    "Pouvoir t'arrêter de vieillir"
+  ],
+  [
+    "Habiter dans un phare",
+    "Habiter dans un moulin"
+  ],
+  [
+    "Un chat qui parle",
+    "Un chien qui chante"
+  ],
+  [
+    "Se faire masser une heure",
+    "Une heure de sieste en plus"
+  ],
+  [
+    "Tout faire ensemble",
+    "Garder chacun ses activités"
+  ],
+  [
+    "Une déclaration en public",
+    "Une déclaration en privé"
+  ],
+  [
+    "Que l'autre te fasse rire",
+    "Que l'autre te fasse rêver"
+  ],
+  [
+    "Un weekend surprise organisé par l'autre",
+    "Un weekend que tu organises toi-même"
+  ],
+  [
+    "Une soirée film d'horreur",
+    "Une soirée comédie"
+  ],
+  [
+    "Un pique-nique au parc",
+    "Un brunch en terrasse"
+  ],
+  [
+    "Avoir un super souvenir sans photo",
+    "Une super photo sans souvenir"
+  ],
+  [
+    "Retourner au lycée une journée",
+    "Aller travailler à la place de l'autre une journée"
+  ],
+  [
+    "Connaître la date de ta mort",
+    "La cause de ta mort"
+  ],
+  [
+    "Une vie calme et heureuse",
+    "Une vie folle et passionnante"
+  ],
+  [
+    "Ne plus jamais pouvoir boire de café",
+    "Ne plus jamais pouvoir boire d'alcool"
+  ],
+  [
+    "Que ta voix soit celle d'un dessin animé",
+    "Que ton rire soit celui d'un dauphin"
+  ],
+  [
+    "Pouvoir changer une décision du passé",
+    "Connaître la bonne décision pour l'avenir"
+  ],
+  [
+    "Que l'autre écrive une chanson sur toi",
+    "Qu'il peigne ton portrait"
+  ],
+  [
+    "Vivre sans chauffage",
+    "Vivre sans eau chaude"
+  ],
+  [
+    "Être coincé sur une île avec l'autre",
+    "Être coincé sur une île avec ton meilleur ami"
+  ],
+  [
+    "Dormir avec des chaussettes",
+    "Dormir avec un bonnet"
+  ],
+  [
+    "Toujours avoir faim",
+    "Toujours avoir sommeil"
+  ],
+  [
+    "Des vacances au ski",
+    "Des vacances au soleil"
+  ],
+  [
+    "Visiter l'espace",
+    "Explorer les fonds marins"
+  ],
+  [
+    "Avoir le pouvoir de guérir",
+    "Le pouvoir de rendre les gens heureux"
+  ],
+  [
+    "Que tout le monde entende tes pensées une heure par jour",
+    "Dire tout haut ce que tu penses pendant une heure"
+  ],
+  [
+    "Changer de prénom",
+    "Changer de nom de famille"
+  ],
+  [
+    "Un salon avec jacuzzi",
+    "Une chambre avec ciel étoilé"
+  ],
+  [
+    "Recevoir 1000 € maintenant",
+    "10 000 € dans 5 ans"
+  ],
+  [
+    "Que l'autre se souvienne de tout",
+    "Que l'autre oublie toutes vos disputes"
+  ],
+  [
+    "Passer une journée dans la peau de l'autre",
+    "Lire ses pensées une journée"
+  ],
+  [
+    "Ne plus jamais avoir de mal de tête",
+    "Ne plus jamais avoir de rhume"
+  ],
+  [
+    "Un concert de ton artiste préféré",
+    "Un match de ton équipe préférée"
+  ],
+  [
+    "Une maison écologique dans la forêt",
+    "Un loft au sommet d'une tour"
+  ],
+  [
+    "Être un génie",
+    "Être un athlète"
+  ],
+  [
+    "Pouvoir dormir n'importe où",
+    "Pouvoir manger n'importe quoi sans grossir"
+  ],
+  [
+    "Une vie sans réveil",
+    "Une vie sans embouteillages"
+  ],
+  [
+    "Faire la vaisselle à vie",
+    "Faire le linge à vie"
+  ],
+  [
+    "Que tous les jours soient un samedi",
+    "Que tous les jours soient ton anniversaire"
+  ],
+  [
+    "Avoir un robot qui fait le ménage",
+    "Un robot qui cuisine"
+  ],
+  [
+    "Une soirée pyjama",
+    "Une soirée chic"
+  ],
+  [
+    "Être surpris par l'autre",
+    "Surprendre l'autre"
+  ],
+  [
+    "Revoir un film culte pour la première fois",
+    "Relire un livre culte pour la première fois"
+  ],
+  [
+    "Être en couple avec un humoriste",
+    "Avec un chanteur"
+  ],
+  [
+    "Partir en week-end sans rien prévoir",
+    "Avoir tout planifié à la minute"
+  ],
+  [
+    "Écrire un livre",
+    "Réaliser un film"
+  ],
+  [
+    "Aller à un festival",
+    "Aller à un spa"
+  ],
+  [
+    "Que vos enfants te ressemblent",
+    "Qu'ils ressemblent à l'autre"
+  ],
+  [
+    "Un baiser de cinéma",
+    "Un fou rire de cinq minutes"
+  ],
+  [
+    "Une maison avec piscine",
+    "Une maison avec un immense jardin"
+  ],
+  [
+    "Vivre dans un pays chaud",
+    "Vivre dans un pays froid"
+  ],
+  [
+    "Abandonner ton téléphone une semaine",
+    "Abandonner le sucre une semaine"
+  ],
+  [
+    "Revivre ton premier baiser",
+    "Ton premier « je t'aime »"
+  ],
+  [
+    "Que l'autre soit trop jaloux",
+    "Pas jaloux du tout"
+  ],
+  [
+    "Avoir une machine à remonter le temps",
+    "Une porte vers n'importe où"
+  ],
+  [
+    "Que le soleil ne se couche jamais",
+    "Qu'il fasse toujours nuit"
+  ],
+  [
+    "Pouvoir faire pousser des plantes en un instant",
+    "Contrôler la météo"
+  ],
+  [
+    "Vivre dans les années 80",
+    "Vivre dans 100 ans"
+  ],
+  [
+    "Être le meilleur à un jeu vidéo",
+    "Le meilleur à un sport"
+  ],
+  [
+    "Que tes amis adorent l'autre",
+    "Que ta famille adore l'autre"
+  ],
+  [
+    "Une déclaration d'amour en chanson",
+    "En poème"
+  ],
+  [
+    "Aller à Disneyland",
+    "Faire un safari"
+  ],
+  [
+    "Un dîner dans le noir total",
+    "Un dîner à 200 mètres de haut"
   ]
 ]

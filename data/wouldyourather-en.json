@@ -118,5 +118,553 @@
   [
     "A surprise planned by me",
     "Pick the plan yourself"
+  ],
+  [
+    "Travel to the past",
+    "Travel to the future"
+  ],
+  [
+    "Never feel cold again",
+    "Never feel hot again"
+  ],
+  [
+    "Live in the mountains",
+    "Live by the sea"
+  ],
+  [
+    "Have a dog",
+    "Have a cat"
+  ],
+  [
+    "A road trip in a van",
+    "A stay in a luxury hotel"
+  ],
+  [
+    "Breakfast in bed",
+    "A candlelit dinner"
+  ],
+  [
+    "Read minds",
+    "See the future"
+  ],
+  [
+    "Never use social media again",
+    "Never watch TV shows again"
+  ],
+  [
+    "A karaoke night",
+    "A board game night"
+  ],
+  [
+    "Speak every language",
+    "Play every instrument"
+  ],
+  [
+    "Live without music",
+    "Live without movies"
+  ],
+  [
+    "Be famous",
+    "Be rich and anonymous"
+  ],
+  [
+    "A weekend in Paris",
+    "A weekend in New York"
+  ],
+  [
+    "Go camping",
+    "Sleep in a treehouse"
+  ],
+  [
+    "Only eat savory food",
+    "Only eat sweet food"
+  ],
+  [
+    "Pizza forever",
+    "Sushi forever"
+  ],
+  [
+    "Relive your best day",
+    "Discover an even better day"
+  ],
+  [
+    "Always be early",
+    "Always be late"
+  ],
+  [
+    "A 10-minute hug",
+    "Ten quick kisses"
+  ],
+  [
+    "Have a butler",
+    "Have a private chef"
+  ],
+  [
+    "Lose your phone",
+    "Lose your wallet"
+  ],
+  [
+    "A house in the countryside",
+    "An apartment in the city"
+  ],
+  [
+    "Sing in front of 1,000 people",
+    "Dance in front of 1,000 people"
+  ],
+  [
+    "Never be able to lie",
+    "Never hear the truth again"
+  ],
+  [
+    "Rewind time by 5 minutes",
+    "Pause time for 5 minutes"
+  ],
+  [
+    "Be a superhero",
+    "Be a wizard"
+  ],
+  [
+    "Live in Harry Potter",
+    "Live in Star Wars"
+  ],
+  [
+    "A matching tattoo",
+    "A matching ring"
+  ],
+  [
+    "Travel all the time",
+    "Have a perfect cozy home"
+  ],
+  [
+    "A week apart",
+    "A week together without phones"
+  ],
+  [
+    "Get married on a beach",
+    "Get married in a castle"
+  ],
+  [
+    "A huge wedding",
+    "A tiny wedding"
+  ],
+  [
+    "Go skydiving",
+    "Dive with sharks"
+  ],
+  [
+    "Cook like a chef",
+    "Dance like a pro"
+  ],
+  [
+    "A night out clubbing",
+    "A night under a blanket"
+  ],
+  [
+    "Get a love letter",
+    "Get a surprise bouquet"
+  ],
+  [
+    "Live 200 years",
+    "Live 5 different 40-year lives"
+  ],
+  [
+    "Always be right",
+    "Always be the funny one"
+  ],
+  [
+    "Never sleep again",
+    "Never eat again"
+  ],
+  [
+    "Be stuck in an elevator with your ex",
+    "With your boss"
+  ],
+  [
+    "Every song gets stuck in your head",
+    "You forget every song right after"
+  ],
+  [
+    "Talk to animals",
+    "Breathe underwater"
+  ],
+  [
+    "Have a dragon",
+    "Be a dragon"
+  ],
+  [
+    "Know everything about the universe",
+    "Know everything about your relationship"
+  ],
+  [
+    "Find videos of your childhood",
+    "See a video of yourself in 30 years"
+  ],
+  [
+    "Your life is an action movie",
+    "A romantic comedy"
+  ],
+  [
+    "Be friends with your idol",
+    "Meet your idol once"
+  ],
+  [
+    "Dinner with a president",
+    "Dinner with a rock star"
+  ],
+  [
+    "Sleep in an igloo",
+    "Sleep in the desert"
+  ],
+  [
+    "Take an ice-cold shower",
+    "Skip showering for 3 days"
+  ],
+  [
+    "Have hiccups for a whole day",
+    "Sneeze every 5 minutes"
+  ],
+  [
+    "Always say what you think",
+    "Never say anything"
+  ],
+  [
+    "A pause button for your life",
+    "A rewind button"
+  ],
+  [
+    "Your partner reads your diary",
+    "Your search history"
+  ],
+  [
+    "Wake up at 5 a.m. every day",
+    "Go to bed at 9 p.m. every day"
+  ],
+  [
+    "Your partner picks your clothes for a month",
+    "Your meals for a month"
+  ],
+  [
+    "Be your partner's best friend",
+    "Be their soulmate"
+  ],
+  [
+    "Your partner always sings",
+    "Always speaks in rhymes"
+  ],
+  [
+    "A kiss in the rain",
+    "A kiss under the stars"
+  ],
+  [
+    "Recreate your first date",
+    "Have a brand-new first date"
+  ],
+  [
+    "Go on vacation with your in-laws",
+    "Host your in-laws for a week"
+  ],
+  [
+    "Have twins",
+    "Have one child"
+  ],
+  [
+    "A living room full of plants",
+    "A living room full of books"
+  ],
+  [
+    "A month without chocolate",
+    "A month without cheese"
+  ],
+  [
+    "A week in Bali",
+    "A week in Lapland"
+  ],
+  [
+    "Never fly again",
+    "Never drive again"
+  ],
+  [
+    "Live in a haunted house",
+    "Live in a house without windows"
+  ],
+  [
+    "Hair that changes color with your mood",
+    "Eyes that change color"
+  ],
+  [
+    "Talk to your 10-year-old self",
+    "Your 80-year-old self"
+  ],
+  [
+    "Win an Oscar",
+    "Win a gold medal"
+  ],
+  [
+    "Be the funniest at the party",
+    "The best-looking at the party"
+  ],
+  [
+    "Go around the world by boat",
+    "By train"
+  ],
+  [
+    "Only watch cartoons",
+    "Only documentaries"
+  ],
+  [
+    "Your arguments are sung",
+    "Your arguments are mimed"
+  ],
+  [
+    "Teleport anywhere once a day",
+    "Stop aging"
+  ],
+  [
+    "Live in a lighthouse",
+    "Live in a windmill"
+  ],
+  [
+    "A talking cat",
+    "A singing dog"
+  ],
+  [
+    "A one-hour massage",
+    "An extra hour of napping"
+  ],
+  [
+    "Do everything together",
+    "Each keep your own hobbies"
+  ],
+  [
+    "A public declaration",
+    "A private declaration"
+  ],
+  [
+    "Your partner makes you laugh",
+    "Your partner makes you dream"
+  ],
+  [
+    "A surprise weekend planned by your partner",
+    "A weekend you plan yourself"
+  ],
+  [
+    "A horror movie night",
+    "A comedy night"
+  ],
+  [
+    "A picnic in the park",
+    "A brunch on a terrace"
+  ],
+  [
+    "A great memory with no photo",
+    "A great photo with no memory"
+  ],
+  [
+    "Go back to high school for a day",
+    "Go to your partner's job for a day"
+  ],
+  [
+    "Know the date of your death",
+    "The cause of your death"
+  ],
+  [
+    "A calm, happy life",
+    "A wild, exciting life"
+  ],
+  [
+    "Never drink coffee again",
+    "Never drink alcohol again"
+  ],
+  [
+    "Your voice sounds like a cartoon",
+    "Your laugh sounds like a dolphin"
+  ],
+  [
+    "Change one past decision",
+    "Know the right future decision"
+  ],
+  [
+    "Your partner writes a song about you",
+    "Paints your portrait"
+  ],
+  [
+    "Live without heating",
+    "Live without hot water"
+  ],
+  [
+    "Be stuck on an island with your partner",
+    "With your best friend"
+  ],
+  [
+    "Sleep in socks",
+    "Sleep in a beanie"
+  ],
+  [
+    "Always be hungry",
+    "Always be sleepy"
+  ],
+  [
+    "A ski holiday",
+    "A sunny holiday"
+  ],
+  [
+    "Visit space",
+    "Explore the deep sea"
+  ],
+  [
+    "The power to heal",
+    "The power to make people happy"
+  ],
+  [
+    "Everyone hears your thoughts one hour a day",
+    "You say every thought out loud for an hour"
+  ],
+  [
+    "Change your first name",
+    "Change your last name"
+  ],
+  [
+    "A living room with a jacuzzi",
+    "A bedroom with a starry ceiling"
+  ],
+  [
+    "Get €1,000 now",
+    "€10,000 in 5 years"
+  ],
+  [
+    "Your partner remembers everything",
+    "Forgets all your arguments"
+  ],
+  [
+    "Spend a day in your partner's body",
+    "Read their mind for a day"
+  ],
+  [
+    "Never have a headache again",
+    "Never catch a cold again"
+  ],
+  [
+    "A concert by your favorite artist",
+    "A game of your favorite team"
+  ],
+  [
+    "An eco-house in the forest",
+    "A penthouse loft"
+  ],
+  [
+    "Be a genius",
+    "Be an athlete"
+  ],
+  [
+    "Sleep anywhere",
+    "Eat anything without gaining weight"
+  ],
+  [
+    "A life without alarms",
+    "A life without traffic jams"
+  ],
+  [
+    "Do the dishes forever",
+    "Do the laundry forever"
+  ],
+  [
+    "Every day is a Saturday",
+    "Every day is your birthday"
+  ],
+  [
+    "A robot that cleans",
+    "A robot that cooks"
+  ],
+  [
+    "A pajama night",
+    "A fancy night"
+  ],
+  [
+    "Be surprised by your partner",
+    "Surprise your partner"
+  ],
+  [
+    "Watch a cult movie for the first time again",
+    "Read a cult book for the first time again"
+  ],
+  [
+    "Date a comedian",
+    "Date a singer"
+  ],
+  [
+    "A weekend with no plans",
+    "Everything planned to the minute"
+  ],
+  [
+    "Write a book",
+    "Direct a movie"
+  ],
+  [
+    "Go to a festival",
+    "Go to a spa"
+  ],
+  [
+    "Your kids look like you",
+    "Look like your partner"
+  ],
+  [
+    "A movie kiss",
+    "A five-minute laughing fit"
+  ],
+  [
+    "A house with a pool",
+    "A house with a huge garden"
+  ],
+  [
+    "Live in a hot country",
+    "Live in a cold country"
+  ],
+  [
+    "Give up your phone for a week",
+    "Give up sugar for a week"
+  ],
+  [
+    "Relive your first kiss",
+    "Your first \"I love you\""
+  ],
+  [
+    "Your partner is too jealous",
+    "Not jealous at all"
+  ],
+  [
+    "A time machine",
+    "A door to anywhere"
+  ],
+  [
+    "The sun never sets",
+    "It's always night"
+  ],
+  [
+    "Grow plants instantly",
+    "Control the weather"
+  ],
+  [
+    "Live in the 80s",
+    "Live 100 years from now"
+  ],
+  [
+    "Be the best at a video game",
+    "The best at a sport"
+  ],
+  [
+    "Your friends love your partner",
+    "Your family loves your partner"
+  ],
+  [
+    "A love declaration in song",
+    "In a poem"
+  ],
+  [
+    "Go to Disneyland",
+    "Go on a safari"
+  ],
+  [
+    "Dinner in total darkness",
+    "Dinner 200 meters up"
   ]
 ]
