@@ -1,8 +1,7 @@
 [
   {"id": "password", "mark": "Aa", "tint": "pink", "available": true},
   {"id": "whoofus", "mark": "?", "tint": "yellow", "available": true, "isNew": true, "filmable": true},
-  {"id": "questions", "mark": "♡", "tint": "lilac", "available": true, "isNew": true, "filmable": true},
+  {"id": "truthordare", "mark": "?!", "tint": "pink", "available": true, "isNew": true, "filmable": true},
   {"id": "scattergories", "mark": "B", "tint": "cyan", "available": true},
-  {"id": "wouldyourather", "mark": "⇄", "tint": "mint", "available": true, "isNew": true, "filmable": true},
-  {"id": "defis", "mark": "!", "tint": "peach", "available": true, "isNew": true}
+  {"id": "wouldyourather", "mark": "⇄", "tint": "mint", "available": true, "isNew": true, "filmable": true}
 ]

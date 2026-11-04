@@ -87,33 +87,6 @@
       "point": "+1 point",
       "whoWon": "Who found one first?"
     },
-    "questions": {
-      "title": "Couple Questions",
-      "description": "Questions to discover each other, in 3 levels.",
-      "tagline": "Get to know each other",
-      "levels": {
-        "light": "Light",
-        "deep": "Deep",
-        "spicy": "Spicy"
-      },
-      "number": "Question {{count}}",
-      "tapForNext": "Tap the card for the next one",
-      "rule": "Take turns answering. No judgment, just curiosity.",
-      "toStory": "Story",
-      "next": "Next"
-    },
-    "defis": {
-      "title": "Duo challenges",
-      "description": "Take turns doing mini-dares, 1 point per dare done.",
-      "tagline": "Dares and mini-challenges",
-      "results": "Results",
-      "forPlayer": "Dare for {{player}}",
-      "done": "Dare done",
-      "pass": "Joker (skip)",
-      "winner": "{{player}} wins!",
-      "tie": "It's a tie!",
-      "playAgain": "Play again"
-    },
     "whoofus": {
       "title": "Who of us?",
       "tagline": "Point at each other",
@@ -158,6 +131,34 @@
       "guessTag": "{{name}}'s guess",
       "resultKicker": "{{guesser}} knows {{answerer}}",
       "swapRoles": "{{name}}'s turn to answer"
+    },
+    "truthordare": {
+      "title": "Truth or Dare",
+      "tagline": "Normal, couple or adult ++",
+      "description": "Take turns: truth or dare, from sweet to spicy.",
+      "results": "Results",
+      "levels": {
+        "normal": "Normal",
+        "couple": "Couple",
+        "adult": "Adult ++"
+      },
+      "adultTitle": "Adults only",
+      "adultBody": "This level has flirty truths and dares. It's for 18+ only and isn't available in camera filter mode.",
+      "adultCancel": "Cancel",
+      "adultConfirm": "I'm over 18",
+      "turnSuffix": ", truth or dare?",
+      "truth": "Truth",
+      "dare": "Dare",
+      "truthFor": "Truth for {{player}}",
+      "dareFor": "Dare for {{player}}",
+      "done": "Done!",
+      "joker_one": "Joker ({{count}} left)",
+      "joker_other": "Joker ({{count}} left)",
+      "tie": "It's a tie!",
+      "winner": "{{player}} wins!",
+      "playAgain": "Play again",
+      "filterSpin": "Who's playing?",
+      "filterAsk": "{{player}}, truth or dare?"
     }
   },
   "names": {
@@ -202,7 +203,7 @@
     "kickers": {
       "whoofus": "Who of us?",
       "wouldyourather": "Would you rather",
-      "questions": "Couple question"
+      "truthordare": "Truth or dare"
     },
     "or": "OR",
     "swap": "Swap sides",
@@ -214,6 +215,8 @@
     "filmingCancel": "Cancel",
     "filmingGo": "Let's go",
     "hintGuess": "Tap the option you bet on",
-    "hintRestart": "Tap the screen to play again"
+    "hintRestart": "Tap the screen to play again",
+    "hintSpinTod": "Tap the screen to pick who plays",
+    "hintTod": "Truth on the left, dare on the right"
   }
 }

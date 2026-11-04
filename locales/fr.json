@@ -86,33 +86,6 @@
       "point": "+1 point",
       "whoWon": "Qui a trouvé en premier ?"
     },
-    "questions": {
-      "title": "Questions Couples",
-      "description": "Des questions pour se découvrir, en 3 niveaux.",
-      "tagline": "Pour mieux se connaître",
-      "levels": {
-        "light": "Léger",
-        "deep": "Profond",
-        "spicy": "Épicé"
-      },
-      "number": "Question {{count}}",
-      "tapForNext": "Touche la carte pour la suivante",
-      "rule": "Chacun répond à son tour. Pas de jugement, que de la curiosité.",
-      "toStory": "Story",
-      "next": "Suivante"
-    },
-    "defis": {
-      "title": "Défis à deux",
-      "description": "Des mini-défis à tour de rôle, 1 point par défi réussi.",
-      "tagline": "Gages et mini-défis",
-      "results": "Résultats",
-      "forPlayer": "Défi pour {{player}}",
-      "done": "Défi réussi",
-      "pass": "Joker (passer)",
-      "winner": "{{player}} gagne !",
-      "tie": "Égalité !",
-      "playAgain": "Rejouer"
-    },
     "whoofus": {
       "title": "Qui de nous deux ?",
       "tagline": "Pointez-vous du doigt",
@@ -157,6 +130,34 @@
       "guessTag": "Pari de {{name}}",
       "resultKicker": "{{guesser}} connaît {{answerer}} à",
       "swapRoles": "Au tour de {{name}} de répondre"
+    },
+    "truthordare": {
+      "title": "Action ou Vérité",
+      "tagline": "Normal, couple ou adulte ++",
+      "description": "Chacun son tour : action ou vérité, du plus sage au plus coquin.",
+      "results": "Résultats",
+      "levels": {
+        "normal": "Normal",
+        "couple": "Couple",
+        "adult": "Adulte ++"
+      },
+      "adultTitle": "Réservé aux adultes",
+      "adultBody": "Ce niveau contient des questions et actions coquines. Il est réservé aux plus de 18 ans et n'est pas disponible en mode filtre caméra.",
+      "adultCancel": "Annuler",
+      "adultConfirm": "J'ai plus de 18 ans",
+      "turnSuffix": ", action ou vérité ?",
+      "truth": "Vérité",
+      "dare": "Action",
+      "truthFor": "Vérité pour {{player}}",
+      "dareFor": "Action pour {{player}}",
+      "done": "Fait !",
+      "joker_one": "Joker ({{count}} restant)",
+      "joker_other": "Joker ({{count}} restants)",
+      "tie": "Égalité parfaite !",
+      "winner": "{{player}} a gagné !",
+      "playAgain": "Rejouer",
+      "filterSpin": "Qui va jouer ?",
+      "filterAsk": "{{player}}, action ou vérité ?"
     }
   },
   "names": {
@@ -201,7 +202,7 @@
     "kickers": {
       "whoofus": "Qui de nous deux ?",
       "wouldyourather": "Tu préfères",
-      "questions": "Question couple"
+      "truthordare": "Action ou vérité"
     },
     "or": "OU",
     "swap": "Inverser les côtés",
@@ -213,6 +214,8 @@
     "filmingCancel": "Annuler",
     "filmingGo": "C'est parti",
     "hintGuess": "Touche l'option que tu paries",
-    "hintRestart": "Touche l'écran pour rejouer"
+    "hintRestart": "Touche l'écran pour rejouer",
+    "hintSpinTod": "Touche l'écran pour tirer qui joue",
+    "hintTod": "Vérité à gauche, action à droite"
   }
 }

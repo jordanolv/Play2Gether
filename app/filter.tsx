@@ -12,16 +12,16 @@ import { Screen } from '@/components/ui/Screen';
 import { WithCoupleNames } from '@/components/ui/WithCoupleNames';
 import { Secret, SecretRound, Side, otherSide } from '@/components/wouldyourather/SecretRound';
 import { colors, fonts, radius, spacing } from '@/constants/theme';
-import questionsEn from '@/data/questions-en.json';
-import questionsFr from '@/data/questions-fr.json';
 import whoEn from '@/data/whoofus-en.json';
 import whoFr from '@/data/whoofus-fr.json';
 import { CoupleNames } from '@/utils/couple';
 import { byLanguage, shuffle } from '@/utils/random';
 import { updateDailyStreak } from '@/utils/streak';
+import { TOD_FILTER_LEVELS, TOD_KIND_COLORS, TOD_LEVEL_COLORS, TodKind, TodLevel, useTodDecks } from '@/utils/truthordare';
 
-type Mode = 'whoofus' | 'wouldyourather' | 'questions';
-const MODES: Mode[] = ['whoofus', 'wouldyourather', 'questions'];
+type Mode = 'whoofus' | 'wouldyourather' | 'truthordare';
+const MODES: Mode[] = ['whoofus', 'wouldyourather', 'truthordare'];
+const TOD_KINDS: TodKind[] = ['truth', 'dare'];
 const isMode = (value: unknown): value is Mode => MODES.includes(value as Mode);
 const SIDE_COLORS = [colors.pink, colors.cyan] as const;
 /** Délais successifs de la roulette : elle accélère puis ralentit avant de s'arrêter. */
@@ -116,8 +116,7 @@ function Filter({ names, mode, secret, onRestart }: FilterProps) {
   const [deck] = useState<(string | string[])[]>(() => {
     if (mode === 'wouldyourather') return secret?.dilemmas ?? [];
     if (mode === 'whoofus') return shuffle(byLanguage(i18n.language, { fr: whoFr, en: whoEn }));
-    const q = byLanguage(i18n.language, { fr: questionsFr, en: questionsEn });
-    return shuffle([...q.light, ...q.deep]);
+    return [];
   });
   const [index, setIndex] = useState(0);
 
@@ -132,6 +131,11 @@ function Filter({ names, mode, secret, onRestart }: FilterProps) {
   const [guess, setGuess] = useState<Side | null>(null);
   const [results, setResults] = useState<boolean[]>([]);
   const [finished, setFinished] = useState(false);
+
+  // « Action ou vérité » : la roulette désigne un joueur, qui choisit ensuite
+  const drawTod = useTodDecks(i18n.language);
+  const [todLevel, setTodLevel] = useState<TodLevel>('couple');
+  const [todCard, setTodCard] = useState<{ kind: TodKind; text: string } | null>(null);
 
   // Animations : entrée de chaque carte, côté choisi, verdict
   const [cardAnim] = useState(() => new Animated.Value(1));
@@ -152,6 +156,7 @@ function Filter({ names, mode, secret, onRestart }: FilterProps) {
     setRolling(false);
     setPicked(false);
     setGuess(null);
+    setTodCard(null);
     pickAnim.setValue(0);
   };
 
@@ -161,7 +166,7 @@ function Filter({ names, mode, secret, onRestart }: FilterProps) {
       setFinished(true);
       updateDailyStreak();
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
-    } else {
+    } else if (deck.length > 0) {
       setIndex((i) => (i + 1) % deck.length);
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
     }
@@ -210,8 +215,14 @@ function Filter({ names, mode, secret, onRestart }: FilterProps) {
       if (finished) onRestart?.();
       else if (guess === null) makeGuess(e.nativeEvent.pageX < width / 2 ? 0 : 1);
       else nextCard();
-    } else if (mode === 'whoofus' && !picked) spin();
-    else nextCard();
+    } else if (mode !== 'truthordare' && mode !== 'whoofus') nextCard();
+    else if (!picked) spin();
+    else if (mode === 'truthordare' && !todCard) {
+      const kind = TOD_KINDS[e.nativeEvent.pageX < width / 2 ? 0 : 1];
+      setTodCard({ kind, text: drawTod(todLevel, kind) });
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
+      popCard();
+    } else nextCard();
   };
 
   const card = deck[index];
@@ -238,6 +249,7 @@ function Filter({ names, mode, secret, onRestart }: FilterProps) {
 
   const hint = (() => {
     if (isWyr) return finished ? t('filter.hintRestart') : guess === null ? t('filter.hintGuess') : t('filter.hintNext');
+    if (mode === 'truthordare') return !picked ? t('filter.hintSpinTod') : !todCard ? t('filter.hintTod') : t('filter.hintNext');
     if (mode === 'whoofus' && !picked) return t('filter.hintSpin');
     return t('filter.hintNext');
   })();
@@ -270,13 +282,24 @@ function Filter({ names, mode, secret, onRestart }: FilterProps) {
             <View style={[styles.top, { paddingTop: insets.top + (filming ? 24 : 72) }]} pointerEvents="none">
               <View style={styles.kickerRow}>
                 <Text style={styles.kicker}>
-                  {isWyr ? t('games.wouldyourather.guessKicker', { guesser: names[guesser] }) : t(`filter.kickers.${mode}`)}
+                  {isWyr
+                    ? t('games.wouldyourather.guessKicker', { guesser: names[guesser] })
+                    : todCard && highlight !== null
+                      ? t(`games.truthordare.${todCard.kind}For`, { player: sideNames[highlight] })
+                      : t(`filter.kickers.${mode}`)}
                 </Text>
                 {isWyr && results.length > 0 && <Text style={styles.scorePill}>{score}/{results.length}</Text>}
               </View>
               <Animated.View style={[styles.card, cardStyle]}>
                 <Text style={styles.cardText}>
-                  {isWyr ? t('games.wouldyourather.guessQuestion', { answerer: names[answerer] }) : (card as string)}
+                  {isWyr
+                    ? t('games.wouldyourather.guessQuestion', { answerer: names[answerer] })
+                    : mode === 'truthordare'
+                      ? todCard?.text ??
+                        (picked && highlight !== null
+                          ? t('games.truthordare.filterAsk', { player: sideNames[highlight] })
+                          : t('games.truthordare.filterSpin'))
+                      : (card as string)}
                 </Text>
               </Animated.View>
             </View>
@@ -291,7 +314,18 @@ function Filter({ names, mode, secret, onRestart }: FilterProps) {
             )}
 
             {/* Bas de l'écran : les deux côtés */}
-            {mode !== 'questions' && (
+            {mode === 'truthordare' && picked && !todCard && (
+              <View style={[styles.sides, { bottom: sidesBottom }]} pointerEvents="none">
+                {TOD_KINDS.map((kind) => (
+                  <View key={kind} style={[styles.side, styles.sideOption, { backgroundColor: TOD_KIND_COLORS[kind], minHeight: 90 }]}>
+                    <Feather name={kind === 'truth' ? 'message-circle' : 'zap'} size={22} color={colors.bg} />
+                    <Text style={[styles.sideText, { color: colors.bg }]}>{t(`games.truthordare.${kind}`)}</Text>
+                  </View>
+                ))}
+              </View>
+            )}
+
+            {(isWyr || mode === 'whoofus' || (mode === 'truthordare' && !picked)) && (
               <View style={[styles.sides, { bottom: sidesBottom }]} pointerEvents="none">
                 {([0, 1] as const).map((side) => {
                   if (isWyr) {
@@ -368,7 +402,7 @@ function Filter({ names, mode, secret, onRestart }: FilterProps) {
               <Feather name="video" size={14} color={colors.pink} />
               <Text style={styles.titleText} numberOfLines={1}>{t(`games.${mode}.title`)}</Text>
             </View>
-            {mode === 'whoofus' ? (
+            {mode !== 'wouldyourather' ? (
               <Pressable onPress={() => setSwapped((s) => !s)} accessibilityRole="button" accessibilityLabel={t('filter.swap')} style={styles.iconBtn}>
                 <Feather name="repeat" size={20} color={colors.text} />
               </Pressable>
@@ -378,6 +412,21 @@ function Filter({ names, mode, secret, onRestart }: FilterProps) {
           </View>
 
           <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 12 }]}>
+            {mode === 'truthordare' && (
+              <View style={styles.todLevels}>
+                {TOD_FILTER_LEVELS.map((l) => (
+                  <Pressable
+                    key={l}
+                    onPress={() => setTodLevel(l)}
+                    accessibilityRole="radio"
+                    accessibilityState={{ checked: l === todLevel }}
+                    style={[styles.todLevel, l === todLevel && { backgroundColor: TOD_LEVEL_COLORS[l] }]}
+                  >
+                    <Text style={[styles.todLevelText, l === todLevel && { color: colors.bg }]}>{t(`games.truthordare.levels.${l}`)}</Text>
+                  </Pressable>
+                ))}
+              </View>
+            )}
             <Text style={styles.hint}>{hint}</Text>
             <Button
               label={t('filter.startFilming')}
@@ -466,6 +515,9 @@ const styles = StyleSheet.create({
   },
   titleText: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 15, flexShrink: 1 },
 
+  todLevels: { flexDirection: 'row', alignSelf: 'center', gap: 4, padding: 4, borderRadius: radius.pill, backgroundColor: 'rgba(18,16,34,0.7)' },
+  todLevel: { height: 32, paddingHorizontal: 14, borderRadius: radius.pill, alignItems: 'center', justifyContent: 'center' },
+  todLevelText: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 12 },
   bottomBar: { position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: spacing.screen, gap: 10 },
   hint: {
     alignSelf: 'center', overflow: 'hidden', color: colors.text, fontFamily: fonts.bold, fontSize: 13,

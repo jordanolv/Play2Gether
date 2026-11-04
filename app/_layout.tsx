@@ -38,9 +38,8 @@ export default function RootLayout() {
         <Stack.Screen name="games/password" />
         <Stack.Screen name="games/scattergories" />
         <Stack.Screen name="games/whoofus" />
-        <Stack.Screen name="games/questions" />
+        <Stack.Screen name="games/truthordare" />
         <Stack.Screen name="games/wouldyourather" />
-        <Stack.Screen name="games/defis" />
         <Stack.Screen name="story" />
         <Stack.Screen name="filter" options={{ animation: 'fade' }} />
         <Stack.Screen name="+not-found" />
