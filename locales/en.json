@@ -166,12 +166,16 @@
   },
   "names": {
     "title": "Who are you?",
-    "subtitle": "We'll show your names in the game and on your stories.",
+    "subtitle": "To show your names and tailor the truths and dares to your couple.",
     "first": "Player 1",
     "second": "Player 2",
     "placeholder1": "e.g. Emma",
     "placeholder2": "e.g. Noah",
-    "go": "Let's go"
+    "go": "Let's go",
+    "gender": {
+      "f": "Woman",
+      "m": "Man"
+    }
   },
   "story": {
     "title": "Story Studio",

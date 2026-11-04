@@ -14,7 +14,7 @@ import { Secret, SecretRound, Side, otherSide } from '@/components/wouldyourathe
 import { colors, fonts, radius, spacing } from '@/constants/theme';
 import whoEn from '@/data/whoofus-en.json';
 import whoFr from '@/data/whoofus-fr.json';
-import { CoupleNames } from '@/utils/couple';
+import { CoupleGenders, CoupleNames } from '@/utils/couple';
 import { byLanguage, shuffle } from '@/utils/random';
 import { updateDailyStreak } from '@/utils/streak';
 import { TOD_FILTER_LEVELS, TOD_KIND_COLORS, TOD_LEVEL_COLORS, TodKind, TodLevel, useTodDecks } from '@/utils/truthordare';
@@ -52,11 +52,11 @@ export default function FilterScreen() {
 
   return (
     <WithCoupleNames title={t('filter.title')}>
-      {(names) =>
+      {(names, _edit, genders) =>
         mode === 'wouldyourather' ? (
           <WouldYouRatherFilter key={i18n.language} names={names} />
         ) : (
-          <Filter key={i18n.language} names={names} mode={mode} />
+          <Filter key={i18n.language} names={names} genders={genders} mode={mode} />
         )
       }
     </WithCoupleNames>
@@ -96,13 +96,14 @@ function WouldYouRatherFilter({ names }: { names: CoupleNames }) {
 
 interface FilterProps {
   names: CoupleNames;
+  genders?: CoupleGenders;
   mode: Mode;
   /** Tu préfères uniquement : les réponses à deviner. */
   secret?: Secret;
   onRestart?: () => void;
 }
 
-function Filter({ names, mode, secret, onRestart }: FilterProps) {
+function Filter({ names, genders = [null, null], mode, secret, onRestart }: FilterProps) {
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -111,6 +112,7 @@ function Filter({ names, mode, secret, onRestart }: FilterProps) {
   const [filming, setFilming] = useState(false);
   const [swapped, setSwapped] = useState(false);
   const sideNames: CoupleNames = swapped ? [names[1], names[0]] : names;
+  const sideGenders: CoupleGenders = swapped ? [genders[1], genders[0]] : genders;
 
   // Paquet de cartes mélangé
   const [deck] = useState<(string | string[])[]>(() => {
@@ -219,7 +221,13 @@ function Filter({ names, mode, secret, onRestart }: FilterProps) {
     else if (!picked) spin();
     else if (mode === 'truthordare' && !todCard) {
       const kind = TOD_KINDS[e.nativeEvent.pageX < width / 2 ? 0 : 1];
-      setTodCard({ kind, text: drawTod(todLevel, kind) });
+      const player = highlight ?? 0;
+      const other = otherSide(player);
+      const players = {
+        player: { name: sideNames[player], gender: sideGenders[player] },
+        other: { name: sideNames[other], gender: sideGenders[other] },
+      };
+      setTodCard({ kind, text: drawTod(todLevel, kind, players) });
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
       popCard();
     } else nextCard();

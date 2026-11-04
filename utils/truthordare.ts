@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { colors } from '@/constants/theme';
 import todEn from '@/data/truthordare-en.json';
 import todFr from '@/data/truthordare-fr.json';
+import { Gender } from '@/utils/couple';
 import { byLanguage, shuffle } from '@/utils/random';
 
 export type TodLevel = 'normal' | 'couple' | 'spicy' | 'adult';
@@ -17,6 +18,48 @@ export const TOD_KIND_COLORS: Record<TodKind, string> = { truth: colors.cyan, da
 
 type Key = `${TodLevel}.${TodKind}`;
 
+/** Joueur dont c'est le tour (p) et son ou sa partenaire (o). */
+export interface TodPlayers {
+  player: { name: string; gender: Gender | null };
+  other: { name: string; gender: Gender | null };
+}
+
+/*
+ * Syntaxe des cartes :
+ * - « @o:f », « @o:m », « @p:f », « @p:m » en tête : carte réservée à ce sexe (o = partenaire, p = joueur).
+ * - « [o:féminin|masculin] », « [p:féminin|masculin] » : accord selon le sexe.
+ * - « {o} », « {p} » : prénom du ou de la partenaire, du joueur.
+ */
+const TAG = /^@([po]):([fm])\s+/;
+
+function parseTags(text: string) {
+  const tags: { who: 'p' | 'o'; gender: Gender }[] = [];
+  let rest = text;
+  for (let m = rest.match(TAG); m; m = rest.match(TAG)) {
+    tags.push({ who: m[1] as 'p' | 'o', gender: m[2] as Gender });
+    rest = rest.slice(m[0].length);
+  }
+  return { tags, rest };
+}
+
+/** La carte convient-elle à ce couple ? */
+export function fitsPlayers(text: string, players: TodPlayers): boolean {
+  return parseTags(text).tags.every(({ who, gender }) => {
+    const actual = (who === 'p' ? players.player : players.other).gender;
+    return actual === null || actual === gender;
+  });
+}
+
+/** Remplace prénoms et accords dans une carte. */
+export function renderCard(text: string, players: TodPlayers): string {
+  return parseTags(text)
+    .rest.replace(/\[([po]):([^|\]]*)\|([^\]]*)\]/g, (_, who: string, fem: string, masc: string) =>
+      (who === 'p' ? players.player : players.other).gender === 'm' ? masc : fem
+    )
+    .replace(/\{o\}/g, players.other.name)
+    .replace(/\{p\}/g, players.player.name);
+}
+
 /** Paquets mélangés pour chaque niveau et type, qui se remélangent quand ils sont épuisés. */
 export function useTodDecks(language: string) {
   const content = byLanguage(language, { fr: todFr, en: todEn });
@@ -30,14 +73,18 @@ export function useTodDecks(language: string) {
     return all;
   });
 
-  const draw = (level: TodLevel, kind: TodKind): string => {
+  /** Tire la prochaine carte qui convient au couple, déjà personnalisée. */
+  const draw = (level: TodLevel, kind: TodKind, players: TodPlayers): string => {
     const key: Key = `${level}.${kind}`;
-    const deck = decks[key];
-    const exhausted = deck.next >= deck.cards.length;
-    const cards = exhausted ? shuffle(content[level][kind]) : deck.cards;
-    const index = exhausted ? 0 : deck.next;
-    setDecks((prev) => ({ ...prev, [key]: { cards, next: index + 1 } }));
-    return cards[index];
+    let { cards, next } = decks[key];
+    let index = cards.findIndex((card, i) => i >= next && fitsPlayers(card, players));
+    if (index === -1) {
+      cards = shuffle(content[level][kind]);
+      index = Math.max(0, cards.findIndex((card) => fitsPlayers(card, players)));
+    }
+    next = index + 1;
+    setDecks((prev) => ({ ...prev, [key]: { cards, next } }));
+    return renderCard(cards[index], players);
   };
 
   return draw;

@@ -10,7 +10,7 @@ import { GameHeader } from '@/components/ui/GameHeader';
 import { Screen } from '@/components/ui/Screen';
 import { WithCoupleNames } from '@/components/ui/WithCoupleNames';
 import { colors, fonts, radius, spacing } from '@/constants/theme';
-import { CoupleNames } from '@/utils/couple';
+import { CoupleGenders, CoupleNames } from '@/utils/couple';
 import { updateDailyStreak } from '@/utils/streak';
 import {
   TOD_ADULT_LEVELS, TOD_KIND_COLORS, TOD_LEVELS, TOD_LEVEL_COLORS, TodKind, TodLevel, parseDuration, useTodDecks,
@@ -29,12 +29,12 @@ export default function TruthOrDareScreen() {
   const { t, i18n } = useTranslation();
   return (
     <WithCoupleNames title={t('games.truthordare.title')} glows={GLOWS}>
-      {(names) => <TruthOrDareGame key={i18n.language} names={names} />}
+      {(names, _edit, genders) => <TruthOrDareGame key={i18n.language} names={names} genders={genders} />}
     </WithCoupleNames>
   );
 }
 
-function TruthOrDareGame({ names }: { names: CoupleNames }) {
+function TruthOrDareGame({ names, genders }: { names: CoupleNames; genders: CoupleGenders }) {
   const { t, i18n } = useTranslation();
   const draw = useTodDecks(i18n.language);
   const [level, setLevel] = useState<TodLevel>('normal');
@@ -67,7 +67,12 @@ function TruthOrDareGame({ names }: { names: CoupleNames }) {
 
   const choose = (kind: TodKind) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
-    setCurrent({ kind, text: draw(level, kind) });
+    const other = player === 0 ? 1 : 0;
+    const players = {
+      player: { name: names[player], gender: genders[player] },
+      other: { name: names[other], gender: genders[other] },
+    };
+    setCurrent({ kind, text: draw(level, kind, players) });
   };
 
   const resolve = (done: boolean) => {

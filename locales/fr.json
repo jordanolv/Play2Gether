@@ -165,12 +165,16 @@
   },
   "names": {
     "title": "Vous êtes qui ?",
-    "subtitle": "On affichera vos prénoms dans le jeu et sur vos stories.",
+    "subtitle": "Pour afficher vos prénoms et adapter les questions et actions à votre couple.",
     "first": "Joueur 1",
     "second": "Joueur 2",
     "placeholder1": "Ex : Léa",
     "placeholder2": "Ex : Tom",
-    "go": "C'est parti"
+    "go": "C'est parti",
+    "gender": {
+      "f": "Femme",
+      "m": "Homme"
+    }
   },
   "story": {
     "title": "Studio Story",
