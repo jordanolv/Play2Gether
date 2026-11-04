@@ -1,5 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -13,7 +14,7 @@ import { colors, fonts, radius, spacing } from '@/constants/theme';
 import { CoupleGenders, CoupleNames } from '@/utils/couple';
 import { updateDailyStreak } from '@/utils/streak';
 import {
-  TOD_ADULT_LEVELS, TOD_KIND_COLORS, TOD_LEVELS, TOD_LEVEL_COLORS, TodKind, TodLevel, parseDuration, useTodDecks,
+  TOD_ADULT_LEVELS, TOD_FILTER_LEVELS, TOD_KIND_COLORS, TOD_LEVELS, TOD_LEVEL_COLORS, TodKind, TodLevel, parseDuration, useTodDecks,
 } from '@/utils/truthordare';
 
 /** Nombre de tours, en alternant les joueurs. */
@@ -36,9 +37,14 @@ export default function TruthOrDareScreen() {
 
 function TruthOrDareGame({ names, genders }: { names: CoupleNames; genders: CoupleGenders }) {
   const { t, i18n } = useTranslation();
+  const router = useRouter();
+  const params = useLocalSearchParams<{ level?: string }>();
+  // Le niveau choisi sur l'accueil a déjà été confirmé (18+) dans la feuille de lancement
+  const initialLevel = TOD_LEVELS.find((l) => l === params.level) ?? 'normal';
   const draw = useTodDecks(i18n.language);
-  const [level, setLevel] = useState<TodLevel>('normal');
-  const [adultOk, setAdultOk] = useState(false);
+  const [level, setLevel] = useState<TodLevel>(initialLevel);
+  const [adultOk, setAdultOk] = useState(TOD_ADULT_LEVELS.includes(initialLevel));
+  const filmable = TOD_FILTER_LEVELS.includes(level);
   const [round, setRound] = useState(0);
   const [current, setCurrent] = useState<{ kind: TodKind; text: string } | null>(null);
   const [scores, setScores] = useState<[number, number]>([0, 0]);
@@ -128,7 +134,12 @@ function TruthOrDareGame({ names, genders }: { names: CoupleNames; genders: Coup
 
   return (
     <Screen glows={GLOWS}>
-      <GameHeader title={t('games.truthordare.title')} step={round + 1} total={ROUNDS} />
+      <GameHeader
+        title={t('games.truthordare.title')}
+        step={round + 1}
+        total={ROUNDS}
+        onFilm={filmable ? () => router.push({ pathname: '/filter', params: { mode: 'truthordare', level } }) : undefined}
+      />
 
       <View style={styles.levels} accessibilityRole="radiogroup">
         {TOD_LEVELS.map((l) => {

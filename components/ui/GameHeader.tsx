@@ -9,9 +9,11 @@ interface GameHeaderProps {
   /** Étape courante, à partir de 1. */
   step?: number;
   total?: number;
+  /** Ouvre le jeu en mode filtre caméra : affiche une icône caméra à droite. */
+  onFilm?: () => void;
 }
 
-export function GameHeader({ title, step, total }: GameHeaderProps) {
+export function GameHeader({ title, step, total, onFilm }: GameHeaderProps) {
   const router = useRouter();
   const { t } = useTranslation();
   const hasProgress = step !== undefined && total !== undefined;
@@ -30,6 +32,17 @@ export function GameHeader({ title, step, total }: GameHeaderProps) {
         </Pressable>
         <Text style={styles.title} numberOfLines={1}>{title}</Text>
         {hasProgress && <Text style={styles.count}>{step} / {total}</Text>}
+        {onFilm && (
+          <Pressable
+            onPress={onFilm}
+            accessibilityRole="button"
+            accessibilityLabel={t('common.filmLabel')}
+            style={({ pressed }) => [styles.film, pressed && { opacity: 0.7 }]}
+            hitSlop={8}
+          >
+            <Feather name="video" size={18} color={colors.pink} />
+          </Pressable>
+        )}
       </View>
       {hasProgress && (
         <View style={styles.progress}>
@@ -48,6 +61,10 @@ const styles = StyleSheet.create({
     width: 44, height: 44, borderRadius: 14,
     backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border,
     alignItems: 'center', justifyContent: 'center',
+  },
+  film: {
+    width: 44, height: 44, borderRadius: 14, alignItems: 'center', justifyContent: 'center',
+    backgroundColor: 'rgba(255,95,168,0.12)', borderWidth: 1, borderColor: 'rgba(255,95,168,0.4)',
   },
   title: { flex: 1, color: colors.text, fontFamily: fonts.extrabold, fontSize: 18 },
   count: { color: colors.textMuted, fontFamily: fonts.bold, fontSize: 14 },

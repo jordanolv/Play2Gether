@@ -10,6 +10,7 @@ import { Screen } from '@/components/ui/Screen';
 import { colors, fonts, radius } from '@/constants/theme';
 import gamesData from '@/data/games.json';
 import { getCurrentStreak } from '@/utils/streak';
+import { TodLevel } from '@/utils/truthordare';
 
 interface GameItem {
   id: string;
@@ -28,7 +29,7 @@ export default function HomeScreen() {
   const router = useRouter();
   const { t, i18n } = useTranslation();
   const [streak, setStreak] = useState(0);
-  const [launching, setLaunching] = useState<string | null>(null);
+  const [pickingLevel, setPickingLevel] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -38,18 +39,14 @@ export default function HomeScreen() {
 
   const openGame = (game: GameItem) => {
     if (!game.available) return;
-    if (game.filmable) setLaunching(game.id);
+    // Action ou vérité : on choisit d'abord le thème
+    if (game.id === 'truthordare') setPickingLevel(true);
     else router.push(`/games/${game.id}` as any);
   };
 
-  const playScreen = (id: string) => {
-    setLaunching(null);
-    router.push(`/games/${id}` as any);
-  };
-
-  const playFilter = (id: string) => {
-    setLaunching(null);
-    router.push({ pathname: '/filter', params: { mode: id } });
+  const playTruthOrDare = (level: TodLevel) => {
+    setPickingLevel(false);
+    router.push({ pathname: '/games/truthordare', params: { level } });
   };
 
   const toggleLanguage = () => {
@@ -128,7 +125,7 @@ export default function HomeScreen() {
         </View>
       </ScrollView>
 
-      <LaunchSheet gameId={launching} onClose={() => setLaunching(null)} onPlayScreen={playScreen} onPlayFilter={playFilter} />
+      <LaunchSheet visible={pickingLevel} onClose={() => setPickingLevel(false)} onPick={playTruthOrDare} />
     </Screen>
   );
 }

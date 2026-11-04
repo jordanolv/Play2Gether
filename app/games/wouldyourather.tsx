@@ -1,5 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -32,6 +33,7 @@ export default function WouldYouRatherScreen() {
 /** Un joueur répond en secret, puis l'autre devine ses choix. */
 function WouldYouRatherGame({ names }: { names: CoupleNames }) {
   const { t } = useTranslation();
+  const router = useRouter();
   const [secret, setSecret] = useState<Secret | null>(null);
   // Change à chaque partie pour repartir d'un tirage neuf
   const [gameId, setGameId] = useState(0);
@@ -52,6 +54,7 @@ function WouldYouRatherGame({ names }: { names: CoupleNames }) {
         initialAnswerer={nextAnswerer}
         startLabel={t('games.wouldyourather.handoffScreen')}
         onReady={setSecret}
+        onFilm={() => router.push({ pathname: '/filter', params: { mode: 'wouldyourather' } })}
       />
     );
   }
@@ -61,6 +64,7 @@ function WouldYouRatherGame({ names }: { names: CoupleNames }) {
 
 function GuessRound({ secret, names, onRestart }: { secret: Secret; names: CoupleNames; onRestart: (answerer?: Side) => void }) {
   const { t } = useTranslation();
+  const router = useRouter();
   const { answerer, dilemmas, answers } = secret;
   const guesser = otherSide(answerer);
   const [results, setResults] = useState<boolean[]>([]);
@@ -113,7 +117,17 @@ function GuessRound({ secret, names, onRestart }: { secret: Secret; names: Coupl
 
   return (
     <Screen glows={GLOWS}>
-      <GameHeader title={t('games.wouldyourather.title')} step={round + 1} total={dilemmas.length} />
+      <GameHeader
+        title={t('games.wouldyourather.title')}
+        step={round + 1}
+        total={dilemmas.length}
+        onFilm={() =>
+          router.push({
+            pathname: '/filter',
+            params: { mode: 'wouldyourather', secret: JSON.stringify({ ...secret, dilemmas: dilemmas.slice(round), answers: answers.slice(round) }) },
+          })
+        }
+      />
 
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         {correct === null ? (

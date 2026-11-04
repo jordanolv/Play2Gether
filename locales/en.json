@@ -16,7 +16,8 @@
     "success": "Success",
     "backLabel": "Back",
     "startTimer": "Timer {{time}}",
-    "timeUp": "Time's up!"
+    "timeUp": "Time's up!",
+    "filmLabel": "Play in camera filter mode"
   },
   "home": {
     "streak": "Streak: {{count}} days",
@@ -34,10 +35,6 @@
     "storyTitle": "Story Studio",
     "storySub": "Make an overlay for TikTok or Insta",
     "filmable": "Playable in camera filter mode",
-    "launchScreen": "Play on screen",
-    "launchScreenSub": "The classic game, on the phone",
-    "launchFilter": "Play as a filter",
-    "launchFilterSub": "Selfie camera with the game on top, for TikTok and Insta",
     "launchCancel": "Cancel"
   },
   "games": {
@@ -161,7 +158,14 @@
       "winner": "{{player}} wins!",
       "playAgain": "Play again",
       "filterSpin": "Who's playing?",
-      "filterAsk": "{{player}}, truth or dare?"
+      "filterAsk": "{{player}}, truth or dare?",
+      "levelsSub": {
+        "normal": "Light and fun, even with friends",
+        "couple": "Memories, feelings and tenderness",
+        "spicy": "Suggestive, to turn up the heat",
+        "adult": "Explicitly sexual: positions, foreplay…"
+      },
+      "pickLevel": "Pick your theme"
     }
   },
   "names": {

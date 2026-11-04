@@ -36,10 +36,12 @@ interface Props {
   /** Libellé du bouton final : « C'est parti » ou « Lancer la caméra ». */
   startLabel: string;
   onReady: (secret: Secret) => void;
+  /** Bouton caméra dans l'en-tête (absent quand on est déjà en mode filtre). */
+  onFilm?: () => void;
 }
 
 /** Première phase : un joueur répond en secret aux dilemmes. */
-export function SecretRound({ names, glows, initialAnswerer, startLabel, onReady }: Props) {
+export function SecretRound({ names, glows, initialAnswerer, startLabel, onReady, onFilm }: Props) {
   const { t, i18n } = useTranslation();
   const [dilemmas] = useState<string[][]>(() =>
     pickRandom(byLanguage(i18n.language, { fr: dilemmasFr, en: dilemmasEn }), WYR_ROUNDS)
@@ -50,7 +52,7 @@ export function SecretRound({ names, glows, initialAnswerer, startLabel, onReady
   if (answerer === null) {
     return (
       <Screen glows={glows}>
-        <GameHeader title={t('games.wouldyourather.title')} />
+        <GameHeader title={t('games.wouldyourather.title')} onFilm={onFilm} />
         <View style={styles.center}>
           <Text style={styles.title}>{t('games.wouldyourather.whoAnswers')}</Text>
           <Text style={styles.sub}>{t('games.wouldyourather.whoAnswersSub')}</Text>

@@ -16,7 +16,8 @@
     "success": "Succès",
     "backLabel": "Retour",
     "startTimer": "Chrono {{time}}",
-    "timeUp": "Temps écoulé !"
+    "timeUp": "Temps écoulé !",
+    "filmLabel": "Jouer en mode filtre caméra"
   },
   "home": {
     "streak": "Série: {{count}} jours",
@@ -34,10 +35,6 @@
     "storyTitle": "Studio Story",
     "storySub": "Crée un overlay pour TikTok ou Insta",
     "filmable": "Jouable en mode filtre caméra",
-    "launchScreen": "Jouer à l'écran",
-    "launchScreenSub": "Le jeu classique, sur le téléphone",
-    "launchFilter": "Jouer en mode filtre",
-    "launchFilterSub": "Caméra selfie + jeu par-dessus, pour TikTok et Insta",
     "launchCancel": "Annuler"
   },
   "games": {
@@ -160,7 +157,14 @@
       "winner": "{{player}} a gagné !",
       "playAgain": "Rejouer",
       "filterSpin": "Qui va jouer ?",
-      "filterAsk": "{{player}}, action ou vérité ?"
+      "filterAsk": "{{player}}, action ou vérité ?",
+      "levelsSub": {
+        "normal": "Fun et léger, même entre amis",
+        "couple": "Souvenirs, sentiments et tendresse",
+        "spicy": "Suggestif, pour faire monter la température",
+        "adult": "Sexe assumé : positions, préliminaires…"
+      },
+      "pickLevel": "Choisissez votre thème"
     }
   },
   "names": {

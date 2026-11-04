@@ -100,7 +100,12 @@ function WhoOfUsGame({ names, onEditNames }: { names: CoupleNames; onEditNames: 
 
   return (
     <Screen glows={GLOWS}>
-      <GameHeader title={t('games.whoofus.title')} step={index + 1} total={questions.length} />
+      <GameHeader
+        title={t('games.whoofus.title')}
+        step={index + 1}
+        total={questions.length}
+        onFilm={() => router.push({ pathname: '/filter', params: { mode: 'whoofus' } })}
+      />
 
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.countdown}>

@@ -29,11 +29,28 @@ const ROULETTE_STEPS = [90, 80, 70, 70, 70, 80, 90, 110, 130, 160, 200, 250, 320
 
 const randomSide = (): Side => (Math.random() < 0.5 ? 0 : 1);
 
+/** Réponses secrètes transmises par l'écran « Tu préfères » quand on passe en caméra en cours de partie. */
+function parseSecret(raw: string | undefined): Secret | null {
+  if (!raw) return null;
+  try {
+    const value = JSON.parse(raw);
+    const valid =
+      (value.answerer === 0 || value.answerer === 1) &&
+      Array.isArray(value.dilemmas) && Array.isArray(value.answers) &&
+      value.dilemmas.length > 0 && value.dilemmas.length === value.answers.length;
+    return valid ? (value as Secret) : null;
+  } catch {
+    return null;
+  }
+}
+
 export default function FilterScreen() {
   const { t, i18n } = useTranslation();
   const [permission, requestPermission] = useCameraPermissions();
-  const params = useLocalSearchParams<{ mode?: string }>();
+  const params = useLocalSearchParams<{ mode?: string; level?: string; secret?: string }>();
   const mode: Mode = isMode(params.mode) ? params.mode : 'whoofus';
+  const level = TOD_FILTER_LEVELS.find((l) => l === params.level) ?? 'couple';
+  const initialSecret = parseSecret(params.secret);
 
   if (!permission) return <Screen><View /></Screen>;
 
@@ -54,9 +71,9 @@ export default function FilterScreen() {
     <WithCoupleNames title={t('filter.title')}>
       {(names, _edit, genders) =>
         mode === 'wouldyourather' ? (
-          <WouldYouRatherFilter key={i18n.language} names={names} />
+          <WouldYouRatherFilter key={i18n.language} names={names} initialSecret={initialSecret} />
         ) : (
-          <Filter key={i18n.language} names={names} genders={genders} mode={mode} />
+          <Filter key={i18n.language} names={names} genders={genders} mode={mode} initialLevel={level} />
         )
       }
     </WithCoupleNames>
@@ -64,9 +81,9 @@ export default function FilterScreen() {
 }
 
 /** Tu préfères : réponses secrètes hors caméra, puis l'autre devine devant la caméra. */
-function WouldYouRatherFilter({ names }: { names: CoupleNames }) {
+function WouldYouRatherFilter({ names, initialSecret }: { names: CoupleNames; initialSecret: Secret | null }) {
   const { t } = useTranslation();
-  const [secret, setSecret] = useState<Secret | null>(null);
+  const [secret, setSecret] = useState<Secret | null>(initialSecret);
   const [gameId, setGameId] = useState(0);
 
   if (!secret) {
@@ -97,13 +114,15 @@ function WouldYouRatherFilter({ names }: { names: CoupleNames }) {
 interface FilterProps {
   names: CoupleNames;
   genders?: CoupleGenders;
+  /** Action ou vérité : niveau de départ. */
+  initialLevel?: TodLevel;
   mode: Mode;
   /** Tu préfères uniquement : les réponses à deviner. */
   secret?: Secret;
   onRestart?: () => void;
 }
 
-function Filter({ names, genders = [null, null], mode, secret, onRestart }: FilterProps) {
+function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', secret, onRestart }: FilterProps) {
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -136,7 +155,7 @@ function Filter({ names, genders = [null, null], mode, secret, onRestart }: Filt
 
   // « Action ou vérité » : la roulette désigne un joueur, qui choisit ensuite
   const drawTod = useTodDecks(i18n.language);
-  const [todLevel, setTodLevel] = useState<TodLevel>('couple');
+  const [todLevel, setTodLevel] = useState<TodLevel>(initialLevel);
   const [todCard, setTodCard] = useState<{ kind: TodKind; text: string } | null>(null);
 
   // Animations : entrée de chaque carte, côté choisi, verdict
