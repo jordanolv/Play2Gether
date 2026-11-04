@@ -14,7 +14,9 @@
     "loading": "Loading...",
     "error": "Error",
     "success": "Success",
-    "backLabel": "Back"
+    "backLabel": "Back",
+    "startTimer": "Timer {{time}}",
+    "timeUp": "Time's up!"
   },
   "home": {
     "streak": "Streak: {{count}} days",

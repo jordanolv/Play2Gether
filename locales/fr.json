@@ -14,7 +14,9 @@
     "loading": "Chargement...",
     "error": "Erreur",
     "success": "Succès",
-    "backLabel": "Retour"
+    "backLabel": "Retour",
+    "startTimer": "Chrono {{time}}",
+    "timeUp": "Temps écoulé !"
   },
   "home": {
     "streak": "Série: {{count}} jours",

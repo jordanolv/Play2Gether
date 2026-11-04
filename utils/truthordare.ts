@@ -42,3 +42,13 @@ export function useTodDecks(language: string) {
 
   return draw;
 }
+
+/** Durée en secondes indiquée dans une action (« pendant 1 minute », « 30 seconds »…), ou null. */
+export function parseDuration(text: string): number | null {
+  const seconds = text.match(/(\d+)[\s-]*(?:secondes?|seconds?)\b/i);
+  if (seconds) return Number(seconds[1]);
+  const minutes = text.match(/(\d+)[\s-]*(?:minutes?|min)\b/i);
+  if (minutes) return Number(minutes[1]) * 60;
+  if (/\b(?:d'une|une|one)[\s-]minute\b/i.test(text)) return 60;
+  return null;
+}

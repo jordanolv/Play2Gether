@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '@/components/ui/Button';
+import { Countdown } from '@/components/ui/Countdown';
 import { GameHeader } from '@/components/ui/GameHeader';
 import { Screen } from '@/components/ui/Screen';
 import { WithCoupleNames } from '@/components/ui/WithCoupleNames';
@@ -12,7 +13,7 @@ import { colors, fonts, radius, spacing } from '@/constants/theme';
 import { CoupleNames } from '@/utils/couple';
 import { updateDailyStreak } from '@/utils/streak';
 import {
-  TOD_ADULT_LEVELS, TOD_KIND_COLORS, TOD_LEVELS, TOD_LEVEL_COLORS, TodKind, TodLevel, useTodDecks,
+  TOD_ADULT_LEVELS, TOD_KIND_COLORS, TOD_LEVELS, TOD_LEVEL_COLORS, TodKind, TodLevel, parseDuration, useTodDecks,
 } from '@/utils/truthordare';
 
 /** Nombre de tours, en alternant les joueurs. */
@@ -159,6 +160,9 @@ function TruthOrDareGame({ names }: { names: CoupleNames }) {
               {t(`games.truthordare.${current.kind}For`, { player: names[player] })}
             </Text>
             <Text style={styles.cardText}>{current.text}</Text>
+            {current.kind === 'dare' && parseDuration(current.text) !== null && (
+              <Countdown key={`${round}-${current.text}`} seconds={parseDuration(current.text)!} color={TOD_KIND_COLORS.dare} />
+            )}
           </View>
         ) : (
           <View style={styles.choice}>
