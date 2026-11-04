@@ -4,7 +4,8 @@ import { colors } from '@/constants/theme';
 import todEn from '@/data/truthordare-en.json';
 import todFr from '@/data/truthordare-fr.json';
 import { Gender } from '@/utils/couple';
-import { byLanguage, shuffle } from '@/utils/random';
+import { byLanguage } from '@/utils/random';
+import { drawOneFresh } from '@/utils/seen';
 
 export type TodLevel = 'normal' | 'couple' | 'spicy' | 'adult';
 export type TodKind = 'truth' | 'dare';
@@ -67,34 +68,21 @@ export function renderCard(text: string, players: TodPlayers): string {
     .replace(/\{p\}/g, players.player.name);
 }
 
-/** Paquets mélangés pour chaque niveau et type, qui se remélangent quand ils sont épuisés. */
+/** Tirage des cartes, sans retomber sur celles déjà jouées (même d'une partie à l'autre). */
 export function useTodDecks(language: string) {
   const content = byLanguage(language, { fr: todFr, en: todEn });
-  const [decks, setDecks] = useState(() => {
-    const all = {} as Record<Key, { cards: string[]; next: number; sinceExplicit: number }>;
-    for (const level of TOD_LEVELS) {
-      for (const kind of ['truth', 'dare'] as const) {
-        all[`${level}.${kind}`] = { cards: shuffle(content[level][kind]), next: 0, sinceExplicit: 1 };
-      }
-    }
-    return all;
-  });
+  // Nombre de cartes tirées depuis le dernier acte concret, par paquet
+  const [sinceExplicit, setSinceExplicit] = useState<Partial<Record<Key, number>>>({});
 
-  /** Tire la prochaine carte qui convient au couple, déjà personnalisée. */
+  /** Tire une carte qui convient au couple, déjà personnalisée. */
   const draw = (level: TodLevel, kind: TodKind, players: TodPlayers): string => {
     const key: Key = `${level}.${kind}`;
-    const deck = decks[key];
-    let cards = deck.cards;
-    const allowExplicit = deck.sinceExplicit >= EXPLICIT_GAP;
-    const fits = (card: string) => fitsPlayers(card, players) && (allowExplicit || !isExplicit(card));
-    let index = cards.findIndex((card, i) => i >= deck.next && fits(card));
-    if (index === -1) {
-      cards = shuffle(content[level][kind]);
-      index = Math.max(0, cards.findIndex(fits));
-    }
-    const card = cards[index];
-    const sinceExplicit = isExplicit(card) ? 0 : deck.sinceExplicit + 1;
-    setDecks((prev) => ({ ...prev, [key]: { cards, next: index + 1, sinceExplicit } }));
+    const since = sinceExplicit[key] ?? 1;
+    const allowExplicit = since >= EXPLICIT_GAP;
+    const card =
+      drawOneFresh(`tod.${language}.${key}`, content[level][kind], (c) => fitsPlayers(c, players) && (allowExplicit || !isExplicit(c))) ??
+      content[level][kind][0];
+    setSinceExplicit((prev) => ({ ...prev, [key]: isExplicit(card) ? 0 : since + 1 }));
     return renderCard(card, players);
   };
 
