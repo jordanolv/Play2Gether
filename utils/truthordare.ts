@@ -5,12 +5,14 @@ import todEn from '@/data/truthordare-en.json';
 import todFr from '@/data/truthordare-fr.json';
 import { byLanguage, shuffle } from '@/utils/random';
 
-export type TodLevel = 'normal' | 'couple' | 'adult';
+export type TodLevel = 'normal' | 'couple' | 'spicy' | 'adult';
 export type TodKind = 'truth' | 'dare';
-export const TOD_LEVELS: TodLevel[] = ['normal', 'couple', 'adult'];
-/** Niveaux autorisés en mode filtre caméra (pas d'adulte sur TikTok / Insta). */
+export const TOD_LEVELS: TodLevel[] = ['normal', 'couple', 'spicy', 'adult'];
+/** Niveaux qui demandent de confirmer avoir plus de 18 ans. */
+export const TOD_ADULT_LEVELS: TodLevel[] = ['spicy', 'adult'];
+/** Niveaux autorisés en mode filtre caméra (rien de coquin sur TikTok / Insta). */
 export const TOD_FILTER_LEVELS: TodLevel[] = ['normal', 'couple'];
-export const TOD_LEVEL_COLORS: Record<TodLevel, string> = { normal: colors.cyan, couple: colors.lilac, adult: colors.pink };
+export const TOD_LEVEL_COLORS: Record<TodLevel, string> = { normal: colors.cyan, couple: colors.lilac, spicy: colors.peach, adult: colors.pink };
 export const TOD_KIND_COLORS: Record<TodKind, string> = { truth: colors.cyan, dare: colors.pink };
 
 type Key = `${TodLevel}.${TodKind}`;

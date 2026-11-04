@@ -134,16 +134,17 @@
     },
     "truthordare": {
       "title": "Truth or Dare",
-      "tagline": "Normal, couple or adult ++",
+      "tagline": "Normal, couple, spicy or adult ++",
       "description": "Take turns: truth or dare, from sweet to spicy.",
       "results": "Results",
       "levels": {
         "normal": "Normal",
         "couple": "Couple",
+        "spicy": "Spicy",
         "adult": "Adult ++"
       },
       "adultTitle": "Adults only",
-      "adultBody": "This level has flirty truths and dares. It's for 18+ only and isn't available in camera filter mode.",
+      "adultBody": "The Spicy and Adult ++ levels contain sexual content. They're for 18+ only and aren't available in camera filter mode.",
       "adultCancel": "Cancel",
       "adultConfirm": "I'm over 18",
       "turnSuffix": ", truth or dare?",

@@ -133,16 +133,17 @@
     },
     "truthordare": {
       "title": "Action ou Vérité",
-      "tagline": "Normal, couple ou adulte ++",
+      "tagline": "Normal, couple, coquin ou adulte ++",
       "description": "Chacun son tour : action ou vérité, du plus sage au plus coquin.",
       "results": "Résultats",
       "levels": {
         "normal": "Normal",
         "couple": "Couple",
+        "spicy": "Coquin",
         "adult": "Adulte ++"
       },
       "adultTitle": "Réservé aux adultes",
-      "adultBody": "Ce niveau contient des questions et actions coquines. Il est réservé aux plus de 18 ans et n'est pas disponible en mode filtre caméra.",
+      "adultBody": "Les niveaux Coquin et Adulte ++ contiennent du contenu sexuel. Ils sont réservés aux plus de 18 ans et ne sont pas disponibles en mode filtre caméra.",
       "adultCancel": "Annuler",
       "adultConfirm": "J'ai plus de 18 ans",
       "turnSuffix": ", action ou vérité ?",

@@ -12,7 +12,7 @@ import { colors, fonts, radius, spacing } from '@/constants/theme';
 import { CoupleNames } from '@/utils/couple';
 import { updateDailyStreak } from '@/utils/streak';
 import {
-  TOD_KIND_COLORS, TOD_LEVELS, TOD_LEVEL_COLORS, TodKind, TodLevel, useTodDecks,
+  TOD_ADULT_LEVELS, TOD_KIND_COLORS, TOD_LEVELS, TOD_LEVEL_COLORS, TodKind, TodLevel, useTodDecks,
 } from '@/utils/truthordare';
 
 /** Nombre de tours, en alternant les joueurs. */
@@ -47,14 +47,14 @@ function TruthOrDareGame({ names }: { names: CoupleNames }) {
 
   const changeLevel = (next: TodLevel) => {
     if (next === level) return;
-    if (next === 'adult' && !adultOk) {
+    if (TOD_ADULT_LEVELS.includes(next) && !adultOk) {
       Alert.alert(t('games.truthordare.adultTitle'), t('games.truthordare.adultBody'), [
         { text: t('games.truthordare.adultCancel'), style: 'cancel' },
         {
           text: t('games.truthordare.adultConfirm'),
           onPress: () => {
             setAdultOk(true);
-            setLevel('adult');
+            setLevel(next);
           },
         },
       ]);
@@ -199,12 +199,12 @@ function TruthOrDareGame({ names }: { names: CoupleNames }) {
 }
 
 const styles = StyleSheet.create({
-  levels: { flexDirection: 'row', gap: 8, paddingHorizontal: spacing.screen, paddingTop: 16 },
+  levels: { flexDirection: 'row', gap: 6, paddingHorizontal: spacing.screen, paddingTop: 16 },
   level: {
     flex: 1, height: 40, borderRadius: radius.pill, borderWidth: 1, borderColor: colors.borderStrong,
     alignItems: 'center', justifyContent: 'center', paddingHorizontal: 6,
   },
-  levelText: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 13 },
+  levelText: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 12 },
 
   content: { paddingHorizontal: spacing.screen, paddingTop: 18, gap: 20 },
   scoreBar: { flexDirection: 'row', gap: 10 },
