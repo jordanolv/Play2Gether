@@ -1,0 +1,26 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{width:100vw;height:100vh;overflow:hidden;background:#121022;font-family:'Bricolage Grotesque',sans-serif}
+.s{position:relative;width:100%;height:100%;overflow:hidden;background:radial-gradient(120% 70% at 50% 0%,var(--a2) 0%,#121022 62%)}
+.ring{position:absolute;border-radius:50%;border:.35vh solid var(--a);opacity:.16}
+.txt{position:absolute;top:7vh;left:0;right:0;text-align:center;padding:0 8vw;z-index:2}
+.eb{display:inline-block;font-weight:800;font-size:1.75vh;letter-spacing:.5vh;color:#121022;background:var(--a);padding:.9vh 2.2vh;border-radius:99vh;margin-bottom:2.4vh}
+h1{font-weight:800;font-size:4.6vh;line-height:1.08;color:#F5F3FF;letter-spacing:-.05vh}
+h1 em{font-style:normal;color:var(--a)}
+.phone{position:absolute;left:50%;top:29vh;transform:translateX(-50%);width:var(--pw,82vw);aspect-ratio:390/890;border-radius:calc(var(--k,1)*11vw);background:#0a0914;padding:calc(var(--k,1)*2.6vw);
+ box-shadow:0 0 0 .45vh #3a3560,0 0 0 .7vh #0a0914,0 4vh 12vh -2vh var(--a3);z-index:1}
+.scr{width:100%;height:100%;border-radius:calc(var(--k,1)*8.6vw);overflow:hidden;background:#121022;display:flex;flex-direction:column}.sb{height:calc(var(--k,1)*12.5vw);flex:none;display:flex;align-items:center;justify-content:space-between;padding:calc(var(--k,1)*1.5vw) calc(var(--k,1)*7vw) 0;color:#F5F3FF;font:600 calc(var(--k,1)*3.6vw) -apple-system,'Bricolage Grotesque',sans-serif}.sb i{font-style:normal;letter-spacing:.calc(var(--k,1)*3vw);font-size:calc(var(--k,1)*3vw)}.phone img{width:100%;flex:1;object-fit:cover;object-position:top;display:block}
+.isl{position:absolute;top:calc(var(--k,1)*5vw);left:50%;transform:translateX(-50%);width:calc(var(--k,1)*25vw);height:calc(var(--k,1)*7.2vw);border-radius:99vh;background:#000}
+</style></head><body>
+<div class="s" id="s"><div class="txt"><div class="eb" id="eb"></div><h1 id="h"></h1></div>
+<div class="phone"><div class="scr"><div class="sb"><span>21:30</span><i>▮▮▮ ◔ ▬</i></div><img id="img"></div><div class="isl"></div></div></div>
+<script>
+const q=new URLSearchParams(location.search),s=document.getElementById('s');if(innerWidth/innerHeight>.7){document.documentElement.style.setProperty('--pw','58vw');document.documentElement.style.setProperty('--k',58/82);}
+const c=q.get('c');s.style.setProperty('--a',c);s.style.setProperty('--a2',c+'55');s.style.setProperty('--a3',c+'66');
+document.getElementById('eb').textContent=q.get('eb');document.getElementById('h').innerHTML=q.get('h');
+document.getElementById('img').src=q.get('img');
+for(const [x,y,r] of [[110,8,60],[110,8,85],[-15,95,45],[-15,95,65]]){const d=document.createElement('div');d.className='ring';
+ Object.assign(d.style,{width:r+'vh',height:r+'vh',left:`calc(${x}vw - ${r/2}vh)`,top:`calc(${y}vh - ${r/2}vh)`});s.prepend(d)}
+</script></body></html>

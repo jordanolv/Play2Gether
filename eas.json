@@ -18,7 +18,12 @@
   "submit": {
     "production": {
       "ios": {
-        "appleId": "olivier.jordan21@gmail.com"
+        "appleId": "olivier.jordan21@gmail.com",
+        "ascAppId": "6751278205"
+      },
+      "android": {
+        "track": "internal",
+        "releaseStatus": "completed"
       }
     }
   }

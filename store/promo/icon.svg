@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1024" height="1024">
+<defs>
+<radialGradient id="bg" cx=".5" cy=".2" r=".9"><stop offset="0" stop-color="#33245c"/><stop offset=".7" stop-color="#121022"/></radialGradient>
+<filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>
+</defs>
+<rect width="512" height="512" fill="url(#bg)"/>
+<circle cx="256" cy="230" r="215" fill="none" stroke="#FF5FA8" stroke-width="5" opacity=".14"/>
+<circle cx="256" cy="230" r="170" fill="none" stroke="#22D3EE" stroke-width="5" opacity=".12"/>
+<g stroke="#121022" stroke-width="9" stroke-linejoin="round" stroke-linecap="round">
+<!-- girl hair back -->
+<path d="M262 170 C 262 110 380 100 398 170 C 412 220 410 300 430 360 C 380 372 330 350 300 330 Z" fill="#FF5FA8"/>
+<circle cx="392" cy="128" r="30" fill="#FF5FA8"/>
+<!-- bodies -->
+<path d="M70 512 C 70 400 110 330 190 325 C 255 322 270 380 272 512 Z" fill="#22D3EE"/>
+<path d="M240 512 C 242 390 265 330 325 328 C 400 326 440 400 442 512 Z" fill="#8B5CF6"/>
+<!-- faces -->
+<circle cx="192" cy="222" r="74" fill="#FFE3D3"/>
+<circle cx="322" cy="222" r="74" fill="#FFE3D3"/>
+<!-- boy hair -->
+<path d="M114 230 C 98 170 120 140 150 132 L 160 108 L 180 128 L 200 104 L 214 130 C 250 136 272 162 268 205 C 240 200 215 185 205 168 C 195 190 160 200 128 200 C 126 212 122 222 114 230 Z" fill="#5B47B8"/>
+<!-- girl fringe -->
+<path d="M248 210 C 245 160 280 140 322 140 C 370 140 398 170 398 215 C 370 210 345 195 330 172 C 315 195 285 205 248 210 Z" fill="#FF5FA8"/>
+</g>
+<path transform="translate(256 82) scale(.62)" d="M0 -14 C -14 -38 -50 -30 -50 -4 C -50 20 -22 36 0 56 C 22 36 50 20 50 -4 C 50 -30 14 -38 0 -14 Z" fill="#FFD84D" stroke="#121022" stroke-width="12" stroke-linejoin="round"/>
+<!-- eyes / mouths -->
+<g fill="#121022"><ellipse cx="168" cy="232" rx="9" ry="12"/><ellipse cx="214" cy="232" rx="9" ry="12"/>
+<ellipse cx="300" cy="232" rx="9" ry="12"/><ellipse cx="346" cy="232" rx="9" ry="12"/></g>
+<g fill="#FF5FA8" opacity=".55"><circle cx="150" cy="258" r="12"/><circle cx="232" cy="258" r="12"/><circle cx="282" cy="258" r="12"/><circle cx="364" cy="258" r="12"/></g>
+<g fill="none" stroke="#121022" stroke-width="7" stroke-linecap="round"><path d="M178 262 Q 191 274 204 262"/></g>
+<path d="M306 258 Q 323 284 340 258 Z" fill="#121022" stroke="#121022" stroke-width="5" stroke-linejoin="round"/>
+<!-- cards -->
+<g opacity=".7" filter="url(#glow)"><rect x="150" y="345" width="110" height="150" rx="20" fill="#22D3EE" transform="rotate(-14 205 420)"/><rect x="252" y="345" width="110" height="150" rx="20" fill="#FF5FA8" transform="rotate(12 307 420)"/></g>
+<g stroke="#121022" stroke-width="9" stroke-linejoin="round">
+<rect x="150" y="345" width="110" height="150" rx="20" fill="#F5F3FF" transform="rotate(-14 205 420)"/>
+<rect x="252" y="345" width="110" height="150" rx="20" fill="#F5F3FF" transform="rotate(12 307 420)"/>
+</g>
+<text x="205" y="452" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="88" fill="#22D3EE" transform="rotate(-14 205 420)">?</text>
+<text x="307" y="452" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="88" fill="#FF5FA8" transform="rotate(12 307 420)">!</text>
+<!-- hands -->
+<g fill="#FFE3D3" stroke="#121022" stroke-width="8"><circle cx="152" cy="440" r="22"/><circle cx="362" cy="440" r="22"/></g>
+</svg>

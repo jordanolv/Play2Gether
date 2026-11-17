@@ -1,0 +1,83 @@
+{
+  "configVersion": 0,
+  "apple": {
+    "version": "1.2",
+    "copyright": "Jordan",
+    "release": {
+      "automaticRelease": true
+    },
+    "info": {
+      "fr-FR": {
+        "description": "Venez jouez à des jeu de devinette avec votre partenaire !",
+        "keywords": [
+          "jeux à deux",
+          "duo",
+          "couple",
+          "fun",
+          "games",
+          "jeu"
+        ],
+        "releaseNotes": "Fixed the keyboard bug that hid the buttons in the password game.",
+        "marketingUrl": "https://jordanolivier.dev",
+        "supportUrl": "https://jordanolivier.dev/support.html",
+        "title": "Play2Gether",
+        "privacyPolicyUrl": "http://jordanolivier.dev",
+        "privacyChoicesUrl": "http://jordanolivier.dev",
+        "screenshots": {
+          "APP_IPHONE_67": [
+            "store/apple/screenshot/fr-FR/APP_IPHONE_67/IMG_5685.jpeg",
+            "store/apple/screenshot/fr-FR/APP_IPHONE_67/IMG_5683.jpeg",
+            "store/apple/screenshot/fr-FR/APP_IPHONE_67/IMG_5684.jpeg"
+          ],
+          "APP_IPAD_PRO_3GEN_129": [
+            "store/apple/screenshot/fr-FR/APP_IPAD_PRO_3GEN_129/IMG_0024 (1).png"
+          ]
+        }
+      }
+    },
+    "categories": [
+      [
+        "GAMES",
+        "GAMES_FAMILY",
+        "GAMES_CASUAL"
+      ]
+    ],
+    "advisory": {
+      "ageRatingOverride": "NONE",
+      "alcoholTobaccoOrDrugUseOrReferences": "NONE",
+      "contests": "NONE",
+      "gambling": false,
+      "gamblingSimulated": "NONE",
+      "horrorOrFearThemes": "NONE",
+      "kidsAgeBand": null,
+      "koreaAgeRatingOverride": "NONE",
+      "lootBox": false,
+      "matureOrSuggestiveThemes": "NONE",
+      "medicalOrTreatmentInformation": "NONE",
+      "profanityOrCrudeHumor": "NONE",
+      "sexualContentGraphicAndNudity": "NONE",
+      "sexualContentOrNudity": "NONE",
+      "unrestrictedWebAccess": false,
+      "violenceCartoonOrFantasy": "NONE",
+      "violenceRealistic": "NONE",
+      "violenceRealisticProlongedGraphicOrSadistic": "NONE",
+      "advertising": false,
+      "ageAssurance": false,
+      "ageRatingOverrideV2": "NONE",
+      "developerAgeRatingInfoUrl": null,
+      "gunsOrOtherWeapons": "NONE",
+      "healthOrWellnessTopics": false,
+      "messagingAndChat": false,
+      "parentalControls": false,
+      "userGeneratedContent": false
+    },
+    "review": {
+      "firstName": "Jordan",
+      "lastName": "Olivier",
+      "email": "olivier.jordan21@gmail.com",
+      "phone": "<redacted>",
+      "demoUsername": "Jordan Olivier",
+      "demoRequired": false
+    }
+  }
+}
