@@ -44,7 +44,7 @@ export function LaunchSheet({ visible, onClose, onPick }: Props) {
               <Text style={styles.optionTitle}>{t(`games.truthordare.levels.${level}`)}</Text>
               <Text style={styles.optionSub}>{t(`games.truthordare.levelsSub.${level}`)}</Text>
             </View>
-            {TOD_ADULT_LEVELS.includes(level) && <Text style={styles.badge}>18+</Text>}
+            {TOD_ADULT_LEVELS.includes(level) && <Text style={styles.badge}>16+</Text>}
             {TOD_FILTER_LEVELS.includes(level) && <Feather name="video" size={15} color={colors.textMuted} />}
             <Feather name="chevron-right" size={20} color={colors.textMuted} />
           </Pressable>

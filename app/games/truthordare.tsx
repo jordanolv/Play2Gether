@@ -39,7 +39,7 @@ function TruthOrDareGame({ names, genders }: { names: CoupleNames; genders: Coup
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const params = useLocalSearchParams<{ level?: string }>();
-  // Le niveau choisi sur l'accueil a déjà été confirmé (18+) dans la feuille de lancement
+  // Le niveau choisi sur l'accueil a déjà été confirmé (16+) dans la feuille de lancement
   const initialLevel = TOD_LEVELS.find((l) => l === params.level) ?? 'normal';
   const draw = useTodDecks(i18n.language);
   const [level, setLevel] = useState<TodLevel>(initialLevel);

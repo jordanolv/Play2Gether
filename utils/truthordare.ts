@@ -7,14 +7,14 @@ import { Gender } from '@/utils/couple';
 import { byLanguage } from '@/utils/random';
 import { drawOneFresh } from '@/utils/seen';
 
-export type TodLevel = 'normal' | 'couple' | 'spicy' | 'adult';
+export type TodLevel = 'normal' | 'couple' | 'spicy';
 export type TodKind = 'truth' | 'dare';
-export const TOD_LEVELS: TodLevel[] = ['normal', 'couple', 'spicy', 'adult'];
-/** Niveaux qui demandent de confirmer avoir plus de 18 ans. */
-export const TOD_ADULT_LEVELS: TodLevel[] = ['spicy', 'adult'];
+export const TOD_LEVELS: TodLevel[] = ['normal', 'couple', 'spicy'];
+/** Niveaux qui demandent de confirmer avoir 16 ans ou plus. */
+export const TOD_ADULT_LEVELS: TodLevel[] = ['spicy'];
 /** Niveaux autorisés en mode filtre caméra (rien de coquin sur TikTok / Insta). */
 export const TOD_FILTER_LEVELS: TodLevel[] = ['normal', 'couple'];
-export const TOD_LEVEL_COLORS: Record<TodLevel, string> = { normal: colors.cyan, couple: colors.lilac, spicy: colors.peach, adult: colors.pink };
+export const TOD_LEVEL_COLORS: Record<TodLevel, string> = { normal: colors.cyan, couple: colors.lilac, spicy: colors.peach };
 export const TOD_KIND_COLORS: Record<TodKind, string> = { truth: colors.cyan, dare: colors.pink };
 
 type Key = `${TodLevel}.${TodKind}`;

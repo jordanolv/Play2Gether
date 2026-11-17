@@ -134,19 +134,18 @@
     },
     "truthordare": {
       "title": "Action ou Vérité",
-      "tagline": "Normal, couple, coquin ou adulte ++",
+      "tagline": "Normal, couple ou coquin",
       "description": "Chacun son tour : action ou vérité, du plus sage au plus coquin.",
       "results": "Résultats",
       "levels": {
         "normal": "Normal",
         "couple": "Couple",
-        "spicy": "Coquin",
-        "adult": "Adulte ++"
+        "spicy": "Coquin"
       },
-      "adultTitle": "Réservé aux adultes",
-      "adultBody": "Les niveaux Coquin et Adulte ++ contiennent du contenu sexuel. Ils sont réservés aux plus de 18 ans et ne sont pas disponibles en mode filtre caméra.",
+      "adultTitle": "Contenu suggestif — 16+",
+      "adultBody": "Le niveau Coquin contient des thèmes suggestifs. Il est réservé aux 16 ans et plus et reste indisponible en mode filtre caméra.",
       "adultCancel": "Annuler",
-      "adultConfirm": "J'ai plus de 18 ans",
+      "adultConfirm": "J’ai 16 ans ou plus",
       "turnSuffix": ", action ou vérité ?",
       "truth": "Vérité",
       "dare": "Action",
@@ -163,8 +162,7 @@
       "levelsSub": {
         "normal": "Fun et léger, même entre amis",
         "couple": "Souvenirs, sentiments et tendresse",
-        "spicy": "Suggestif, pour faire monter la température",
-        "adult": "Sexe assumé : positions, préliminaires…"
+        "spicy": "Suggestif, pour faire monter la température"
       },
       "pickLevel": "Choisissez votre thème"
     }
