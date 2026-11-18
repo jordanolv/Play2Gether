@@ -88,3 +88,9 @@ Déclaration d'âge du brouillon corrigée : thèmes suggestifs fréquents, cont
 ## Validation Apple (17/11/2026)
 
 - 2.0.0 (build 31) validée par App Review : READY_FOR_SALE, publiée automatiquement sur l'App Store.
+
+## Version 2.0.1 (18/11/2026)
+
+- Correctif : « Qui de nous deux » en mode caméra n'utilise plus la roulette. Le jeu affiche un compte à rebours, puis on touche le côté de la personne pointée.
+- iOS : build 33 rattaché à la 2.0.1 et soumis à l'App Review (reviewSubmission f34afd4d…, WAITING_FOR_REVIEW). Publication automatique après validation.
+- Android : build 5 (2.0.1) publié en test interne (completed). Production toujours refusée (FAILED_PRECONDITION). Build 5 remplace le build 4 en brouillon sur le test fermé (alpha).
