@@ -155,6 +155,8 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
   const [highlight, setHighlight] = useState<Side | null>(null);
   const [rolling, setRolling] = useState(false);
   const [picked, setPicked] = useState(false);
+  // « Qui de nous deux » : compte à rebours 3, 2, 1… puis « Pointez ! » (0)
+  const [count, setCount] = useState<number | null>(null);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
 
@@ -190,6 +192,7 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
     setHighlight(null);
     setRolling(false);
     setPicked(false);
+    setCount(null);
     setGuess(null);
     setTodCard(null);
     pickAnim.setValue(0);
@@ -237,6 +240,25 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
     });
   };
 
+  /** Les deux joueurs pointent la même personne en même temps : pas de tirage au sort. */
+  const countdown = () => {
+    setRolling(true);
+    [3, 2, 1, 0].forEach((n, i) => {
+      timers.current.push(
+        setTimeout(() => {
+          setCount(n);
+          popPick();
+          if (n > 0) Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+          else {
+            setRolling(false);
+            setPicked(true);
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
+          }
+        }, i * 800)
+      );
+    });
+  };
+
   const makeGuess = (side: Side) => {
     if (!secret) return;
     const correct = secret.answers[index] === side;
@@ -266,8 +288,13 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
         else nextCard();
         return;
       case 'whoofus':
-        if (!picked) spin();
-        else nextCard();
+        // Compte à rebours, puis on touche le côté de la personne pointée, puis question suivante
+        if (!picked) countdown();
+        else if (highlight === null) {
+          setHighlight(side);
+          point(side);
+          popPick();
+        } else nextCard();
         return;
       case 'truthordare':
         if (!picked) spin();
@@ -359,7 +386,7 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
       case 'truthordare':
         return !picked ? t('filter.hintSpinTod') : !todCard ? t('filter.hintTod') : t('filter.hintNext');
       case 'whoofus':
-        return picked ? t('filter.hintNext') : t('filter.hintSpin');
+        return !picked ? t('filter.hintCountdown') : highlight === null ? t('filter.hintPointed') : t('filter.hintNext');
       case 'password':
         return t('filter.hintPassword');
       default:
@@ -439,6 +466,7 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
         >
           {side === 0 && <Feather name="arrow-left" size={20} color={lit ? colors.bg : colors.text} />}
           <Text style={[styles.sideText, { color: lit ? colors.bg : colors.text }]} numberOfLines={1}>{sideNames[side]}</Text>
+          {mode === 'whoofus' && scores[side] > 0 && <Text style={[styles.sideText, { color: lit ? colors.bg : colors.textMuted }]}>{scores[side]}</Text>}
           {side === 1 && <Feather name="arrow-right" size={20} color={lit ? colors.bg : colors.text} />}
         </Animated.View>
       );
@@ -496,6 +524,15 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
             <View style={styles.verdictWrap} pointerEvents="none">
               <Animated.Text style={[styles.verdict, { backgroundColor: lastCorrect ? colors.mint : colors.pink }, verdictStyle]}>
                 {t(lastCorrect ? 'games.wouldyourather.right' : 'games.wouldyourather.wrong')}
+              </Animated.Text>
+            </View>
+          )}
+
+          {/* Compte à rebours de « Qui de nous deux » */}
+          {mode === 'whoofus' && count !== null && highlight === null && (
+            <View style={styles.verdictWrap} pointerEvents="none">
+              <Animated.Text style={[styles.verdict, styles.countdown, { backgroundColor: count === 0 ? colors.pink : colors.yellow }, verdictStyle]}>
+                {count === 0 ? t('filter.pointNow') : count}
               </Animated.Text>
             </View>
           )}
@@ -596,6 +633,7 @@ const styles = StyleSheet.create({
   },
   cardSub: { color: colors.yellow, fontFamily: fonts.extrabold, fontSize: 15, textAlign: 'center' },
 
+  countdown: { fontSize: 44, color: colors.bg },
   verdictWrap: { position: 'absolute', left: 0, right: 0, top: '42%', alignItems: 'center' },
   verdict: {
     overflow: 'hidden', color: colors.bg, fontFamily: fonts.extrabold, fontSize: 34,

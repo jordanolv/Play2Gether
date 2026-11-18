@@ -84,3 +84,7 @@ Déclaration d'âge du brouillon corrigée : thèmes suggestifs fréquents, cont
 
 - iOS : build 31 (nouvelle icône) VALID, rattaché à la 2.0.0, notes App Review mises à jour, soumis à l'App Review (reviewSubmission 56ee57be…, WAITING_FOR_REVIEW). Publication automatique après validation.
 - Android : production refusée par l'API (FAILED_PRECONDITION, accès production non accordé). App encore en statut brouillon chez Google. Build 4 placé en brouillon sur le test fermé (alpha) : testeurs à ajouter et envoi pour examen à faire dans Play Console ; 12 testeurs / 14 jours si exigé.
+
+## Validation Apple (17/11/2026)
+
+- 2.0.0 (build 31) validée par App Review : READY_FOR_SALE, publiée automatiquement sur l'App Store.
