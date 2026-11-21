@@ -23,7 +23,7 @@ interface GameItem {
 }
 
 const games = gamesData as GameItem[];
-const FEATURED_ID = 'password';
+const FEATURED_ID = 'ladder';
 
 export default function HomeScreen() {
   const router = useRouter();

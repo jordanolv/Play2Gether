@@ -166,6 +166,39 @@
         "spicy": "Suggestive, to turn up the heat"
       },
       "pickLevel": "Pick your theme"
+    },
+    "ladder": {
+      "title": "Word Ladder",
+      "tagline": "One letter at a time",
+      "description": "Go from one word to another by changing a single letter each move.",
+      "from": "Start",
+      "to": "Goal",
+      "par": "Par {{count}}",
+      "turn": "{{name}}, find a word",
+      "words_one": "{{count}} word",
+      "words_other": "{{count}} words",
+      "found": "Word found",
+      "undo": "Undo last",
+      "done": "We made it!",
+      "giveUp": "Show a solution",
+      "howTo": "Take turns changing one letter (keeping the order) to make a real word, until you reach the goal. No referee: you check each other!",
+      "example": "Example: {{example}}",
+      "solution": "A solution in {{count}} moves",
+      "verdict": {
+        "under": "Under par, well done!",
+        "par": "Right on par!",
+        "over_one": "{{count}} move over par",
+        "over_other": "{{count}} moves over par",
+        "gaveUp": "Solution revealed"
+      },
+      "next": "Next round",
+      "seeResults": "See results",
+      "results": "Results",
+      "total": "{{words}} moves for a par of {{par}}",
+      "perfect": "Genius duo 🧠",
+      "good": "Great team!",
+      "ok": "Not bad, try again?",
+      "playAgain": "Play again"
     }
   },
   "names": {
@@ -216,7 +249,8 @@
       "wouldyourather": "Would you rather",
       "truthordare": "Truth or dare",
       "password": "{{giver}} gives clues",
-      "scattergories": "Scattergories"
+      "scattergories": "Scattergories",
+      "ladder": "Word Ladder"
     },
     "or": "OR",
     "hintSpin": "Tap the screen to spin",
@@ -236,6 +270,11 @@
     "found": "Got it",
     "skip": "Skip",
     "hintPassword": "Left: got it · Right: skip",
-    "hintBac": "A word from the theme containing both letters. Tap the side of whoever finds one first"
+    "hintBac": "A word from the theme containing both letters. Tap the side of whoever finds one first",
+    "ladderSub": "Par {{par}} · {{words}}",
+    "ladderTurn": "{{name}}'s turn!",
+    "hintLadder": "Left: word found · Right: we made it!",
+    "ladderFound": "Word found",
+    "ladderDone": "We made it!"
   }
 }
