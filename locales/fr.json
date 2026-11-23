@@ -17,7 +17,8 @@
     "backLabel": "Retour",
     "startTimer": "Chrono {{time}}",
     "timeUp": "Temps écoulé !",
-    "filmLabel": "Jouer en mode filtre caméra"
+    "filmLabel": "Jouer en mode filtre caméra",
+    "helpLabel": "Règles du jeu"
   },
   "home": {
     "streak": "Série: {{count}} jours",
@@ -176,13 +177,12 @@
       "turn": "À {{name}} de trouver un mot",
       "words_one": "{{count}} mot",
       "words_other": "{{count}} mots",
-      "found": "Mot trouvé",
       "undo": "Annuler le dernier",
-      "done": "On y est !",
-      "giveUp": "Voir une solution",
-      "howTo": "Chacun votre tour, changez une seule lettre (sans changer leur ordre) pour former un vrai mot, jusqu'au mot d'arrivée. Pas d'arbitre : vous vous corrigez entre vous !",
+      "pickLetter": "Choisis la nouvelle lettre",
+      "tapHint": "Glisse une lettre sur celle à changer",
+      "giveUp": "Passer",
+      "howTo": "Glisse une lettre de la liste sur la lettre du mot à changer (ou touche la lettre du mot, puis une lettre de la liste). À chaque coup, une seule lettre change et le mot doit rester un vrai mot. Chacun son tour, jusqu'au mot d'arrivée. L'appli ne vérifie pas : vous vous corrigez entre vous !",
       "example": "Exemple : {{example}}",
-      "solution": "Une solution en {{count}} coups",
       "verdict": {
         "under": "Sous le par, bravo !",
         "par": "Pile le par !",
@@ -248,8 +248,7 @@
       "wouldyourather": "Tu préfères",
       "truthordare": "Action ou vérité",
       "password": "{{giver}} fait deviner",
-      "scattergories": "Petit Bac",
-      "ladder": "Du coq à l'âne"
+      "scattergories": "Petit Bac"
     },
     "or": "OU",
     "hintSpin": "Touche l'écran pour lancer la roulette",
@@ -269,11 +268,6 @@
     "found": "Trouvé",
     "skip": "Passer",
     "hintPassword": "Gauche : trouvé · Droite : on passe",
-    "hintBac": "Un mot du thème qui contient les 2 lettres. Touche le côté de celui qui trouve en premier",
-    "ladderSub": "Par {{par}} · {{words}}",
-    "ladderTurn": "À {{name}} !",
-    "hintLadder": "Gauche : mot trouvé · Droite : on y est !",
-    "ladderFound": "Mot trouvé",
-    "ladderDone": "On y est !"
+    "hintBac": "Un mot du thème qui contient les 2 lettres. Touche le côté de celui qui trouve en premier"
   }
 }

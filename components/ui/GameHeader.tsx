@@ -11,9 +11,11 @@ interface GameHeaderProps {
   total?: number;
   /** Ouvre le jeu en mode filtre caméra : affiche une icône caméra à droite. */
   onFilm?: () => void;
+  /** Affiche un bouton « ? » (règles du jeu). */
+  onHelp?: () => void;
 }
 
-export function GameHeader({ title, step, total, onFilm }: GameHeaderProps) {
+export function GameHeader({ title, step, total, onFilm, onHelp }: GameHeaderProps) {
   const router = useRouter();
   const { t } = useTranslation();
   const hasProgress = step !== undefined && total !== undefined;
@@ -32,6 +34,17 @@ export function GameHeader({ title, step, total, onFilm }: GameHeaderProps) {
         </Pressable>
         <Text style={styles.title} numberOfLines={1}>{title}</Text>
         {hasProgress && <Text style={styles.count}>{step} / {total}</Text>}
+        {onHelp && (
+          <Pressable
+            onPress={onHelp}
+            accessibilityRole="button"
+            accessibilityLabel={t('common.helpLabel')}
+            style={({ pressed }) => [styles.film, pressed && { opacity: 0.7 }]}
+            hitSlop={8}
+          >
+            <Feather name="help-circle" size={18} color={colors.textMuted} />
+          </Pressable>
+        )}
         {onFilm && (
           <Pressable
             onPress={onFilm}

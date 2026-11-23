@@ -17,14 +17,13 @@ import whoEn from '@/data/whoofus-en.json';
 import whoFr from '@/data/whoofus-fr.json';
 import { CoupleGenders, CoupleNames } from '@/utils/couple';
 import { getBacRound, getRandomWords } from '@/utils/gameWords';
-import { drawLadders, ladderPar, ladderVerdict } from '@/utils/ladder';
 import { byLanguage } from '@/utils/random';
 import { drawFresh } from '@/utils/seen';
 import { updateDailyStreak } from '@/utils/streak';
 import { TOD_FILTER_LEVELS, TOD_KIND_COLORS, TOD_LEVEL_COLORS, TodKind, TodLevel, useTodDecks } from '@/utils/truthordare';
 
-type Mode = 'whoofus' | 'wouldyourather' | 'truthordare' | 'password' | 'scattergories' | 'ladder';
-const MODES: Mode[] = ['whoofus', 'wouldyourather', 'truthordare', 'password', 'scattergories', 'ladder'];
+type Mode = 'whoofus' | 'wouldyourather' | 'truthordare' | 'password' | 'scattergories';
+const MODES: Mode[] = ['whoofus', 'wouldyourather', 'truthordare', 'password', 'scattergories'];
 const isMode = (value: unknown): value is Mode => MODES.includes(value as Mode);
 const TOD_KINDS: TodKind[] = ['truth', 'dare'];
 const SIDE_COLORS = [colors.pink, colors.cyan] as const;
@@ -152,12 +151,6 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
   });
   const [index, setIndex] = useState(0);
 
-  // « Du coq à l'âne » : mots trouvés dans la manche, puis total de coups une fois arrivés
-  const [ladders] = useState(() => (mode === 'ladder' ? drawLadders(i18n.language, 40) : []));
-  const [steps, setSteps] = useState(0);
-  const [ladderEnd, setLadderEnd] = useState<number | null>(null);
-  const ladder = ladders.length > 0 ? ladders[index % ladders.length] : null;
-
   // Roulette (« Qui de nous deux », « Action ou vérité »)
   const [highlight, setHighlight] = useState<Side | null>(null);
   const [rolling, setRolling] = useState(false);
@@ -200,8 +193,6 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
     setRolling(false);
     setPicked(false);
     setCount(null);
-    setSteps(0);
-    setLadderEnd(null);
     setGuess(null);
     setTodCard(null);
     pickAnim.setValue(0);
@@ -322,18 +313,6 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
           popCard();
         } else nextCard();
         return;
-      case 'ladder':
-        // Gauche : un mot de plus ; droite : on est arrivés (le mot d'arrivée compte) ; puis manche suivante
-        if (ladderEnd !== null) nextCard();
-        else if (side === 0) {
-          setSteps((n) => n + 1);
-          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
-        } else {
-          setLadderEnd(steps + 1);
-          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
-          popPick();
-        }
-        return;
       case 'password':
         // Gauche : trouvé, droite : on passe
         if (side === 0) point(0);
@@ -394,25 +373,6 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
         };
       case 'scattergories':
         return { kicker: t('filter.kickers.scattergories'), text: bac.theme, letters: bac.letters };
-      case 'ladder': {
-        if (!ladder) return { kicker: t('filter.kickers.ladder'), text: '' };
-        const par = ladderPar(ladder);
-        const ends = `${ladder[0].toUpperCase()} → ${ladder[ladder.length - 1].toUpperCase()}`;
-        if (ladderEnd !== null) {
-          const v = ladderVerdict(ladderEnd, par, false);
-          return {
-            kicker: v === 'over' ? t('games.ladder.verdict.over', { count: ladderEnd - par }) : t(`games.ladder.verdict.${v}`),
-            text: ends,
-            sub: ladder.map((w) => w.toUpperCase()).join(' → '),
-            score: `${ladderEnd} / ${par}`,
-          };
-        }
-        return {
-          kicker: t('filter.ladderTurn', { name: sideNames[(index + steps) % 2] }),
-          text: ends,
-          sub: t('filter.ladderSub', { par, words: t('games.ladder.words', { count: steps }) }),
-        };
-      }
       default:
         return { kicker: t('filter.kickers.whoofus'), text: deck[index] };
     }
@@ -429,8 +389,6 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
         return !picked ? t('filter.hintCountdown') : highlight === null ? t('filter.hintPointed') : t('filter.hintNext');
       case 'password':
         return t('filter.hintPassword');
-      case 'ladder':
-        return ladderEnd !== null ? t('filter.hintNext') : t('filter.hintLadder');
       default:
         return t('filter.hintBac');
     }
@@ -474,18 +432,6 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
       ));
     }
     if (mode === 'truthordare' && todCard) return null;
-    if (mode === 'ladder') {
-      if (ladderEnd !== null) return null;
-      return [
-        { icon: 'plus' as const, label: t('filter.ladderFound'), color: SIDE_COLORS[(index + steps) % 2] },
-        { icon: 'flag' as const, label: t('filter.ladderDone'), color: colors.mint },
-      ].map((b, i) => (
-        <View key={i} style={[styles.side, styles.sideWide, { backgroundColor: b.color }]}>
-          <Feather name={b.icon} size={18} color={colors.bg} />
-          <Text style={[styles.sideText, { color: colors.bg }]}>{b.label}</Text>
-        </View>
-      ));
-    }
     if (mode === 'password') {
       return [
         { icon: 'check' as const, label: t('filter.found'), color: colors.mint },

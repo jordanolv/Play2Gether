@@ -2,7 +2,7 @@
   "expo": {
     "name": "Play2Gether",
     "slug": "play2gether",
-    "version": "2.0.1",
+    "version": "2.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "play2gether",

@@ -1,9 +1,8 @@
 import { Feather } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
-import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Animated, PanResponder, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '@/components/ui/Button';
 import { GameHeader } from '@/components/ui/GameHeader';
@@ -67,33 +66,143 @@ export function WordTiles({ word, color, diff, size = 'lg' }: { word: string; co
   );
 }
 
+const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+/** Compare sans tenir compte des accents ni de la casse (ÂNE = ANE). */
+const plain = (w: string) => w.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
+type Measurable = { measureInWindow: (cb: (x: number, y: number, w: number, h: number) => void) => void };
+
+interface DragKeyProps {
+  letter: string;
+  color: string;
+  onTap: (letter: string) => void;
+  onGrab: () => void;
+  onMove: (x: number, y: number) => void;
+  onDrop: (letter: string, x: number, y: number) => void;
+}
+
+/** Une lettre de la liste : on la touche, ou on la glisse sur la lettre à changer. */
+function DragKey(props: DragKeyProps) {
+  const [pan] = useState(() => new Animated.ValueXY());
+  const [dragging, setDragging] = useState(false);
+  const latest = useRef(props);
+  useEffect(() => {
+    latest.current = props;
+  });
+
+  // Le geste garde les derniers callbacks via `latest` : le PanResponder n'est créé qu'une fois
+  // eslint-disable-next-line react-hooks/refs
+  const [responder] = useState(() =>
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderGrant: () => {
+        setDragging(true);
+        latest.current.onGrab();
+      },
+      onPanResponderMove: (_, g) => {
+        pan.setValue({ x: g.dx, y: g.dy });
+        latest.current.onMove(g.moveX, g.moveY);
+      },
+      onPanResponderRelease: (_, g) => {
+        const { letter, onTap, onDrop } = latest.current;
+        if (Math.abs(g.dx) < 8 && Math.abs(g.dy) < 8) onTap(letter);
+        else onDrop(letter, g.moveX, g.moveY);
+        setDragging(false);
+        Animated.spring(pan, { toValue: { x: 0, y: 0 }, useNativeDriver: false, bounciness: 8 }).start();
+      },
+      onPanResponderTerminate: () => {
+        latest.current.onMove(-1, -1); // efface la tuile survolée
+        setDragging(false);
+        Animated.spring(pan, { toValue: { x: 0, y: 0 }, useNativeDriver: false }).start();
+      },
+    })
+  );
+
+  return (
+    <Animated.View
+      {...responder.panHandlers}
+      accessibilityRole="button"
+      style={[
+        styles.key,
+        { borderColor: props.color },
+        { transform: [{ translateX: pan.x }, { translateY: pan.y }, { scale: dragging ? 1.35 : 1 }] },
+        dragging && { backgroundColor: props.color, zIndex: 50, elevation: 12 },
+      ]}
+    >
+      <Text style={[styles.keyText, dragging && { color: colors.bg }]}>{props.letter}</Text>
+    </Animated.View>
+  );
+}
+
 function LadderGame({ names }: { names: CoupleNames }) {
   const { t, i18n } = useTranslation();
-  const router = useRouter();
   const [ladders, setLadders] = useState<Ladder[]>(() => drawLadders(i18n.language, ROUNDS));
   const [results, setResults] = useState<RoundResult[]>([]);
-  const [words, setWords] = useState(0);
+  const [moves, setMoves] = useState<string[]>([]);
+  const [selected, setSelected] = useState<number | null>(null);
   const [revealed, setRevealed] = useState<RoundResult | null>(null);
+  const [showHelp, setShowHelp] = useState(false);
+  const [hover, setHover] = useState<number | null>(null);
+  const tileRefs = useRef<(Measurable | null)[]>([]);
+  const tileRects = useRef<{ x: number; y: number; w: number; h: number }[]>([]);
 
   const round = results.length;
   const finished = round >= ladders.length;
   const ladder = ladders[Math.min(round, ladders.length - 1)];
   const par = ladder ? ladderPar(ladder) : 0;
+  const start = ladder?.[0] ?? '';
+  const goal = ladder?.[ladder.length - 1] ?? '';
+  const current = moves.length > 0 ? moves[moves.length - 1] : start;
   // Chacun son tour ; celui qui commence change à chaque manche
-  const turn = ((round + words) % 2) as 0 | 1;
+  const turn = ((round + moves.length) % 2) as 0 | 1;
 
-  const found = () => {
-    setWords((w) => w + 1);
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
-  };
-
-  const endRound = (gaveUp: boolean) => {
-    // « On y est » : le dernier mot trouvé est le mot d'arrivée, il compte comme un coup
-    const result = { words: gaveUp ? words : words + 1, par, gaveUp };
-    setRevealed(result);
+  const endRound = (words: number, gaveUp: boolean) => {
+    setSelected(null);
+    setRevealed({ words, par, gaveUp });
     Haptics.notificationAsync(
       gaveUp ? Haptics.NotificationFeedbackType.Warning : Haptics.NotificationFeedbackType.Success
     ).catch(() => {});
+  };
+
+  const applyLetter = (index: number, letter: string) => {
+    if (plain(current[index]) === plain(letter)) return;
+    const chars = [...current];
+    chars[index] = letter.toLowerCase();
+    const word = chars.join('');
+    if (plain(word) === plain(goal)) {
+      setMoves([...moves, goal]);
+      endRound(moves.length + 1, false);
+      return;
+    }
+    setMoves([...moves, word]);
+    setSelected(null);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+  };
+
+  // Position des lettres du mot au début d'un glissé, pour savoir sur laquelle on dépose
+  const measureTiles = () => {
+    tileRefs.current.forEach((ref, i) => {
+      ref?.measureInWindow((x, y, w, h) => {
+        tileRects.current[i] = { x, y, w, h };
+      });
+    });
+  };
+  const tileAt = (px: number, py: number) => {
+    const pad = 12;
+    const i = tileRects.current.findIndex((r) => r && px >= r.x - pad && px <= r.x + r.w + pad && py >= r.y - pad && py <= r.y + r.h + pad);
+    return i >= 0 && i < current.length ? i : null;
+  };
+  const onDragMove = (x: number, y: number) => {
+    const i = tileAt(x, y);
+    if (i !== hover) setHover(i);
+  };
+  const onDragDrop = (letter: string, x: number, y: number) => {
+    setHover(null);
+    const i = tileAt(x, y);
+    if (i !== null) applyLetter(i, letter);
+  };
+  const onKeyTap = (letter: string) => {
+    if (selected !== null) applyLetter(selected, letter);
   };
 
   const next = () => {
@@ -101,14 +210,16 @@ function LadderGame({ names }: { names: CoupleNames }) {
     const all = [...results, revealed];
     setResults(all);
     setRevealed(null);
-    setWords(0);
+    setMoves([]);
+    setSelected(null);
     if (all.length >= ladders.length) updateDailyStreak();
   };
 
   const restart = () => {
     setLadders(drawLadders(i18n.language, ROUNDS));
     setResults([]);
-    setWords(0);
+    setMoves([]);
+    setSelected(null);
     setRevealed(null);
   };
 
@@ -150,9 +261,8 @@ function LadderGame({ names }: { names: CoupleNames }) {
     );
   }
 
-  const start = ladder[0];
-  const goal = ladder[ladder.length - 1];
   const example = byLanguage(i18n.language, LADDER_EXAMPLE).map((w) => w.toUpperCase()).join(' → ');
+  const color = PLAYER_COLORS[turn];
 
   return (
     <Screen glows={GLOWS}>
@@ -160,19 +270,36 @@ function LadderGame({ names }: { names: CoupleNames }) {
         title={t('games.ladder.title')}
         step={round + 1}
         total={ladders.length}
-        onFilm={() => router.push({ pathname: '/filter', params: { mode: 'ladder' } })}
+        onHelp={() => setShowHelp((v) => !v)}
       />
 
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.card}>
-          <Text style={styles.label}>{t('games.ladder.from')}</Text>
-          <WordTiles word={start} color={colors.violet} />
-          <View style={styles.middle}>
-            <Feather name="arrow-down" size={22} color={colors.textMuted} />
-            <Text style={styles.par}>{t('games.ladder.par', { count: par })}</Text>
-          </View>
           <Text style={styles.label}>{t('games.ladder.to')}</Text>
           <WordTiles word={goal} color={colors.mint} />
+          <View style={styles.middle}>
+            <Feather name="arrow-up" size={22} color={colors.textMuted} />
+            <Text style={styles.par}>{t('games.ladder.par', { count: par })}</Text>
+          </View>
+          {!revealed && (
+            <>
+              <Text style={styles.label}>{t('games.ladder.turn', { name: names[turn] })}</Text>
+              <View style={styles.tiles}>
+                {[...current.toUpperCase()].map((letter, i) => (
+                  <Pressable
+                    key={i}
+                    ref={(r) => { tileRefs.current[i] = r; }}
+                    collapsable={false}
+                    onPress={() => setSelected(selected === i ? null : i)}
+                    accessibilityRole="button"
+                    style={[styles.tile, { borderColor: color }, (selected === i || hover === i) && { backgroundColor: color }]}
+                  >
+                    <Text style={[styles.tileText, (selected === i || hover === i) && { color: colors.bg }]}>{letter}</Text>
+                  </Pressable>
+                ))}
+              </View>
+            </>
+          )}
         </View>
 
         {revealed ? (
@@ -187,26 +314,20 @@ function LadderGame({ names }: { names: CoupleNames }) {
                 </Text>
               );
             })()}
-            <Text style={styles.solutionTitle}>{t('games.ladder.solution', { count: par })}</Text>
-            {ladder.map((w, i) => (
-              <WordTiles key={i} word={w} size="sm" color={i === ladder.length - 1 ? colors.mint : colors.violet} diff={i > 0 ? ladder[i - 1] : undefined} />
-            ))}
+            {!revealed.gaveUp && <Text style={styles.count}>{t('games.ladder.total', { words: revealed.words, par: revealed.par })}</Text>}
           </View>
         ) : (
-          <>
-            <View style={styles.turnRow}>
-              <Text style={[styles.turn, { color: PLAYER_COLORS[turn] }]} numberOfLines={1}>
-                {t('games.ladder.turn', { name: names[turn] })}
-              </Text>
-              <Text style={styles.count}>{t('games.ladder.words', { count: words })}</Text>
-            </View>
-            {round === 0 && words === 0 && (
-              <View style={styles.howTo}>
-                <Text style={styles.howToText}>{t('games.ladder.howTo')}</Text>
-                <Text style={styles.example}>{t('games.ladder.example', { example })}</Text>
-              </View>
-            )}
-          </>
+          <View style={styles.turnRow}>
+            <Text style={styles.count}>{t('games.ladder.words', { count: moves.length })}</Text>
+            <Text style={styles.tapHint}>{t(selected === null ? 'games.ladder.tapHint' : 'games.ladder.pickLetter')}</Text>
+          </View>
+        )}
+
+        {showHelp && (
+          <View style={styles.howTo}>
+            <Text style={styles.howToText}>{t('games.ladder.howTo')}</Text>
+            <Text style={styles.example}>{t('games.ladder.example', { example })}</Text>
+          </View>
         )}
       </ScrollView>
 
@@ -219,33 +340,20 @@ function LadderGame({ names }: { names: CoupleNames }) {
           />
         ) : (
           <>
-            <View style={styles.actions}>
-              <Pressable
-                onPress={found}
-                accessibilityRole="button"
-                style={({ pressed }) => [styles.bigBtn, { backgroundColor: PLAYER_COLORS[turn] }, pressed && styles.pressed]}
-              >
-                <Feather name="plus" size={20} color={colors.bg} />
-                <Text style={styles.bigBtnText}>{t('games.ladder.found')}</Text>
-              </Pressable>
-              <Pressable
-                onPress={() => endRound(false)}
-                accessibilityRole="button"
-                style={({ pressed }) => [styles.bigBtn, { backgroundColor: colors.mint }, pressed && styles.pressed]}
-              >
-                <Feather name="flag" size={18} color={colors.bg} />
-                <Text style={styles.bigBtnText}>{t('games.ladder.done')}</Text>
-              </Pressable>
+            <View style={styles.keys}>
+              {LETTERS.map((l) => (
+                <DragKey key={l} letter={l} color={color} onTap={onKeyTap} onGrab={measureTiles} onMove={onDragMove} onDrop={onDragDrop} />
+              ))}
             </View>
             <View style={styles.tools}>
-              {words > 0 && (
-                <Pressable onPress={() => setWords((w) => Math.max(0, w - 1))} accessibilityRole="button" style={styles.tool}>
+              {moves.length > 0 && (
+                <Pressable onPress={() => { setMoves(moves.slice(0, -1)); setSelected(null); }} accessibilityRole="button" style={styles.tool}>
                   <Feather name="rotate-ccw" size={14} color={colors.textMuted} />
                   <Text style={styles.toolText}>{t('games.ladder.undo')}</Text>
                 </Pressable>
               )}
-              <Pressable onPress={() => endRound(true)} accessibilityRole="button" style={styles.tool}>
-                <Feather name="eye" size={14} color={colors.textMuted} />
+              <Pressable onPress={() => endRound(moves.length, true)} accessibilityRole="button" style={styles.tool}>
+                <Feather name="skip-forward" size={14} color={colors.textMuted} />
                 <Text style={styles.toolText}>{t('games.ladder.giveUp')}</Text>
               </Pressable>
             </View>
@@ -276,7 +384,6 @@ const styles = StyleSheet.create({
   tileTextSm: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 18 },
 
   turnRow: { alignItems: 'center', gap: 4 },
-  turn: { fontFamily: fonts.extrabold, fontSize: 22, textAlign: 'center' },
   count: { color: colors.textMuted, fontFamily: fonts.bold, fontSize: 15 },
   howTo: { gap: 8, padding: 16, borderRadius: radius.lg, backgroundColor: 'rgba(255,255,255,0.05)' },
   howToText: { color: colors.text, fontFamily: fonts.semibold, fontSize: 14, lineHeight: 20 },
@@ -284,13 +391,12 @@ const styles = StyleSheet.create({
 
   reveal: { alignItems: 'center', gap: 8 },
   verdict: { fontFamily: fonts.extrabold, fontSize: 24, textAlign: 'center', marginBottom: 4 },
-  solutionTitle: { color: colors.textMuted, fontFamily: fonts.bold, fontSize: 13, marginBottom: 4 },
 
-  footer: { paddingHorizontal: spacing.screen, paddingBottom: 8, gap: 6 },
-  actions: { flexDirection: 'row', gap: 12 },
-  bigBtn: { flex: 1, height: 64, borderRadius: radius.xl, flexDirection: 'row', gap: 8, alignItems: 'center', justifyContent: 'center' },
-  bigBtnText: { color: colors.bg, fontFamily: fonts.extrabold, fontSize: 18 },
-  pressed: { opacity: 0.85, transform: [{ scale: 0.98 }] },
+  footer: { paddingHorizontal: spacing.screen, paddingBottom: 8, gap: 6, zIndex: 10 },
+  keys: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 6, paddingBottom: 4 },
+  key: { width: 38, height: 38, borderRadius: radius.md, borderWidth: 1.5, alignItems: 'center', justifyContent: 'center' },
+  keyText: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 16 },
+  tapHint: { color: colors.text, fontFamily: fonts.bold, fontSize: 15, textAlign: 'center' },
   tools: { flexDirection: 'row', justifyContent: 'center', gap: 8 },
   tool: { flexDirection: 'row', alignItems: 'center', gap: 6, height: 40, paddingHorizontal: 12 },
   toolText: { color: colors.textMuted, fontFamily: fonts.bold, fontSize: 14 },

@@ -17,7 +17,8 @@
     "backLabel": "Back",
     "startTimer": "Timer {{time}}",
     "timeUp": "Time's up!",
-    "filmLabel": "Play in camera filter mode"
+    "filmLabel": "Play in camera filter mode",
+    "helpLabel": "Game rules"
   },
   "home": {
     "streak": "Streak: {{count}} days",
@@ -177,13 +178,12 @@
       "turn": "{{name}}, find a word",
       "words_one": "{{count}} word",
       "words_other": "{{count}} words",
-      "found": "Word found",
       "undo": "Undo last",
-      "done": "We made it!",
-      "giveUp": "Show a solution",
-      "howTo": "Take turns changing one letter (keeping the order) to make a real word, until you reach the goal. No referee: you check each other!",
+      "pickLetter": "Pick the new letter",
+      "tapHint": "Drag a letter onto the one to change",
+      "giveUp": "Skip",
+      "howTo": "Drag a letter from the list onto the letter of the word you want to change (or tap the letter, then a letter from the list). Each move changes just one letter and the result must be a real word. Take turns until you reach the goal word. The app doesn't check: you check each other!",
       "example": "Example: {{example}}",
-      "solution": "A solution in {{count}} moves",
       "verdict": {
         "under": "Under par, well done!",
         "par": "Right on par!",
@@ -249,8 +249,7 @@
       "wouldyourather": "Would you rather",
       "truthordare": "Truth or dare",
       "password": "{{giver}} gives clues",
-      "scattergories": "Scattergories",
-      "ladder": "Word Ladder"
+      "scattergories": "Scattergories"
     },
     "or": "OR",
     "hintSpin": "Tap the screen to spin",
@@ -270,11 +269,6 @@
     "found": "Got it",
     "skip": "Skip",
     "hintPassword": "Left: got it · Right: skip",
-    "hintBac": "A word from the theme containing both letters. Tap the side of whoever finds one first",
-    "ladderSub": "Par {{par}} · {{words}}",
-    "ladderTurn": "{{name}}'s turn!",
-    "hintLadder": "Left: word found · Right: we made it!",
-    "ladderFound": "Word found",
-    "ladderDone": "We made it!"
+    "hintBac": "A word from the theme containing both letters. Tap the side of whoever finds one first"
   }
 }
