@@ -94,3 +94,10 @@ Déclaration d'âge du brouillon corrigée : thèmes suggestifs fréquents, cont
 - Correctif : « Qui de nous deux » en mode caméra n'utilise plus la roulette. Le jeu affiche un compte à rebours, puis on touche le côté de la personne pointée.
 - iOS : build 33 rattaché à la 2.0.1 et soumis à l'App Review (reviewSubmission f34afd4d…, WAITING_FOR_REVIEW). Publication automatique après validation.
 - Android : build 5 (2.0.1) publié en test interne (completed). Production toujours refusée (FAILED_PRECONDITION). Build 5 remplace le build 4 en brouillon sur le test fermé (alpha).
+
+## Version 2.1.0 (23/11/2026)
+
+- Nouveau jeu « Du coq à l'âne » (échelle de mots, glisser une lettre, par).
+- Quota EAS gratuit iOS épuisé pour novembre : build iOS fait sur un Mac GitHub Actions (`.github/workflows/ios-build.yml`, `eas build --local`, gratuit pour un dépôt public, compte dans les 10 builds locaux EAS/mois). Secrets du dépôt : EXPO_TOKEN, ASC_KEY_P8, ASC_KEY_ID, ASC_ISSUER_ID. Lancement : Actions > iOS build > Run workflow.
+- iOS : build 37 rattaché à la 2.1.0, soumis à l'App Review (reviewSubmission 1c12c552…, WAITING_FOR_REVIEW).
+- Android : build 6 (cloud EAS) en test interne (completed) et en brouillon sur le test fermé. Production toujours bloquée.
