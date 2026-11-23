@@ -1,0 +1,3 @@
+scripts:
+  setup: |
+    npm ci --no-audit --no-fund --prefer-offline
