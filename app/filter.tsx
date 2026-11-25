@@ -344,7 +344,10 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
   const guesser = otherSide(answerer);
   const wyrScore = results.filter(Boolean).length;
   const lastCorrect = results[results.length - 1];
-  const sidesBottom = insets.bottom + 64;
+  // Les aides occupent le bas de l'écran ; les commandes se posent juste au-dessus, quelle que soit la hauteur des aides (texte agrandi, deux aides)
+  const [hintsHeight, setHintsHeight] = useState(60);
+  const hintsBottom = insets.bottom + 20;
+  const sidesBottom = hintsBottom + hintsHeight + 12;
 
   // Contenu de la carte du haut, selon le jeu
   const top = ((): { kicker: string; text: string; sub?: string; score?: string; letters?: string[] } => {
@@ -553,7 +556,7 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
       )}
 
       {/* Signature, remplacée par l'aide quand les menus sont affichés */}
-      <View style={[styles.brand, { bottom: insets.bottom + 20 }]} pointerEvents="none">
+      <View style={[styles.brand, { bottom: hintsBottom }]} pointerEvents="none" onLayout={(e) => setHintsHeight(Math.ceil(e.nativeEvent.layout.height))}>
         {chrome && !started && <Text style={[styles.hint, styles.hintMenus]}>{t('filter.hintChrome')}</Text>}
         <Text style={styles.hint}>{hint}</Text>
       </View>
