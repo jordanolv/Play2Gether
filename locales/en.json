@@ -242,6 +242,8 @@
     "title": "Filter mode",
     "permissionTitle": "We need the camera",
     "permissionBody": "Filter mode shows the game on top of your selfie camera, like a TikTok filter.",
+    "playClassic": "Play without camera",
+    "menusPill": "Menus · exit",
     "allowCamera": "Allow camera",
     "tapToPlay": "Tap to play",
     "kickers": {
@@ -254,6 +256,8 @@
     "or": "OR",
     "hintSpin": "Tap the screen to spin",
     "hintCountdown": "Tap the screen for the countdown, then point!",
+    "hintCounting": "Countdown running… point when it says POINT!",
+    "hintRolling": "Picking…",
     "hintPointed": "Tap the side of the person you pointed at",
     "pointNow": "POINT!",
     "hintNext": "Tap the screen for the next one",

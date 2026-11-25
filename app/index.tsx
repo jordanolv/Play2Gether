@@ -110,7 +110,7 @@ export default function HomeScreen() {
                 </View>
                 <View style={styles.badges}>
                   {game.filmable && (
-                    <View style={styles.badgeCam} accessibilityLabel={t('home.filmable')}>
+                    <View style={styles.badgeCam} accessible accessibilityLabel={t('home.filmable')}>
                       <Feather name="video" size={13} color={colors.pink} />
                     </View>
                   )}
@@ -167,10 +167,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border,
   },
   cardSoon: { opacity: 0.55 },
-  cardTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 },
-  mark: { width: 36, height: 36, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center' },
+  cardTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 6, marginBottom: 2 },
+  mark: { flexShrink: 0, width: 36, height: 36, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center' },
   markText: { color: colors.bg, fontFamily: fonts.extrabold, fontSize: 16 },
-  badges: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  badges: { flexShrink: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-end', alignItems: 'center', gap: 6 },
   badgeCam: {
     width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center',
     backgroundColor: 'rgba(255,95,168,0.14)', borderWidth: 1, borderColor: 'rgba(255,95,168,0.4)',

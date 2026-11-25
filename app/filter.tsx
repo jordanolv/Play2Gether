@@ -51,6 +51,7 @@ function parseSecret(raw: string | undefined): Secret | null {
 
 export default function FilterScreen() {
   const { t, i18n } = useTranslation();
+  const router = useRouter();
   const [permission, requestPermission] = useCameraPermissions();
   const params = useLocalSearchParams<{ mode?: string; level?: string; secret?: string }>();
   const mode: Mode = isMode(params.mode) ? params.mode : 'whoofus';
@@ -68,6 +69,7 @@ export default function FilterScreen() {
         <Text style={styles.permissionTitle}>{t('filter.permissionTitle')}</Text>
         <Text style={styles.permissionBody}>{t('filter.permissionBody')}</Text>
         <Button label={t('filter.allowCamera')} onPress={requestPermission} variant="accent" style={{ alignSelf: 'stretch' }} />
+        <Button label={t('filter.playClassic')} onPress={() => (router.canGoBack() ? router.back() : router.replace(mode === 'truthordare' ? ({ pathname: '/games/truthordare', params: { level } } as any) : (`/games/${mode}` as any)))} variant="ghost" style={{ alignSelf: 'stretch' }} />
       </Screen>
     );
   }
@@ -342,7 +344,10 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
   const guesser = otherSide(answerer);
   const wyrScore = results.filter(Boolean).length;
   const lastCorrect = results[results.length - 1];
-  const sidesBottom = insets.bottom + 64;
+  // Les aides occupent le bas de l'écran ; les commandes se posent juste au-dessus, quelle que soit la hauteur des aides (texte agrandi, deux aides)
+  const [hintsHeight, setHintsHeight] = useState(60);
+  const hintsBottom = insets.bottom + 20;
+  const sidesBottom = hintsBottom + hintsHeight + 12;
 
   // Contenu de la carte du haut, selon le jeu
   const top = ((): { kicker: string; text: string; sub?: string; score?: string; letters?: string[] } => {
@@ -379,14 +384,13 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
   })();
 
   const hint = (() => {
-    if (!started) return t('filter.hintChrome');
     switch (mode) {
       case 'wouldyourather':
         return finished ? t('filter.hintRestart') : guess === null ? t('filter.hintGuess') : t('filter.hintNext');
       case 'truthordare':
-        return !picked ? t('filter.hintSpinTod') : !todCard ? t('filter.hintTod') : t('filter.hintNext');
+        return !picked ? (rolling ? t('filter.hintRolling') : t('filter.hintSpinTod')) : !todCard ? t('filter.hintTod') : t('filter.hintNext');
       case 'whoofus':
-        return !picked ? t('filter.hintCountdown') : highlight === null ? t('filter.hintPointed') : t('filter.hintNext');
+        return !picked ? (rolling ? t('filter.hintCounting') : t('filter.hintCountdown')) : highlight === null ? t('filter.hintPointed') : t('filter.hintNext');
       case 'password':
         return t('filter.hintPassword');
       default:
@@ -552,8 +556,9 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
       )}
 
       {/* Signature, remplacée par l'aide quand les menus sont affichés */}
-      <View style={[styles.brand, { bottom: insets.bottom + 20 }]} pointerEvents="none">
-        {chrome ? <Text style={styles.hint}>{hint}</Text> : <Text style={styles.brandText}>Play2Gether</Text>}
+      <View style={[styles.brand, { bottom: hintsBottom }]} pointerEvents="none" onLayout={(e) => setHintsHeight(Math.ceil(e.nativeEvent.layout.height))}>
+        {chrome && !started && <Text style={[styles.hint, styles.hintMenus]}>{t('filter.hintChrome')}</Text>}
+        <Text style={styles.hint}>{hint}</Text>
       </View>
 
       {/* Bande du haut : touche pour réafficher les menus */}
@@ -563,7 +568,12 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
           onPress={() => setChrome(true)}
           accessibilityRole="button"
           accessibilityLabel={t('filter.showMenus')}
-        />
+        >
+          <View style={[styles.menusPill, { marginTop: insets.top + 8 }]} pointerEvents="none">
+            <Feather name="menu" size={13} color={colors.text} />
+            <Text style={styles.menusPillText}>{t('filter.menusPill')}</Text>
+          </View>
+        </Pressable>
       )}
 
       {chrome && (
@@ -670,13 +680,19 @@ const styles = StyleSheet.create({
   endValue: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 80, lineHeight: 88 },
   endScore: { color: colors.textMuted, fontFamily: fonts.bold, fontSize: 16 },
 
-  brand: { position: 'absolute', left: spacing.screen, right: spacing.screen, alignItems: 'center' },
+  brand: { position: 'absolute', left: spacing.screen, right: spacing.screen, alignItems: 'center', gap: 6 },
+  hintMenus: { fontSize: 12, opacity: 0.9 },
   brandText: {
     overflow: 'hidden', backgroundColor: DIM, color: colors.pink, fontFamily: fonts.extrabold, fontSize: 12,
     paddingHorizontal: 12, paddingVertical: 5, borderRadius: radius.pill,
   },
 
   chromeZone: { position: 'absolute', top: 0, left: 0, right: 0 },
+  menusPill: {
+    alignSelf: 'center', flexDirection: 'row', alignItems: 'center', gap: 6, height: 30, paddingHorizontal: 12,
+    borderRadius: 15, backgroundColor: 'rgba(18,16,34,0.55)',
+  },
+  menusPillText: { color: colors.text, fontFamily: fonts.bold, fontSize: 12 },
   header: { position: 'absolute', top: 0, left: 0, right: 0, flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12 },
   iconBtn: { width: 44, height: 44, borderRadius: 22, backgroundColor: 'rgba(18,16,34,0.7)', alignItems: 'center', justifyContent: 'center' },
   iconSpacer: { width: 44, height: 44 },
