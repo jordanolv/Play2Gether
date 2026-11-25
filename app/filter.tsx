@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Animated, Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { CameraSettings } from '@/components/filter/CameraSettings';
 import { Movable, usePlacement } from '@/components/filter/Movable';
 import { Button } from '@/components/ui/Button';
 import { Screen } from '@/components/ui/Screen';
@@ -31,6 +32,10 @@ const DIM = 'rgba(18,16,34,0.75)';
 /** Délais successifs de la roulette : elle accélère puis ralentit avant de s'arrêter. */
 const ROULETTE_STEPS = [90, 80, 70, 70, 70, 80, 90, 110, 130, 160, 200, 250, 320, 400];
 const PASSWORD_DECK = 60;
+
+/** Présentations de l'overlay, par jeu : seul « Qui de nous deux » en propose plusieurs pour l'instant. */
+type OverlayStyle = 'card' | 'banner';
+const STYLE_OPTIONS: Partial<Record<Mode, readonly OverlayStyle[]>> = { whoofus: ['card', 'banner'] };
 
 const randomSide = (): Side => (Math.random() < 0.5 ? 0 : 1);
 
@@ -135,9 +140,12 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
 
-  // Les menus restent visibles au départ, se cachent dès qu'on joue, et reviennent en touchant le haut de l'écran
-  const [chrome, setChrome] = useState(true);
-  const [started, setStarted] = useState(false);
+  // L'image reste propre : les réglages n'apparaissent qu'à la demande (appui long sur le fond)
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [overlayOn, setOverlayOn] = useState(true);
+  const [overlayStyle, setOverlayStyle] = useState<OverlayStyle>('card');
+  const styleOptions = STYLE_OPTIONS[mode] ?? [];
+  const compact = styleOptions.length > 1 && overlayStyle === 'banner';
   const sideNames = names;
   const sideGenders = genders;
 
@@ -279,9 +287,12 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
 
   // Un appui fait avancer le jeu. Pour les jeux à deux choix, le côté touché compte.
   const onTap = (x: number) => {
+    // Réglages ouverts : un appui les referme, sans faire avancer la partie
+    if (settingsOpen) {
+      setSettingsOpen(false);
+      return;
+    }
     if (rolling) return;
-    setChrome(false);
-    setStarted(true);
     const side: Side = x < width / 2 ? 0 : 1;
     switch (mode) {
       case 'wouldyourather':
@@ -344,10 +355,8 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
   const guesser = otherSide(answerer);
   const wyrScore = results.filter(Boolean).length;
   const lastCorrect = results[results.length - 1];
-  // Les aides occupent le bas de l'écran ; les commandes se posent juste au-dessus, quelle que soit la hauteur des aides (texte agrandi, deux aides)
-  const [hintsHeight, setHintsHeight] = useState(60);
-  const hintsBottom = insets.bottom + 20;
-  const sidesBottom = hintsBottom + hintsHeight + 12;
+  // Les commandes de jeu restent au-dessus de la zone réservée aux légendes des réseaux
+  const sidesBottom = insets.bottom + 64;
 
   // Contenu de la carte du haut, selon le jeu
   const top = ((): { kicker: string; text: string; sub?: string; score?: string; letters?: string[] } => {
@@ -463,13 +472,14 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
           key={side}
           style={[
             styles.side,
+            compact && styles.sideCompact,
             side === 1 && styles.sideRight,
             { backgroundColor: lit ? SIDE_COLORS[side] : DIM },
             picked && lit && { transform: [{ scale: pickScale }] },
           ]}
         >
           {side === 0 && <Feather name="arrow-left" size={20} color={lit ? colors.bg : colors.text} />}
-          <Text style={[styles.sideText, { color: lit ? colors.bg : colors.text }]} numberOfLines={1}>{sideNames[side]}</Text>
+          <Text style={[styles.sideText, compact && styles.sideTextCompact, { color: lit ? colors.bg : colors.text }]} numberOfLines={1}>{sideNames[side]}</Text>
           {mode === 'whoofus' && scores[side] > 0 && <Text style={[styles.sideText, { color: lit ? colors.bg : colors.textMuted }]}>{scores[side]}</Text>}
           {side === 1 && <Feather name="arrow-right" size={20} color={lit ? colors.bg : colors.text} />}
         </Animated.View>
@@ -484,15 +494,22 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
     <View style={styles.root}>
       <CameraView style={StyleSheet.absoluteFill} facing="front" mirror />
 
-      {/* Fond tactile : un appui n'importe où joue */}
+      {/* Fond tactile : un appui joue ; un appui long affiche les réglages (jamais de texte d'aide à l'image) */}
       <Pressable
         style={StyleSheet.absoluteFill}
         onPress={(e) => onTap(e.nativeEvent.pageX)}
+        onLongPress={() => setSettingsOpen(true)}
+        delayLongPress={600}
         accessibilityRole="button"
         accessibilityLabel={t('filter.tapToPlay')}
+        accessibilityHint={hint}
+        accessibilityActions={[{ name: 'settings', label: t('filter.showSettings') }]}
+        onAccessibilityAction={(e) => {
+          if (e.nativeEvent.actionName === 'settings') setSettingsOpen(true);
+        }}
       />
 
-      {mode === 'wouldyourather' && finished ? (
+      {overlayOn && (mode === 'wouldyourather' && finished ? (
         <Movable placement={cardPlacement} onTap={onTap} style={styles.endWrap}>
           <Animated.View style={[styles.endCard, cardStyle]}>
             <Text style={styles.endKicker}>
@@ -506,12 +523,14 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
         <>
           {/* Carte du jeu, en haut */}
           <Movable placement={cardPlacement} onTap={onTap} style={[styles.top, { top: insets.top + (mode === 'truthordare' ? 112 : 72) }]}>
-            <View style={styles.kickerRow}>
-              <Text style={styles.kicker}>{top.kicker}</Text>
-              {top.score && <Text style={styles.scorePill}>{top.score}</Text>}
-            </View>
-            <Animated.View style={[styles.card, cardStyle]}>
-              <Text style={[styles.cardText, mode === 'password' && styles.cardWord]}>{top.text}</Text>
+            {!compact && (
+              <View style={styles.kickerRow}>
+                <Text style={styles.kicker}>{top.kicker}</Text>
+                {top.score && <Text style={styles.scorePill}>{top.score}</Text>}
+              </View>
+            )}
+            <Animated.View testID={`overlay-card-${compact ? 'banner' : 'card'}`} style={[styles.card, compact && styles.cardCompact, cardStyle]}>
+              <Text style={[styles.cardText, compact && styles.cardTextCompact, mode === 'password' && styles.cardWord]}>{top.text}</Text>
               {top.sub && <Text style={styles.cardSub}>{top.sub}</Text>}
               {top.letters && (
                 <View style={styles.letters}>
@@ -553,60 +572,39 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
             </Movable>
           )}
         </>
-      )}
+      ))}
 
-      {/* Signature, remplacée par l'aide quand les menus sont affichés */}
-      <View style={[styles.brand, { bottom: hintsBottom }]} pointerEvents="none" onLayout={(e) => setHintsHeight(Math.ceil(e.nativeEvent.layout.height))}>
-        {chrome && !started && <Text style={[styles.hint, styles.hintMenus]}>{t('filter.hintChrome')}</Text>}
-        <Text style={styles.hint}>{hint}</Text>
-      </View>
-
-      {/* Bande du haut : touche pour réafficher les menus */}
-      {!chrome && (
-        <Pressable
-          style={[styles.chromeZone, { height: insets.top + 64 }]}
-          onPress={() => setChrome(true)}
-          accessibilityRole="button"
-          accessibilityLabel={t('filter.showMenus')}
+      {settingsOpen && (
+        <CameraSettings
+          title={t(`games.${mode}.title`)}
+          overlayOn={overlayOn}
+          onOverlayChange={setOverlayOn}
+          styleOptions={styleOptions}
+          styleValue={overlayStyle}
+          onStyleChange={(value) => setOverlayStyle(value as OverlayStyle)}
+          onResetPlacement={() => {
+            cardPlacement.reset();
+            sidesPlacement.reset();
+          }}
+          onClose={() => setSettingsOpen(false)}
+          onQuit={() => router.back()}
         >
-          <View style={[styles.menusPill, { marginTop: insets.top + 8 }]} pointerEvents="none">
-            <Feather name="menu" size={13} color={colors.text} />
-            <Text style={styles.menusPillText}>{t('filter.menusPill')}</Text>
-          </View>
-        </Pressable>
-      )}
-
-      {chrome && (
-        <>
-          <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
-            <Pressable onPress={() => router.back()} accessibilityRole="button" accessibilityLabel={t('common.backLabel')} style={styles.iconBtn}>
-              <Feather name="x" size={22} color={colors.text} />
-            </Pressable>
-            <View style={styles.titlePill}>
-              <Feather name="video" size={14} color={colors.pink} />
-              <Text style={styles.titleText} numberOfLines={1}>{t(`games.${mode}.title`)}</Text>
+          {mode === 'truthordare' && (
+            <View style={styles.todLevels}>
+              {TOD_FILTER_LEVELS.map((l) => (
+                <Pressable
+                  key={l}
+                  onPress={() => setTodLevel(l)}
+                  accessibilityRole="radio"
+                  accessibilityState={{ checked: l === todLevel }}
+                  style={[styles.todLevel, l === todLevel && { backgroundColor: TOD_LEVEL_COLORS[l] }]}
+                >
+                  <Text style={[styles.todLevelText, l === todLevel && { color: colors.bg }]}>{t(`games.truthordare.levels.${l}`)}</Text>
+                </Pressable>
+              ))}
             </View>
-            <View style={styles.iconSpacer} />
-          </View>
-
-          <View style={[styles.menuBar, { top: insets.top + 60 }]} pointerEvents="box-none">
-            {mode === 'truthordare' && (
-              <View style={styles.todLevels}>
-                {TOD_FILTER_LEVELS.map((l) => (
-                  <Pressable
-                    key={l}
-                    onPress={() => setTodLevel(l)}
-                    accessibilityRole="radio"
-                    accessibilityState={{ checked: l === todLevel }}
-                    style={[styles.todLevel, l === todLevel && { backgroundColor: TOD_LEVEL_COLORS[l] }]}
-                  >
-                    <Text style={[styles.todLevelText, l === todLevel && { color: colors.bg }]}>{t(`games.truthordare.levels.${l}`)}</Text>
-                  </Pressable>
-                ))}
-              </View>
-            )}
-          </View>
-        </>
+          )}
+        </CameraSettings>
       )}
     </View>
   );
@@ -634,6 +632,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.bg, borderRadius: radius.lg, paddingHorizontal: 18, paddingVertical: 14, gap: 6,
     shadowColor: '#000', shadowOpacity: 0.35, shadowRadius: 18, shadowOffset: { width: 0, height: 10 }, elevation: 10,
   },
+  cardCompact: { backgroundColor: DIM, borderRadius: radius.md, paddingHorizontal: 14, paddingVertical: 8 },
+  cardTextCompact: { fontSize: 18, lineHeight: 22 },
   cardText: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 26, lineHeight: 30, textAlign: 'center' },
   cardWord: { fontSize: 40, lineHeight: 46, letterSpacing: -0.5 },
   letters: { flexDirection: 'row', justifyContent: 'center', gap: 10, marginTop: 4 },
@@ -652,6 +652,8 @@ const styles = StyleSheet.create({
 
   sides: { position: 'absolute', left: 16, right: 16, flexDirection: 'row', justifyContent: 'space-between', gap: 12 },
   side: { flexDirection: 'row', alignItems: 'center', gap: 6, height: 52, paddingHorizontal: 18, borderRadius: radius.pill, maxWidth: '48%' },
+  sideCompact: { height: 40, paddingHorizontal: 14 },
+  sideTextCompact: { fontSize: 16 },
   sideRight: { justifyContent: 'flex-end' },
   sideWide: { flex: 1, justifyContent: 'center', maxWidth: undefined },
   sideText: { fontFamily: fonts.extrabold, fontSize: 20, flexShrink: 1 },
@@ -680,34 +682,7 @@ const styles = StyleSheet.create({
   endValue: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 80, lineHeight: 88 },
   endScore: { color: colors.textMuted, fontFamily: fonts.bold, fontSize: 16 },
 
-  brand: { position: 'absolute', left: spacing.screen, right: spacing.screen, alignItems: 'center', gap: 6 },
-  hintMenus: { fontSize: 12, opacity: 0.9 },
-  brandText: {
-    overflow: 'hidden', backgroundColor: DIM, color: colors.pink, fontFamily: fonts.extrabold, fontSize: 12,
-    paddingHorizontal: 12, paddingVertical: 5, borderRadius: radius.pill,
-  },
-
-  chromeZone: { position: 'absolute', top: 0, left: 0, right: 0 },
-  menusPill: {
-    alignSelf: 'center', flexDirection: 'row', alignItems: 'center', gap: 6, height: 30, paddingHorizontal: 12,
-    borderRadius: 15, backgroundColor: 'rgba(18,16,34,0.55)',
-  },
-  menusPillText: { color: colors.text, fontFamily: fonts.bold, fontSize: 12 },
-  header: { position: 'absolute', top: 0, left: 0, right: 0, flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12 },
-  iconBtn: { width: 44, height: 44, borderRadius: 22, backgroundColor: 'rgba(18,16,34,0.7)', alignItems: 'center', justifyContent: 'center' },
-  iconSpacer: { width: 44, height: 44 },
-  titlePill: {
-    flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, height: 44,
-    backgroundColor: 'rgba(18,16,34,0.7)', borderRadius: radius.pill, paddingHorizontal: 14,
-  },
-  titleText: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 15, flexShrink: 1 },
-  menuBar: { position: 'absolute', left: 0, right: 0, alignItems: 'center' },
-  todLevels: { flexDirection: 'row', gap: 4, padding: 4, borderRadius: radius.pill, backgroundColor: 'rgba(18,16,34,0.7)' },
-  todLevel: { height: 32, paddingHorizontal: 14, borderRadius: radius.pill, alignItems: 'center', justifyContent: 'center' },
+  todLevels: { alignSelf: 'flex-start', flexDirection: 'row', gap: 4, padding: 4, borderRadius: radius.pill, backgroundColor: 'rgba(18,16,34,0.7)' },
+  todLevel: { height: 40, paddingHorizontal: 14, borderRadius: radius.pill, alignItems: 'center', justifyContent: 'center' },
   todLevelText: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 12 },
-
-  hint: {
-    overflow: 'hidden', color: colors.text, fontFamily: fonts.bold, fontSize: 13, textAlign: 'center',
-    backgroundColor: 'rgba(18,16,34,0.85)', paddingHorizontal: 12, paddingVertical: 6, borderRadius: radius.pill,
-  },
 });

@@ -237,12 +237,24 @@
     "permissionBody": "Allow photo access in Settings to save the image.",
     "exportError": "Couldn't create the image. Try again."
   },
+  "intro": {
+    "play": "Play",
+    "cameraTitle": "Playable for a Story",
+    "cameraBody": "Tap the camera icon in the game: it plays over your camera, with no other text in the frame.",
+    "cameraSettings": "While filming, long-press the background (not the card) to show the settings: change, hide or restore the overlay, and exit.",
+    "gestures": {
+      "whoofus": "On camera: tap the screen to start 3, 2, 1, point, then tap the side of the person pointed at.",
+      "wouldyourather": "On camera: one answers in secret off camera, then the other taps the option they bet on.",
+      "truthordare": "On camera: tap to pick who plays, then left (truth) or right (dare).",
+      "password": "On camera: tap left when the word is found, right to skip.",
+      "scattergories": "On camera: tap the side of whoever finds one first."
+    }
+  },
   "filter": {
     "title": "Filter mode",
     "permissionTitle": "We need the camera",
     "permissionBody": "Filter mode shows the game on top of your selfie camera, like a TikTok filter.",
     "playClassic": "Play without camera",
-    "menusPill": "Menus · exit",
     "allowCamera": "Allow camera",
     "tapToPlay": "Tap to play",
     "kickers": {
@@ -264,14 +276,26 @@
     "hintRestart": "Tap the screen to play again",
     "hintSpinTod": "Tap the screen to pick who plays",
     "hintTod": "Truth on the left, dare on the right",
-    "hintChrome": "Menus hide as soon as you play. Tap the top of the screen to bring them back. Drag or pinch the overlay to place it.",
-    "showMenus": "Show menus",
     "passwordSub": "{{guesser}}, don't look!",
     "passwordScore_one": "{{count}} found",
     "passwordScore_other": "{{count}} found",
     "found": "Got it",
     "skip": "Skip",
     "hintPassword": "Left: got it · Right: skip",
-    "hintBac": "A word from the theme containing both letters. Tap the side of whoever finds one first"
+    "hintBac": "A word from the theme containing both letters. Tap the side of whoever finds one first",
+    "settingsTitle": "Camera settings",
+    "done": "Done",
+    "quit": "Exit",
+    "overlay": "Game overlay",
+    "overlayOn": "Shown",
+    "overlayOff": "Hidden",
+    "style": "Layout",
+    "styles": {
+      "card": "Card",
+      "banner": "Banner"
+    },
+    "resetPlacement": "Reset position",
+    "showSettings": "Show settings",
+    "settingsHowTo": "Long-press the background to come back here. Drag the overlay with one finger, pinch it with two."
   }
 }
