@@ -82,11 +82,6 @@ function WhoOfUsGame({ names, onEditNames }: { names: CoupleNames; onEditNames: 
               </View>
             ))}
           </View>
-          <Button
-            label={t('games.whoofus.shareStory')}
-            onPress={() => router.push({ pathname: '/story', params: { template: 'match', percent: String(percent), name1: names[0], name2: names[1] } })}
-            variant="accent"
-          />
           <Button label={t('games.whoofus.playAgain')} onPress={restart} />
         </ScrollView>
       </Screen>
