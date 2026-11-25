@@ -146,17 +146,34 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
   const [panelHeight, setPanelHeight] = useState(0);
   // Web : accès clavier aux réglages (visible seulement quand il a le focus), avec retour du focus à la fermeture
   const keyboardOpener = useRef<any>(null);
-  const openedByKeyboard = useRef(false);
-  const openSettings = (viaKeyboard = false) => {
-    openedByKeyboard.current = viaKeyboard;
-    setSettingsOpen(true);
-  };
+  // Modalité d'entrée (web) : le bouton clavier n'est visible que si la dernière interaction était au clavier
+  const keyboardModality = useRef(false);
+  const [openerVisible, setOpenerVisible] = useState(false);
+  const openerFocused = useRef(false);
+  useEffect(() => {
+    if (Platform.OS !== 'web') return;
+    const onKeyDown = () => {
+      keyboardModality.current = true;
+      setOpenerVisible(openerFocused.current);
+    };
+    const onPointer = () => {
+      keyboardModality.current = false;
+      setOpenerVisible(false);
+    };
+    document.addEventListener('keydown', onKeyDown, true);
+    document.addEventListener('pointerdown', onPointer, true);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown, true);
+      document.removeEventListener('pointerdown', onPointer, true);
+    };
+  }, []);
+  const scrimStart = useRef<{ x: number; y: number } | null>(null);
+  const openSettings = () => setSettingsOpen(true);
   const closeSettings = () => {
     setSettingsOpen(false);
-    if (openedByKeyboard.current) setTimeout(() => keyboardOpener.current?.focus?.(), 50);
-    openedByKeyboard.current = false;
+    // Fermeture au clavier : le focus revient au bouton ; fermeture tactile : image propre, pas de focus
+    if (Platform.OS === 'web' && keyboardModality.current) setTimeout(() => keyboardOpener.current?.focus?.(), 50);
   };
-  const [openerFocused, setOpenerFocused] = useState(false);
   // Échap (web) et Retour (Android) referment d'abord les réglages, sans quitter la partie
   useEffect(() => {
     if (!settingsOpen) return;
@@ -524,12 +541,18 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
       {Platform.OS === 'web' && !settingsOpen && (
         <Pressable
           ref={keyboardOpener}
-          onPress={() => openSettings(true)}
-          onFocus={() => setOpenerFocused(true)}
-          onBlur={() => setOpenerFocused(false)}
+          onPress={() => openSettings()}
+          onFocus={() => {
+            openerFocused.current = true;
+            setOpenerVisible(keyboardModality.current);
+          }}
+          onBlur={() => {
+            openerFocused.current = false;
+            setOpenerVisible(false);
+          }}
           accessibilityRole="button"
           accessibilityLabel={t('filter.showSettings')}
-          style={[styles.kbOpener, { top: insets.top + 8, opacity: openerFocused ? 1 : 0 }]}
+          style={[styles.kbOpener, { top: insets.top + 8, opacity: openerVisible ? 1 : 0 }]}
         >
           <Feather name="settings" size={14} color={colors.text} />
           <Text style={styles.kbOpenerText}>{t('filter.showSettings')}</Text>
@@ -553,7 +576,7 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
       />
 
       {overlayOn && (mode === 'wouldyourather' && finished ? (
-        <Movable placement={cardPlacement} onTap={onTap} style={[styles.endWrap, settingsOpen && { paddingTop: panelHeight + 8 }]}>
+        <Movable placement={cardPlacement} preview={settingsOpen} onTap={onTap} style={[styles.endWrap, settingsOpen && { paddingTop: panelHeight + 8 }]}>
           <Animated.View style={[styles.endCard, cardStyle]}>
             <Text style={styles.endKicker}>
               {t('games.wouldyourather.resultKicker', { guesser: names[guesser], answerer: names[answerer] })}
@@ -565,7 +588,7 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
       ) : (
         <>
           {/* Carte du jeu, en haut */}
-          <Movable placement={cardPlacement} onTap={onTap} style={[styles.top, { top: settingsOpen ? panelHeight + 8 : insets.top + (mode === 'truthordare' ? 112 : 72) }]}>
+          <Movable placement={cardPlacement} preview={settingsOpen} onTap={onTap} style={[styles.top, { top: settingsOpen ? panelHeight + 8 : insets.top + (mode === 'truthordare' ? 112 : 72) }]}>
             {!compact && (
               <View style={styles.kickerRow}>
                 <Text style={styles.kicker}>{top.kicker}</Text>
@@ -605,7 +628,7 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
 
           {/* Bas de l'écran : les deux côtés */}
           {sides && (
-            <Movable placement={sidesPlacement} onTap={onTap} style={[styles.sides, { bottom: sidesBottom }]}>
+            <Movable placement={sidesPlacement} preview={settingsOpen} onTap={onTap} style={[styles.sides, { bottom: sidesBottom }]}>
               {sides}
               {showOr && (
                 <View style={styles.orWrap} pointerEvents="none">
@@ -622,7 +645,15 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
         <Pressable
           style={StyleSheet.absoluteFill}
           focusable={false}
-          onPress={closeSettings}
+          onPressIn={(e) => {
+            scrimStart.current = { x: e.nativeEvent.pageX, y: e.nativeEvent.pageY };
+          }}
+          onPress={(e) => {
+            // Un appui referme ; un glissement est absorbé (ni fermeture, ni jeu, ni placement)
+            const start = scrimStart.current;
+            if (start && Math.hypot(e.nativeEvent.pageX - start.x, e.nativeEvent.pageY - start.y) > 10) return;
+            closeSettings();
+          }}
           accessibilityRole="button"
           accessibilityLabel={t('filter.closeSettings')}
         />
