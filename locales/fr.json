@@ -255,6 +255,8 @@
     "or": "OU",
     "hintSpin": "Touche l'écran pour lancer la roulette",
     "hintCountdown": "Touche l'écran pour lancer le compte à rebours, puis pointez !",
+    "hintCounting": "Compte à rebours en cours… pointez à « POINTEZ ! »",
+    "hintRolling": "Tirage en cours…",
     "hintPointed": "Touche le côté de la personne pointée",
     "pointNow": "POINTEZ !",
     "hintNext": "Touche l'écran pour la suite",

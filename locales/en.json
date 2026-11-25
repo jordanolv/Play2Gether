@@ -256,6 +256,8 @@
     "or": "OR",
     "hintSpin": "Tap the screen to spin",
     "hintCountdown": "Tap the screen for the countdown, then point!",
+    "hintCounting": "Countdown running… point when it says POINT!",
+    "hintRolling": "Picking…",
     "hintPointed": "Tap the side of the person you pointed at",
     "pointNow": "POINT!",
     "hintNext": "Tap the screen for the next one",
