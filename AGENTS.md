@@ -31,6 +31,15 @@ Le package s'appelle `duo-games` (nom npm), l'app `Play2Gether` (slug `play2geth
 - Style visuel « Néon Nuit » (thème sombre) : réutiliser `app/theme.ts` et `components/ui/`.
 - Commits en français, conventional commits (`feat:`, `fix:`, `content(...)`, `docs:`, `ci:`, `chore:`).
 
+## Mode caméra (écran `app/filter.tsx`)
+- L'image prête à enregistrer ne montre que la caméra et l'overlay du jeu : aucune aide, aucun bouton.
+- Un **appui** n'importe où joue ; un **appui long (600 ms) sur le fond** (pas sur la carte, qui se déplace/pince
+  et se remet en place par appui long) ouvre les réglages (`components/filter/CameraSettings.tsx`) : quitter,
+  overlay affiché/masqué, présentation (plusieurs pour « Qui de nous deux » : carte/bandeau), remise en place,
+  niveau d'Action ou Vérité. Alternative VoiceOver/TalkBack : action d'accessibilité « Afficher les réglages ».
+- Réglages ouverts, un appui hors panneau les referme sans faire avancer la partie. Ce geste est enseigné par la
+  mini-instruction qui s'ouvre depuis l'accueil (`components/ui/LaunchSheet.tsx`, clés `intro.*`).
+
 ## Commandes
 Toutes exécutées avec succès dans ce worktree :
 - Installer : `npm ci --no-audit --no-fund --prefer-offline`
