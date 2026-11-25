@@ -60,10 +60,6 @@ function WhoOfUsGame({ names, onEditNames }: { names: CoupleNames; onEditNames: 
     setAnswers([]);
   };
 
-  const shareQuestion = (question: string) => {
-    router.push({ pathname: '/story', params: { template: 'whoofus', question, name1: names[0], name2: names[1] } });
-  };
-
   if (finished) {
     const agreed = answers.filter((a) => a !== 'split').length;
     const percent = Math.round((agreed / answers.length) * 100);
@@ -118,10 +114,6 @@ function WhoOfUsGame({ names, onEditNames }: { names: CoupleNames; onEditNames: 
         </View>
 
         <View style={styles.tools}>
-          <Pressable onPress={() => shareQuestion(question)} accessibilityRole="button" style={({ pressed }) => [styles.tool, pressed && { opacity: 0.7 }]}>
-            <Feather name="smartphone" size={15} color={colors.textMuted} />
-            <Text style={styles.toolText}>{t('games.whoofus.filmIt')}</Text>
-          </Pressable>
           <Pressable onPress={onEditNames} accessibilityRole="button" style={({ pressed }) => [styles.tool, pressed && { opacity: 0.7 }]}>
             <Feather name="edit-2" size={15} color={colors.textMuted} />
             <Text style={styles.toolText}>{t('games.whoofus.editNames')}</Text>
