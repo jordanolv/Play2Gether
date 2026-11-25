@@ -241,14 +241,17 @@
     "play": "Play",
     "cameraTitle": "Playable for a Story",
     "cameraBody": "Tap the camera icon in the game: it plays over your camera, with no other text in the frame.",
-    "cameraSettings": "While filming, long-press the background (not the card) to show the settings: change, hide or restore the overlay, and exit.",
+    "cameraSettings": "Long-press the background (off the overlay): settings to change, hide or restore the overlay, and exit.",
     "gestures": {
       "whoofus": "On camera: tap the screen to start 3, 2, 1, point, then tap the side of the person pointed at.",
       "wouldyourather": "On camera: one answers in secret off camera, then the other taps the option they bet on.",
       "truthordare": "On camera: tap to pick who plays, then left (truth) or right (dare).",
       "password": "On camera: tap left when the word is found, right to skip.",
       "scattergories": "On camera: tap the side of whoever finds one first."
-    }
+    },
+    "cameraPlace": "Drag the overlay with one finger, pinch it with two to place it. Long-press the overlay: it snaps back into place.",
+    "cameraTitleTod": "Playable for a Story: Normal and Couple",
+    "cameraNoSpicy": "The Spicy 16+ level is not available on camera."
   },
   "filter": {
     "title": "Filter mode",
@@ -296,6 +299,7 @@
     },
     "resetPlacement": "Reset position",
     "showSettings": "Show settings",
-    "settingsHowTo": "Long-press the background to come back here. Drag the overlay with one finger, pinch it with two."
+    "settingsHowTo": "Long-press the background (off the overlay) to come back here. Long-press the overlay: it snaps back into place.",
+    "closeSettings": "Close settings"
   }
 }

@@ -49,11 +49,13 @@ export function LaunchSheet({ game, onClose, onPlay }: Props) {
               <View style={styles.camera}>
                 <View style={styles.cameraHead}>
                   <Feather name="video" size={15} color={colors.pink} />
-                  <Text style={styles.cameraTitle}>{t('intro.cameraTitle')}</Text>
+                  <Text style={styles.cameraTitle}>{t(isTod ? 'intro.cameraTitleTod' : 'intro.cameraTitle')}</Text>
                 </View>
                 <Text style={styles.cameraText}>{t('intro.cameraBody')}</Text>
                 <Text style={styles.cameraText}>{t(`intro.gestures.${current.id}`)}</Text>
+                <Text style={styles.cameraText}>{t('intro.cameraPlace')}</Text>
                 <Text style={styles.cameraText}>{t('intro.cameraSettings')}</Text>
+                {isTod && <Text style={styles.cameraText}>{t('intro.cameraNoSpicy')}</Text>}
               </View>
             )}
 

@@ -1,7 +1,7 @@
 import { Feather } from '@expo/vector-icons';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet, Switch, Text, View } from 'react-native';
+import { Platform, Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { colors, fonts, radius } from '@/constants/theme';
@@ -17,19 +17,33 @@ interface Props {
   onResetPlacement: () => void;
   onClose: () => void;
   onQuit: () => void;
+  /** Hauteur maximale : au-delà, le contenu défile (petits écrans, texte agrandi). */
+  maxHeight: number;
+  /** Hauteur réelle du panneau, pour garder l'overlay visible dessous. */
+  onHeight: (height: number) => void;
   /** Réglages propres au jeu (ex. niveau d'Action ou Vérité). */
   children?: ReactNode;
 }
 
 /** Réglages du mode caméra : affichés à la demande seulement, jamais sur l'image prête à enregistrer. */
 export function CameraSettings({
-  title, overlayOn, onOverlayChange, styleOptions = [], styleValue, onStyleChange, onResetPlacement, onClose, onQuit, children,
+  title, overlayOn, onOverlayChange, styleOptions = [], styleValue, onStyleChange, onResetPlacement, onClose, onQuit, maxHeight, onHeight, children,
 }: Props) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
+  const doneRef = useRef<any>(null);
+  // Web : le focus clavier arrive dans le panneau à l'ouverture
+  useEffect(() => {
+    if (Platform.OS === 'web') (doneRef.current as any)?.focus?.();
+  }, []);
 
   return (
-    <View style={[styles.panel, { paddingTop: insets.top + 8 }]} accessibilityViewIsModal>
+    <View
+      style={[styles.panel, { paddingTop: insets.top + 8, maxHeight }]}
+      accessibilityViewIsModal
+      testID="camera-settings"
+      onLayout={(e) => onHeight(Math.ceil(e.nativeEvent.layout.height))}
+    >
       <View style={styles.header}>
         <Pressable onPress={onQuit} accessibilityRole="button" style={({ pressed }) => [styles.quit, pressed && { opacity: 0.8 }]}>
           <Feather name="x" size={16} color={colors.text} />
@@ -39,11 +53,12 @@ export function CameraSettings({
           <Feather name="video" size={14} color={colors.pink} />
           <Text style={styles.titleText} numberOfLines={1}>{title}</Text>
         </View>
-        <Pressable onPress={onClose} accessibilityRole="button" style={({ pressed }) => [styles.done, pressed && { opacity: 0.8 }]}>
+        <Pressable ref={doneRef} onPress={onClose} accessibilityRole="button" style={({ pressed }) => [styles.done, pressed && { opacity: 0.8 }]}>
           <Text style={styles.doneText}>{t('filter.done')}</Text>
         </Pressable>
       </View>
 
+      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
       <Text style={styles.heading}>{t('filter.settingsTitle')}</Text>
 
       <View style={styles.row}>
@@ -88,15 +103,17 @@ export function CameraSettings({
       </Pressable>
 
       <Text style={styles.how}>{t('filter.settingsHowTo')}</Text>
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   panel: {
-    position: 'absolute', top: 0, left: 0, right: 0, gap: 12, paddingHorizontal: 16, paddingBottom: 16,
+    position: 'absolute', top: 0, left: 0, right: 0, gap: 10, paddingHorizontal: 16, paddingBottom: 12,
     backgroundColor: 'rgba(18,16,34,0.94)', borderBottomLeftRadius: radius.xl, borderBottomRightRadius: radius.xl,
   },
+  scroll: { gap: 12 },
   header: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   quit: {
     flexDirection: 'row', alignItems: 'center', gap: 6, height: 44, paddingHorizontal: 14, borderRadius: radius.pill,

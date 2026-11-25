@@ -240,14 +240,17 @@
     "play": "Jouer",
     "cameraTitle": "Jouable pour une Story",
     "cameraBody": "Touche l’icône caméra dans la partie : le jeu s’affiche sur ta caméra, sans autre texte à l’image.",
-    "cameraSettings": "Pendant la prise, fais un appui long sur le fond (pas sur la carte) pour afficher les réglages : changer, masquer ou remettre l’overlay, et quitter.",
+    "cameraSettings": "Appui long sur le fond (hors overlay) : réglages pour changer, masquer ou remettre l’overlay, et quitter.",
     "gestures": {
       "whoofus": "En caméra : touche l’écran pour lancer le 3, 2, 1, pointez, puis touche le côté de la personne pointée.",
       "wouldyourather": "En caméra : l’un répond en secret hors caméra, puis l’autre touche l’option qu’il parie.",
       "truthordare": "En caméra : touche pour tirer qui joue, puis à gauche (vérité) ou à droite (action).",
       "password": "En caméra : touche à gauche si le mot est trouvé, à droite pour passer.",
       "scattergories": "En caméra : touche le côté de celui qui trouve en premier."
-    }
+    },
+    "cameraPlace": "Glisse l’overlay d’un doigt, pince-le à deux doigts pour le placer. Appui long sur l’overlay : il revient en place.",
+    "cameraTitleTod": "Jouable pour une Story : Normal et Couple",
+    "cameraNoSpicy": "Le niveau Coquin 16+ n’est pas disponible en caméra."
   },
   "filter": {
     "title": "Mode filtre",
@@ -295,6 +298,7 @@
     },
     "resetPlacement": "Remettre en place",
     "showSettings": "Afficher les réglages",
-    "settingsHowTo": "Appui long sur le fond pour revenir ici. Glisse l’overlay d’un doigt, pince-le à deux doigts."
+    "settingsHowTo": "Appui long sur le fond (hors overlay) pour revenir ici. Appui long sur l’overlay : il revient en place.",
+    "closeSettings": "Fermer les réglages"
   }
 }

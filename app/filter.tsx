@@ -4,7 +4,7 @@ import * as Haptics from 'expo-haptics';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Animated, Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { Animated, BackHandler, Platform, Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CameraSettings } from '@/components/filter/CameraSettings';
@@ -138,10 +138,41 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
 
   // L'image reste propre : les réglages n'apparaissent qu'à la demande (appui long sur le fond)
   const [settingsOpen, setSettingsOpen] = useState(false);
+  // Hauteur du panneau : l'overlay se décale dessous pendant les réglages, pour rester visible
+  const [panelHeight, setPanelHeight] = useState(0);
+  // Web : accès clavier aux réglages (visible seulement quand il a le focus), avec retour du focus à la fermeture
+  const keyboardOpener = useRef<any>(null);
+  const openedByKeyboard = useRef(false);
+  const openSettings = (viaKeyboard = false) => {
+    openedByKeyboard.current = viaKeyboard;
+    setSettingsOpen(true);
+  };
+  const closeSettings = () => {
+    setSettingsOpen(false);
+    if (openedByKeyboard.current) setTimeout(() => keyboardOpener.current?.focus?.(), 50);
+    openedByKeyboard.current = false;
+  };
+  const [openerFocused, setOpenerFocused] = useState(false);
+  // Échap (web) et Retour (Android) referment d'abord les réglages, sans quitter la partie
+  useEffect(() => {
+    if (!settingsOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeSettings();
+    };
+    if (Platform.OS === 'web') document.addEventListener('keydown', onKey);
+    const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+      closeSettings();
+      return true;
+    });
+    return () => {
+      if (Platform.OS === 'web') document.removeEventListener('keydown', onKey);
+      sub.remove();
+    };
+  }, [settingsOpen]);
   const [overlayOn, setOverlayOn] = useState(true);
   const [overlayStyle, setOverlayStyle] = useState<OverlayStyle>('card');
   const styleOptions = STYLE_OPTIONS[mode] ?? [];
@@ -287,11 +318,6 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
 
   // Un appui fait avancer le jeu. Pour les jeux à deux choix, le côté touché compte.
   const onTap = (x: number) => {
-    // Réglages ouverts : un appui les referme, sans faire avancer la partie
-    if (settingsOpen) {
-      setSettingsOpen(false);
-      return;
-    }
     if (rolling) return;
     const side: Side = x < width / 2 ? 0 : 1;
     switch (mode) {
@@ -494,23 +520,40 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
     <View style={styles.root}>
       <CameraView style={StyleSheet.absoluteFill} facing="front" mirror />
 
+      {/* Web : accès clavier aux réglages, invisible tant qu'il n'a pas le focus (distinct de l'action qui joue) */}
+      {Platform.OS === 'web' && !settingsOpen && (
+        <Pressable
+          ref={keyboardOpener}
+          onPress={() => openSettings(true)}
+          onFocus={() => setOpenerFocused(true)}
+          onBlur={() => setOpenerFocused(false)}
+          accessibilityRole="button"
+          accessibilityLabel={t('filter.showSettings')}
+          style={[styles.kbOpener, { top: insets.top + 8, opacity: openerFocused ? 1 : 0 }]}
+        >
+          <Feather name="settings" size={14} color={colors.text} />
+          <Text style={styles.kbOpenerText}>{t('filter.showSettings')}</Text>
+        </Pressable>
+      )}
+
       {/* Fond tactile : un appui joue ; un appui long affiche les réglages (jamais de texte d'aide à l'image) */}
       <Pressable
         style={StyleSheet.absoluteFill}
+        focusable={!settingsOpen}
         onPress={(e) => onTap(e.nativeEvent.pageX)}
-        onLongPress={() => setSettingsOpen(true)}
+        onLongPress={() => openSettings()}
         delayLongPress={600}
         accessibilityRole="button"
         accessibilityLabel={t('filter.tapToPlay')}
         accessibilityHint={hint}
         accessibilityActions={[{ name: 'settings', label: t('filter.showSettings') }]}
         onAccessibilityAction={(e) => {
-          if (e.nativeEvent.actionName === 'settings') setSettingsOpen(true);
+          if (e.nativeEvent.actionName === 'settings') openSettings();
         }}
       />
 
       {overlayOn && (mode === 'wouldyourather' && finished ? (
-        <Movable placement={cardPlacement} onTap={onTap} style={styles.endWrap}>
+        <Movable placement={cardPlacement} onTap={onTap} style={[styles.endWrap, settingsOpen && { paddingTop: panelHeight + 8 }]}>
           <Animated.View style={[styles.endCard, cardStyle]}>
             <Text style={styles.endKicker}>
               {t('games.wouldyourather.resultKicker', { guesser: names[guesser], answerer: names[answerer] })}
@@ -522,7 +565,7 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
       ) : (
         <>
           {/* Carte du jeu, en haut */}
-          <Movable placement={cardPlacement} onTap={onTap} style={[styles.top, { top: insets.top + (mode === 'truthordare' ? 112 : 72) }]}>
+          <Movable placement={cardPlacement} onTap={onTap} style={[styles.top, { top: settingsOpen ? panelHeight + 8 : insets.top + (mode === 'truthordare' ? 112 : 72) }]}>
             {!compact && (
               <View style={styles.kickerRow}>
                 <Text style={styles.kicker}>{top.kicker}</Text>
@@ -574,8 +617,21 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
         </>
       ))}
 
+      {/* Réglages ouverts : une couche couvre le jeu et son placement ; un appui dessus referme sans jouer */}
+      {settingsOpen && (
+        <Pressable
+          style={StyleSheet.absoluteFill}
+          focusable={false}
+          onPress={closeSettings}
+          accessibilityRole="button"
+          accessibilityLabel={t('filter.closeSettings')}
+        />
+      )}
+
       {settingsOpen && (
         <CameraSettings
+          maxHeight={Math.round(height * 0.46)}
+          onHeight={setPanelHeight}
           title={t(`games.${mode}.title`)}
           overlayOn={overlayOn}
           onOverlayChange={setOverlayOn}
@@ -586,7 +642,7 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
             cardPlacement.reset();
             sidesPlacement.reset();
           }}
-          onClose={() => setSettingsOpen(false)}
+          onClose={closeSettings}
           onQuit={() => router.back()}
         >
           {mode === 'truthordare' && (
@@ -682,6 +738,11 @@ const styles = StyleSheet.create({
   endValue: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 80, lineHeight: 88 },
   endScore: { color: colors.textMuted, fontFamily: fonts.bold, fontSize: 16 },
 
+  kbOpener: {
+    position: 'absolute', left: 12, flexDirection: 'row', alignItems: 'center', gap: 6, height: 36, paddingHorizontal: 12,
+    borderRadius: radius.pill, backgroundColor: 'rgba(18,16,34,0.9)', borderWidth: 2, borderColor: colors.pink,
+  },
+  kbOpenerText: { color: colors.text, fontFamily: fonts.bold, fontSize: 13 },
   todLevels: { alignSelf: 'flex-start', flexDirection: 'row', gap: 4, padding: 4, borderRadius: radius.pill, backgroundColor: 'rgba(18,16,34,0.7)' },
   todLevel: { height: 40, paddingHorizontal: 14, borderRadius: radius.pill, alignItems: 'center', justifyContent: 'center' },
   todLevelText: { color: colors.text, fontFamily: fonts.extrabold, fontSize: 12 },
