@@ -35,8 +35,6 @@
     "soon": "BIENTÔT",
     "storyTitle": "Studio Story",
     "storySub": "Crée un overlay pour TikTok ou Insta",
-    "camera": "Caméra",
-    "cameraLabel": "Lancer {{game}} en mode caméra",
     "filmable": "Jouable en mode filtre caméra",
     "launchCancel": "Annuler"
   },

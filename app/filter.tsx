@@ -69,7 +69,7 @@ export default function FilterScreen() {
         <Text style={styles.permissionTitle}>{t('filter.permissionTitle')}</Text>
         <Text style={styles.permissionBody}>{t('filter.permissionBody')}</Text>
         <Button label={t('filter.allowCamera')} onPress={requestPermission} variant="accent" style={{ alignSelf: 'stretch' }} />
-        <Button label={t('filter.playClassic')} onPress={() => router.replace(`/games/${mode}` as any)} variant="ghost" style={{ alignSelf: 'stretch' }} />
+        <Button label={t('filter.playClassic')} onPress={() => (router.canGoBack() ? router.back() : router.replace(`/games/${mode}` as any))} variant="ghost" style={{ alignSelf: 'stretch' }} />
       </Screen>
     );
   }
@@ -380,8 +380,7 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
     }
   })();
 
-  const hint = (() => {
-    if (!started) return t('filter.hintChrome');
+  const stepHint = (() => {
     switch (mode) {
       case 'wouldyourather':
         return finished ? t('filter.hintRestart') : guess === null ? t('filter.hintGuess') : t('filter.hintNext');
@@ -395,6 +394,8 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
         return t('filter.hintBac');
     }
   })();
+
+  const hint = !started ? t('filter.hintChrome') : stepHint;
 
   /** Boutons du bas : deux côtés colorés, selon le jeu. */
   const renderSides = () => {
@@ -555,7 +556,7 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
 
       {/* Signature, remplacée par l'aide quand les menus sont affichés */}
       <View style={[styles.brand, { bottom: insets.bottom + 20 }]} pointerEvents="none">
-        {chrome ? <Text style={styles.hint}>{hint}</Text> : <Text style={styles.brandText}>Play2Gether</Text>}
+        <Text style={styles.hint}>{chrome || !started ? hint : stepHint}</Text>
       </View>
 
       {/* Bande du haut : touche pour réafficher les menus */}

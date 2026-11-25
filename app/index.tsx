@@ -110,16 +110,9 @@ export default function HomeScreen() {
                 </View>
                 <View style={styles.badges}>
                   {game.filmable && (
-                    <Pressable
-                      onPress={() => router.push({ pathname: '/filter', params: { mode: game.id } })}
-                      accessibilityRole="button"
-                      accessibilityLabel={t('home.cameraLabel', { game: t(`games.${game.id}.title`) })}
-                      hitSlop={8}
-                      style={({ pressed }) => [styles.badgeCam, pressed && { opacity: 0.7 }]}
-                    >
+                    <View style={styles.badgeCam} accessible accessibilityLabel={t('home.filmable')}>
                       <Feather name="video" size={13} color={colors.pink} />
-                      <Text style={styles.badgeCamText}>{t('home.camera')}</Text>
-                    </Pressable>
+                    </View>
                   )}
                   {game.isNew && game.available && <Text style={styles.badgeNew}>{t('home.new')}</Text>}
                   {!game.available && <Text style={styles.badgeSoon}>{t('home.soon')}</Text>}
@@ -174,15 +167,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border,
   },
   cardSoon: { opacity: 0.55 },
-  cardTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 },
-  mark: { width: 36, height: 36, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center' },
+  cardTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 6, marginBottom: 2 },
+  mark: { flexShrink: 0, width: 36, height: 36, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center' },
   markText: { color: colors.bg, fontFamily: fonts.extrabold, fontSize: 16 },
-  badges: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  badges: { flexShrink: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-end', alignItems: 'center', gap: 6 },
   badgeCam: {
-    flexDirection: 'row', gap: 5, height: 28, paddingHorizontal: 10, borderRadius: 14, alignItems: 'center', justifyContent: 'center',
+    width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center',
     backgroundColor: 'rgba(255,95,168,0.14)', borderWidth: 1, borderColor: 'rgba(255,95,168,0.4)',
   },
-  badgeCamText: { color: colors.pink, fontFamily: fonts.extrabold, fontSize: 11 },
   badgeNew: {
     overflow: 'hidden', backgroundColor: colors.yellow, color: colors.bg, fontFamily: fonts.extrabold,
     fontSize: 10, letterSpacing: 0.8, paddingHorizontal: 8, paddingVertical: 4, borderRadius: radius.pill,
