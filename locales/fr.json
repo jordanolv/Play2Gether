@@ -236,12 +236,27 @@
     "permissionBody": "Autorise l'accès aux photos dans les réglages pour enregistrer l'image.",
     "exportError": "Impossible de créer l'image. Réessaie."
   },
+  "intro": {
+    "play": "Jouer",
+    "cameraTitle": "Jouable pour une Story",
+    "cameraBody": "Touche l’icône caméra dans la partie : le jeu s’affiche sur ta caméra, sans autre texte à l’image.",
+    "cameraSettings": "Appui long sur le fond (hors overlay) : réglages pour changer, masquer ou remettre l’overlay, et quitter.",
+    "gestures": {
+      "whoofus": "En caméra : touche l’écran pour lancer le 3, 2, 1, pointez, puis touche le côté de la personne pointée.",
+      "wouldyourather": "En caméra : l’un répond en secret hors caméra, puis l’autre touche l’option qu’il parie.",
+      "truthordare": "En caméra : touche pour tirer qui joue, puis à gauche (vérité) ou à droite (action).",
+      "password": "En caméra : touche à gauche si le mot est trouvé, à droite pour passer.",
+      "scattergories": "En caméra : touche le côté de celui qui trouve en premier."
+    },
+    "cameraPlace": "Glisse l’overlay d’un doigt, pince-le à deux doigts pour le placer. Appui long sur l’overlay : il revient en place.",
+    "cameraTitleTod": "Jouable pour une Story : Normal et Couple",
+    "cameraNoSpicy": "Le niveau Coquin 16+ n’est pas disponible en caméra."
+  },
   "filter": {
     "title": "Mode filtre",
     "permissionTitle": "On a besoin de la caméra",
     "permissionBody": "Le mode filtre affiche le jeu par-dessus votre caméra selfie, comme un filtre TikTok.",
     "playClassic": "Jouer sans caméra",
-    "menusPill": "Menus · quitter",
     "allowCamera": "Autoriser la caméra",
     "tapToPlay": "Touche pour jouer",
     "kickers": {
@@ -263,14 +278,27 @@
     "hintRestart": "Touche l'écran pour rejouer",
     "hintSpinTod": "Touche l'écran pour tirer qui joue",
     "hintTod": "Vérité à gauche, action à droite",
-    "hintChrome": "Les menus se cachent dès que vous jouez. Touche le haut de l'écran pour les revoir. Glisse ou pince l'overlay pour le placer.",
-    "showMenus": "Afficher les menus",
     "passwordSub": "{{guesser}}, ne regarde pas !",
     "passwordScore_one": "{{count}} trouvé",
     "passwordScore_other": "{{count}} trouvés",
     "found": "Trouvé",
     "skip": "Passer",
     "hintPassword": "Gauche : trouvé · Droite : on passe",
-    "hintBac": "Un mot du thème qui contient les 2 lettres. Touche le côté de celui qui trouve en premier"
+    "hintBac": "Un mot du thème qui contient les 2 lettres. Touche le côté de celui qui trouve en premier",
+    "settingsTitle": "Réglages caméra",
+    "done": "Terminé",
+    "quit": "Quitter",
+    "overlay": "Overlay du jeu",
+    "overlayOn": "Affiché",
+    "overlayOff": "Masqué",
+    "style": "Présentation",
+    "styles": {
+      "card": "Carte",
+      "banner": "Bandeau"
+    },
+    "resetPlacement": "Remettre en place",
+    "showSettings": "Afficher les réglages",
+    "settingsHowTo": "Appui long sur le fond (hors overlay) pour revenir ici. Appui long sur l’overlay : il revient en place.",
+    "closeSettings": "Fermer les réglages"
   }
 }

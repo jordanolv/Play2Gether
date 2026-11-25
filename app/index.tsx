@@ -29,7 +29,7 @@ export default function HomeScreen() {
   const router = useRouter();
   const { t, i18n } = useTranslation();
   const [streak, setStreak] = useState(0);
-  const [pickingLevel, setPickingLevel] = useState(false);
+  const [intro, setIntro] = useState<GameItem | null>(null);
 
   useFocusEffect(
     useCallback(() => {
@@ -37,16 +37,17 @@ export default function HomeScreen() {
     }, [])
   );
 
+  // Toucher un jeu (carte ou jeu mis en avant) ouvre d'abord sa mini-instruction
   const openGame = (game: GameItem) => {
-    if (!game.available) return;
-    // Action ou vérité : on choisit d'abord le thème
-    if (game.id === 'truthordare') setPickingLevel(true);
-    else router.push(`/games/${game.id}` as any);
+    if (game.available) setIntro(game);
   };
 
-  const playTruthOrDare = (level: TodLevel) => {
-    setPickingLevel(false);
-    router.push({ pathname: '/games/truthordare', params: { level } });
+  const play = (level?: TodLevel) => {
+    const game = intro;
+    setIntro(null);
+    if (!game) return;
+    if (game.id === 'truthordare') router.push({ pathname: '/games/truthordare', params: { level: level ?? 'couple' } });
+    else router.push(`/games/${game.id}` as any);
   };
 
   const toggleLanguage = () => {
@@ -125,7 +126,7 @@ export default function HomeScreen() {
         </View>
       </ScrollView>
 
-      <LaunchSheet visible={pickingLevel} onClose={() => setPickingLevel(false)} onPick={playTruthOrDare} />
+      <LaunchSheet game={intro} onClose={() => setIntro(null)} onPlay={play} />
     </Screen>
   );
 }

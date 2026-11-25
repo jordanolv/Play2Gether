@@ -31,6 +31,20 @@ Le package s'appelle `duo-games` (nom npm), l'app `Play2Gether` (slug `play2geth
 - Style visuel « Néon Nuit » (thème sombre) : réutiliser `app/theme.ts` et `components/ui/`.
 - Commits en français, conventional commits (`feat:`, `fix:`, `content(...)`, `docs:`, `ci:`, `chore:`).
 
+## Mode caméra (écran `app/filter.tsx`)
+- L'image prête à enregistrer ne montre que la caméra et l'overlay du jeu : aucune aide, aucun bouton.
+- Un **appui** n'importe où joue ; un **appui long (600 ms) sur le fond** (pas sur la carte, qui se déplace/pince
+  et se remet en place par appui long) ouvre les réglages (`components/filter/CameraSettings.tsx`) : quitter,
+  overlay affiché/masqué, présentation (plusieurs pour « Qui de nous deux » : carte/bandeau), remise en place,
+  niveau d'Action ou Vérité. Alternative VoiceOver/TalkBack : action d'accessibilité « Afficher les réglages ».
+- Réglages ouverts : une couche transparente couvre le jeu et le placement (un appui dessus referme sans jouer ;
+  un glissement est absorbé : ni fermeture, ni jeu, ni placement) ; le panneau (≤ 46 % de la hauteur, défilant) laisse l'overlay visible dessous : pendant les
+  réglages il est rendu à son ancre d'origine, jamais agrandi, sans toucher à sa position/taille de partie (rétablies à la fermeture). Échap (web) et Retour (Android) referment d'abord les réglages, sans quitter la partie.
+- Web : bouton « Afficher les réglages » atteignable à la touche Tab, visible seulement au focus en modalité clavier (pas après un geste tactile/souris) ; le focus
+  entre dans le panneau à l'ouverture et revient au bouton à la fermeture.
+- Ces gestes (glisser/pincer, appui long overlay vs fond) sont enseignés par la mini-instruction qui s'ouvre depuis
+  l'accueil (`components/ui/LaunchSheet.tsx`, clés `intro.*`) ; en Action ou Vérité, caméra = Normal et Couple.
+
 ## Commandes
 Toutes exécutées avec succès dans ce worktree :
 - Installer : `npm ci --no-audit --no-fund --prefer-offline`

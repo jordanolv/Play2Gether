@@ -1,5 +1,5 @@
 import * as Haptics from 'expo-haptics';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import {
   GestureDetector, useExclusiveGestures, useLongPressGesture, usePanGesture, usePinchGesture, useSimultaneousGestures, useTapGesture,
@@ -34,6 +34,8 @@ interface Props {
   /** Appui simple (sans glisser) : reçoit la position X du doigt à l'écran. */
   onTap: (absoluteX: number) => void;
   style?: StyleProp<ViewStyle>;
+  /** Aperçu figé (réglages ouverts) : rendu à sa place d'origine, sans toucher aux valeurs de la partie. */
+  preview?: boolean;
   children: ReactNode;
 }
 
@@ -42,8 +44,12 @@ const onReset = () => {
 };
 
 /** Élément d'overlay qu'on peut déplacer (un doigt), agrandir ou réduire (deux doigts), et remettre en place (appui long). */
-export function Movable({ placement, onTap, style, children }: Props) {
+export function Movable({ placement, onTap, style, preview = false, children }: Props) {
   const { x, y, scale } = placement;
+  const previewing = useSharedValue(false);
+  useEffect(() => {
+    previewing.set(preview);
+  }, [preview, previewing]);
   const startX = useSharedValue(0);
   const startY = useSharedValue(0);
   const startScale = useSharedValue(1);
@@ -95,9 +101,12 @@ export function Movable({ placement, onTap, style, children }: Props) {
 
   const gesture = useExclusiveGestures(useSimultaneousGestures(pan, pinch), longPress, tap);
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: x.get() }, { translateY: y.get() }, { scale: scale.get() }],
-  }));
+  // En aperçu : à l'ancre d'origine (sous le panneau), taille jamais agrandie ; x, y et scale restent intacts
+  const animatedStyle = useAnimatedStyle(() =>
+    previewing.get()
+      ? { transform: [{ translateX: 0 }, { translateY: 0 }, { scale: Math.min(1, scale.get()) }] }
+      : { transform: [{ translateX: x.get() }, { translateY: y.get() }, { scale: scale.get() }] }
+  );
 
   return (
     <GestureDetector gesture={gesture}>
