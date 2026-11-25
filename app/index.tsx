@@ -110,9 +110,16 @@ export default function HomeScreen() {
                 </View>
                 <View style={styles.badges}>
                   {game.filmable && (
-                    <View style={styles.badgeCam} accessibilityLabel={t('home.filmable')}>
+                    <Pressable
+                      onPress={() => router.push({ pathname: '/filter', params: { mode: game.id } })}
+                      accessibilityRole="button"
+                      accessibilityLabel={t('home.cameraLabel', { game: t(`games.${game.id}.title`) })}
+                      hitSlop={8}
+                      style={({ pressed }) => [styles.badgeCam, pressed && { opacity: 0.7 }]}
+                    >
                       <Feather name="video" size={13} color={colors.pink} />
-                    </View>
+                      <Text style={styles.badgeCamText}>{t('home.camera')}</Text>
+                    </Pressable>
                   )}
                   {game.isNew && game.available && <Text style={styles.badgeNew}>{t('home.new')}</Text>}
                   {!game.available && <Text style={styles.badgeSoon}>{t('home.soon')}</Text>}
@@ -172,9 +179,10 @@ const styles = StyleSheet.create({
   markText: { color: colors.bg, fontFamily: fonts.extrabold, fontSize: 16 },
   badges: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   badgeCam: {
-    width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center',
+    flexDirection: 'row', gap: 5, height: 28, paddingHorizontal: 10, borderRadius: 14, alignItems: 'center', justifyContent: 'center',
     backgroundColor: 'rgba(255,95,168,0.14)', borderWidth: 1, borderColor: 'rgba(255,95,168,0.4)',
   },
+  badgeCamText: { color: colors.pink, fontFamily: fonts.extrabold, fontSize: 11 },
   badgeNew: {
     overflow: 'hidden', backgroundColor: colors.yellow, color: colors.bg, fontFamily: fonts.extrabold,
     fontSize: 10, letterSpacing: 0.8, paddingHorizontal: 8, paddingVertical: 4, borderRadius: radius.pill,

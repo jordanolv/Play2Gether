@@ -51,6 +51,7 @@ function parseSecret(raw: string | undefined): Secret | null {
 
 export default function FilterScreen() {
   const { t, i18n } = useTranslation();
+  const router = useRouter();
   const [permission, requestPermission] = useCameraPermissions();
   const params = useLocalSearchParams<{ mode?: string; level?: string; secret?: string }>();
   const mode: Mode = isMode(params.mode) ? params.mode : 'whoofus';
@@ -68,6 +69,7 @@ export default function FilterScreen() {
         <Text style={styles.permissionTitle}>{t('filter.permissionTitle')}</Text>
         <Text style={styles.permissionBody}>{t('filter.permissionBody')}</Text>
         <Button label={t('filter.allowCamera')} onPress={requestPermission} variant="accent" style={{ alignSelf: 'stretch' }} />
+        <Button label={t('filter.playClassic')} onPress={() => router.replace(`/games/${mode}` as any)} variant="ghost" style={{ alignSelf: 'stretch' }} />
       </Screen>
     );
   }
@@ -563,7 +565,12 @@ function Filter({ names, genders = [null, null], mode, initialLevel = 'couple', 
           onPress={() => setChrome(true)}
           accessibilityRole="button"
           accessibilityLabel={t('filter.showMenus')}
-        />
+        >
+          <View style={[styles.menusPill, { marginTop: insets.top + 8 }]} pointerEvents="none">
+            <Feather name="menu" size={13} color={colors.text} />
+            <Text style={styles.menusPillText}>{t('filter.menusPill')}</Text>
+          </View>
+        </Pressable>
       )}
 
       {chrome && (
@@ -677,6 +684,11 @@ const styles = StyleSheet.create({
   },
 
   chromeZone: { position: 'absolute', top: 0, left: 0, right: 0 },
+  menusPill: {
+    alignSelf: 'center', flexDirection: 'row', alignItems: 'center', gap: 6, height: 30, paddingHorizontal: 12,
+    borderRadius: 15, backgroundColor: 'rgba(18,16,34,0.55)',
+  },
+  menusPillText: { color: colors.text, fontFamily: fonts.bold, fontSize: 12 },
   header: { position: 'absolute', top: 0, left: 0, right: 0, flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12 },
   iconBtn: { width: 44, height: 44, borderRadius: 22, backgroundColor: 'rgba(18,16,34,0.7)', alignItems: 'center', justifyContent: 'center' },
   iconSpacer: { width: 44, height: 44 },

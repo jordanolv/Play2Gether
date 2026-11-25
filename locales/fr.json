@@ -35,6 +35,8 @@
     "soon": "BIENTÔT",
     "storyTitle": "Studio Story",
     "storySub": "Crée un overlay pour TikTok ou Insta",
+    "camera": "Caméra",
+    "cameraLabel": "Lancer {{game}} en mode caméra",
     "filmable": "Jouable en mode filtre caméra",
     "launchCancel": "Annuler"
   },
@@ -241,6 +243,8 @@
     "title": "Mode filtre",
     "permissionTitle": "On a besoin de la caméra",
     "permissionBody": "Le mode filtre affiche le jeu par-dessus votre caméra selfie, comme un filtre TikTok.",
+    "playClassic": "Jouer sans caméra",
+    "menusPill": "Menus · quitter",
     "allowCamera": "Autoriser la caméra",
     "tapToPlay": "Touche pour jouer",
     "kickers": {
